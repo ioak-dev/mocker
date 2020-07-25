@@ -1,0 +1,114 @@
+.nav {
+  // Dimension constants
+  $logoHeight: 30px;
+  $logoHeightMobile: 20px;
+  $signinIconHeight: 25px;
+  &.popover-closed {
+    position: fixed;
+  }
+
+  .nav-menu-icon {
+    padding: 20px;
+    .material-icons {
+      cursor: pointer;
+      font-size: var(--metric-typography-14);
+    }
+  }
+}
+
+.nav-popover {
+  position: fixed;
+  z-index: 99;
+  height: 80%;
+  width: 80%;
+  background-color: #17bebb;
+  display: grid;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  box-shadow: var(--bs-lg);
+  @media (max-width: 767px) {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    transform: none;
+  }
+  .nav-popover-container {
+    padding: 20px;
+    display: grid;
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr auto 0.8fr;
+    }
+
+    @media (max-width: 767px) {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      // grid-template-rows: 1fr auto 0.8fr;
+      overflow: auto;
+    }
+
+    .nav-divider-section {
+      background: var(--color-foreground-5);
+      width: 1px;
+      height: 90%;
+      margin: auto;
+      @media (max-width: 767px) {
+        width: 90%;
+        height: 1px;
+      }
+    }
+
+    .nav-left-section {
+      display: grid;
+      align-self: center;
+      row-gap: 20px;
+      color: var(--color-foreground-2);
+    }
+
+    .nav-right-section {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      margin-left: 20px;
+
+      .nav-right-header {
+        display: flex;
+        justify-content: flex-end;
+        .material-icons {
+          font-size: var(--metric-typography-14);
+          cursor: pointer;
+          transition: transform 250ms ease-in-out, color 250ms ease-in-out;
+          &:hover {
+            transform: rotate(90deg);
+          }
+        }
+      }
+    }
+  }
+}
+
+img.logo {
+  height: 50px;
+  width: auto;
+}
+
+.links {
+  display: grid;
+  grid-auto-flow: row;
+  justify-content: flex-start;
+  align-content: center;
+  row-gap: 20px;
+  font-family: 'Roboto Slab', serif;
+  font-size: var(--metric-typography-14);
+  a {
+    color: var(--color-foreground-2);
+    border: 1px solid transparent;
+    padding: 10px;
+
+    &.active {
+      color: var(--color-foreground-1);
+      border: 1px solid var(--color-foreground-5);
+    }
+  }
+}

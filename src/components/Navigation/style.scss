@@ -1,0 +1,143 @@
+.nav-header {
+  z-index: 3;
+  width: 100%;
+  position: fixed;
+  .nav-header-container {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img.logo {
+      height: 40px;
+      width: auto;
+      @media (max-width: 767px) {
+        height: 24px;
+      }
+    }
+  }
+}
+.nav {
+  // Dimension constants
+  $logoHeight: 30px;
+  $logoHeightMobile: 20px;
+  $signinIconHeight: 25px;
+  position: fixed;
+  z-index: 1;
+
+  &:before,
+  .nav-after {
+    content: '';
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    // background: rgba(#eaeaea, 0.2);
+    background: var(--color-foreground-2);
+    // background: #e0c8a4;
+    transition: transform cubic-bezier(0.77, 0, 0.175, 1) 0.8s;
+    transform: translateX(0%) translateY(-100%);
+  }
+  .nav-after {
+    // background: rgba(#ffffff, 1);
+    background: var(--color-foreground-1);
+    // background: url('../../images/login_bg.jpg') no-repeat center center;
+    // background-size: cover;
+    // background: #d4b483;
+    transition-delay: 0s;
+  }
+  &:before {
+    transition-delay: 0.1s;
+  }
+
+  &.active {
+    width: 100vw;
+    height: 100vh;
+    &:before,
+    .nav-after {
+      transform: translateX(0%) translateY(0%);
+    }
+    .nav-after {
+      transition-delay: 0.1s;
+    }
+    &:before {
+      transition-delay: 0s;
+    }
+  }
+}
+
+.nav-container {
+  visibility: hidden;
+  position: fixed;
+  z-index: 2;
+  height: 100vh;
+  &.inactive {
+    transition: visibility 0.4s;
+  }
+  &.active {
+    visibility: visible;
+    animation: opacityAnimate 0.8s ease-in;
+  }
+  width: 100vw;
+}
+
+img.logo {
+  height: 50px;
+  width: auto;
+}
+
+.links {
+  display: flex;
+  // align-content: center;
+  font-family: 'Roboto Slab', serif;
+  font-size: var(--metric-typography-14);
+  @media (max-width: 767px) {
+    flex-direction: column;
+    font-size: var(--metric-typography-10);
+  }
+  a {
+    color: var(--color-background-2);
+    margin-right: 25px;
+
+    &.active {
+      color: var(--color-primary-1);
+    }
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      background: var(--color-background-2);
+      width: 20px;
+      height: 2px;
+      top: 100%;
+      transform: translate(0%, 0%);
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+    &:hover {
+      &:before {
+        width: 100%;
+      }
+    }
+    @media (max-width: 767px) {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@keyframes opacityAnimate {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.videoTag {
+  position: fixed;
+  // z-index: -1;
+  height: 100%;
+  width: auto;
+}
