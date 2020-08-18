@@ -12,6 +12,8 @@ export const LIST_POSTS = gql`
         comments
         helpful
         notHelpful
+        isAnswered
+        answeredOn
         createdAt
         updatedAt
         tags {
@@ -37,6 +39,36 @@ export const SEARCH_POSTS = gql`
         comments
         helpful
         notHelpful
+        isAnswered
+        answeredOn
+        createdAt
+        updatedAt
+        tags {
+          id
+          name
+        }
+      }
+      pageNo
+      hasMore
+      total
+    }
+  }
+`;
+
+export const MY_POSTS = gql`
+  query MyPosts($pageNo: Int, $pageSize: Int) {
+    myPosts(pageNo: $pageNo, pageSize: $pageSize) {
+      results {
+        id
+        title
+        description
+        views
+        followers
+        comments
+        helpful
+        notHelpful
+        isAnswered
+        answeredOn
         createdAt
         updatedAt
         tags {
@@ -62,6 +94,8 @@ export const GET_POST = gql`
       comments
       helpful
       notHelpful
+      isAnswered
+      answeredOn
       createdAt
       updatedAt
       followerList {
@@ -94,6 +128,8 @@ export const POSTS_BY_TAG = gql`
           comments
           helpful
           notHelpful
+          isAnswered
+          answeredOn
           createdAt
           updatedAt
           tags {
@@ -119,6 +155,8 @@ export const UPDATE_POST = gql`
       comments
       helpful
       notHelpful
+      isAnswered
+      answeredOn
       createdAt
       updatedAt
       tags {
@@ -187,6 +225,7 @@ export const POST_COMMENTS = gql`
         parentId
         helpful
         notHelpful
+        isAnswer
         createdBy
         updatedBy
         createdAt
@@ -201,6 +240,26 @@ export const POST_COMMENTS = gql`
   }
 `;
 
+export const POST_COMMENT = gql`
+  query PostComment($id: ID!) {
+    postComment(id: $id) {
+      id
+      text
+      parentId
+      helpful
+      notHelpful
+      isAnswer
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+      feedback {
+        type
+      }
+    }
+  }
+`;
+
 export const UPDATE_POST_COMMENT = gql`
   mutation UpdatePostComment($payload: PostCommentPayload!) {
     updatePostComment(payload: $payload) {
@@ -209,6 +268,7 @@ export const UPDATE_POST_COMMENT = gql`
       parentId
       helpful
       notHelpful
+      isAnswer
       createdBy
       updatedBy
       createdAt
@@ -253,8 +313,14 @@ export const FOLLOW_POST = gql`
   mutation FollowPost($postId: String!) {
     followPost(postId: $postId) {
       id
-      userId
-      postId
+      post {
+        id
+        followers
+        followerList {
+          id
+          userId
+        }
+      }
     }
   }
 `;
@@ -264,7 +330,42 @@ export const UNFOLLOW_POST = gql`
     unfollowPost(postId: $postId) {
       id
       userId
-      postId
+      post {
+        id
+        followers
+        followerList {
+          id
+          userId
+        }
+      }
+    }
+  }
+`;
+
+export const MARK_POSTCOMMENT_AS_ANSWER = gql`
+  mutation MarkPostCommentAsAnswer($id: ID!) {
+    markPostCommentAsAnswer(id: $id) {
+      id
+      isAnswer
+      post {
+        id
+        isAnswered
+        answeredOn
+      }
+    }
+  }
+`;
+
+export const UNMARK_POSTCOMMENT_AS_ANSWER = gql`
+  mutation UnmarkPostCommentAsAnswer($id: ID!) {
+    unmarkPostCommentAsAnswer(id: $id) {
+      id
+      isAnswer
+      post {
+        id
+        isAnswered
+        answeredOn
+      }
     }
   }
 `;

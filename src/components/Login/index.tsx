@@ -1,28 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import './style.scss';
 import LoginMethod from './LoginMethod';
+import OakHeading from '../../oakui/OakHeading';
 import OakPage from '../../oakui/OakPage';
 import OakSection from '../../oakui/OakSection';
-import OakHeading from '../../oakui/OakHeading';
+import oaBlack from '../../images/oneauth_black_small.svg';
+import oaWhite from '../../images/oneauth_white_small.svg';
 
 interface Props {
   history: any;
   match: any;
   params: string;
-  asset: string;
+  space: string;
+  location: any;
 }
 
+const queryString = require('query-string');
+
 const Login = (props: Props) => {
+  const authorization = useSelector(state => state.authorization);
+  const profile = useSelector(state => state.profile);
+  const [from, setFrom] = useState<string | undefined>();
   const oaLogin = () => {
-    props.history.push(`/${props.asset}/login/oa`);
+    props.history.push(
+      `/${props.space}/login/oa${from ? `?from=${from}` : ''}`
+    );
   };
   const emailLogin = () => {
-    props.history.push(`/${props.asset}/login/email`);
+    props.history.push(
+      `/${props.space}/login/email${from ? `?from=${from}` : ''}`
+    );
   };
 
   const mockbackLogin = () => {
     console.log('not yet implemented');
   };
+
+  useEffect(() => {
+    if (authorization.isAuth) {
+      props.history.push(`/${props.space}/home`);
+    }
+  }, [authorization]);
+
+  useEffect(() => {
+    const query = queryString.parse(props.location.search);
+    query.from ? setFrom(query.from) : setFrom(undefined);
+  }, [props.location.search]);
 
   return (
     <OakPage>
@@ -34,12 +58,20 @@ const Login = (props: Props) => {
         <div className="view-asset-item">
           <div className="space-top-3 mockback-signin">
             <div className="login-home">
-              <LoginMethod action={oaLogin} icon="blur_on" label="Oneauth" />
-              <LoginMethod action={emailLogin} icon="email" label="Email" />
+              <LoginMethod
+                action={oaLogin}
+                icon="corporate_fare"
+                label="Enterprise Login"
+              />
               <LoginMethod
                 action={mockbackLogin}
                 icon="people"
-                label="Native"
+                label="Individual Login"
+              />
+              <LoginMethod
+                action={emailLogin}
+                icon="email"
+                label="OTP via Email"
               />
             </div>
           </div>

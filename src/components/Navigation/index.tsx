@@ -4,8 +4,8 @@ import { useSelector, connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 import { withCookies } from 'react-cookie';
 import { getProfile, setProfile } from '../../actions/ProfileActions';
-import mockbackWhite from '../../images/mirror_white.svg';
-import mockbackBlack from '../../images/mirror_black.svg';
+import packetWhite from '../../images/mockback_white.svg';
+import packetBlack from '../../images/mockback_black.svg';
 
 import './style.scss';
 
@@ -15,7 +15,7 @@ import { removeAuth } from '../../actions/AuthActions';
 import NavPopover from './NavPopover';
 import NavMenuIcon from './NavMenuIcon';
 import Links from './Links';
-import menuBg from '../../images/video.mp4';
+// import menuBg from '../../images/video.mp4';
 
 interface Props {
   sendEvent: Function;
@@ -46,16 +46,16 @@ const Navigation = (props: Props) => {
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector(state => state.authorization);
 
-  const profile = useSelector((state) => state.profile);
+  const profile = useSelector(state => state.profile);
 
   const dispatch = useDispatch();
 
-  const [asset, setAsset] = useState('');
+  const [asset, setAsset] = useState('210');
 
   useEffect(() => {
-    receiveMessage().subscribe((event) => {
+    receiveMessage().subscribe(event => {
       if (event.name === 'spaceChange') {
         setAsset(event.data);
       }
@@ -67,7 +67,7 @@ const Navigation = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    receiveMessage().subscribe((message) => {
+    receiveMessage().subscribe(message => {
       if (message.name === 'navbar-transparency') {
         setData({ ...data, transparentNavBar: message.signal });
       }
@@ -90,7 +90,9 @@ const Navigation = (props: Props) => {
     message = 'You have been logged out'
   ) => {
     dispatch(removeAuth());
-    props.cookies.remove(`mockback_${asset}`);
+    props.cookies.remove(`mockback`);
+    props.history.push(`/`);
+    setIsPopoverOpen(false);
     sendMessage('notification', true, {
       type,
       message,
@@ -112,8 +114,10 @@ const Navigation = (props: Props) => {
     }
   };
 
-  const login = (type) => {
-    props.history.push(`/${asset}/login/home`);
+  const login = type => {
+    // props.history.push(`/${asset}/login/home`);
+    window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/210/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
+    setIsPopoverOpen(false);
     // window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/${asset}/login?type=${type}&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
   };
 
@@ -131,10 +135,10 @@ const Navigation = (props: Props) => {
           />
           {/* <div className="">
             {profile.theme === 'theme_light' && (
-              <img className="logo" src={mockbackBlack} alt="Mockback logo" />
+              <img className="logo" src={packetBlack} alt="Packet logo" />
             )}
             {profile.theme === 'theme_dark' && (
-              <img className="logo" src={mockbackWhite} alt="Mockback logo" />
+              <img className="logo" src={packetWhite} alt="Packet logo" />
             )}
           </div> */}
         </div>
@@ -150,6 +154,8 @@ const Navigation = (props: Props) => {
             <NavPopover
               asset={asset}
               handleClose={() => setIsPopoverOpen(false)}
+              logout={logout}
+              login={login}
             />
           </div>
         </div>
@@ -158,7 +164,7 @@ const Navigation = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   profile: state.profile,
 });
 

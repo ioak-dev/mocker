@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './styles/oak-subheading-mockback.scss';
+import './styles/oak-subheading.scss';
 import OakHeadingLink from './OakHeadingLink';
 
 interface Props {

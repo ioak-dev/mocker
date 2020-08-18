@@ -17,12 +17,12 @@ interface Props {
 }
 
 const OakRoute = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
-  const profile = useSelector((state) => state.profile);
+  const authorization = useSelector(state => state.authorization);
+  const profile = useSelector(state => state.profile);
   const dispatch = useDispatch();
 
   const middlewares = () => {
-    props.middleware?.forEach((middlewareName) => {
+    props.middleware?.forEach(middlewareName => {
       if (!runMidleware(middlewareName)) {
         return false;
       }
@@ -30,7 +30,7 @@ const OakRoute = (props: Props) => {
     return true;
   };
 
-  const runMidleware = (middlewareName) => {
+  const runMidleware = middlewareName => {
     sendMessage('spaceChange', true, '');
     switch (middlewareName) {
       case 'readAuthentication':
@@ -45,23 +45,24 @@ const OakRoute = (props: Props) => {
   };
 
   const authenticateSpace = () => {
-    return authenticate('asset');
+    return authenticate('space');
   };
   const readAuthenticationSpace = () => {
-    return authenticate('asset', false);
+    return authenticate('space', false);
   };
 
   const authenticate = async (type, redirect = true) => {
-    sendMessage('spaceChange', true, props.match.params.asset);
+    sendMessage('spaceChange', true, props.match.params.space);
     if (authorization.isAuth) {
       return true;
     }
-    const cookieKey = `mockback_${props.match.params.asset}`;
+    const cookieKey = `mockback_${props.match.params.space}`;
     const authKey = props.cookies.get(cookieKey);
-    const baseAuthUrl = `/auth/${props.match.params.asset}`;
+    const baseAuthUrl = `/auth/${props.match.params.space}`;
+    console.log(baseAuthUrl);
     if (authKey) {
       httpGet(`${baseAuthUrl}/session/${authKey}`, null)
-        .then((sessionResponse) => {
+        .then(sessionResponse => {
           if (sessionResponse.status === 200) {
             dispatch(
               addAuth({
@@ -85,18 +86,18 @@ const OakRoute = (props: Props) => {
               message: 'Invalid session token',
               duration: 3000,
             });
-            redirectToLogin(props.match.params.asset);
+            redirectToLogin(props.match.params.space);
           } else if (redirect && error.response.status === 401) {
             sendMessage('notification', true, {
               type: 'failure',
               message: 'Session expired',
               duration: 3000,
             });
-            redirectToLogin(props.match.params.asset);
+            redirectToLogin(props.match.params.space);
           }
         });
     } else if (redirect) {
-      redirectToLogin(props.match.params.asset);
+      redirectToLogin(props.match.params.space);
     } else {
       return true;
     }
@@ -107,13 +108,13 @@ const OakRoute = (props: Props) => {
     return false;
   };
 
-  const redirectToLogin = (asset) => {
+  const redirectToLogin = space => {
     // window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/${spaceId}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
-    props.history.push(`/${asset}/login/home`);
+    props.history.push(`/${space}/login/home`);
   };
 
   const redirectToUnauthorized = () => {
-    props.history.push(`/${profile.asset}/unauthorized`);
+    props.history.push(`/${profile.space}/unauthorized`);
   };
 
   return (
@@ -122,7 +123,7 @@ const OakRoute = (props: Props) => {
         <props.component
           {...props}
           profile={profile}
-          asset={props.match.params.asset}
+          space={props.match.params.space}
           // getProfile={getProfile}
           // setProfile={props.setProfile}
         />

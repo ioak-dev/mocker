@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto|Montserrat|Lato|Open+Sans|Open+Sans+Condensed:300|Source+Sans+Pro&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&family=Roboto:ital,wght@0,400;1,300&display=swap');
 @import './theme.scss';
 
 body {
@@ -22,7 +21,7 @@ body.oak-dialog-open {
 }
 
 .body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 code {

@@ -28,14 +28,7 @@ interface Props {
 }
 
 const Home = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
-  return (
-    <div className="home full">
-      <div>Home page</div>
-      <br />
-      <div>{authorization.token}</div>
-    </div>
-  );
+  return <div className="home full">Home page</div>;
 };
 
 export default Home;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './styles/oak-page-mockback.scss';
+import './styles/oak-page.scss';
 
 interface Props {
   children?: any;

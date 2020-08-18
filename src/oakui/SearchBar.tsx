@@ -11,19 +11,19 @@ const SearchBar = (props: Props) => {
 
   useEffect(() => {
     const searchTextChangedEventListener = searchTextChangedEvent$.subscribe(
-      (data) => {
+      data => {
         setSearchText(data);
       }
     );
     return () => searchTextChangedEventListener.unsubscribe();
   }, []);
 
-  const onSubmit = (event) => {
+  const onSubmit = event => {
     event.preventDefault();
     searchEvent$.next(searchText);
   };
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     searchTextChangedEvent$.next(event.target.value);
   };
 
