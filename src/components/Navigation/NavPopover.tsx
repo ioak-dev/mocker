@@ -21,22 +21,19 @@ const NavPopover = (props: Props) => {
 
   return (
     <div className="nav-popover">
-      <div className="nav-popover-header">
+      {/* <div className="nav-popover-header">
         {profile.theme === 'theme_light' && (
           <img className="logo" src={packetWhite} alt="Packet logo" />
         )}
         {profile.theme === 'theme_dark' && (
           <img className="logo" src={packetBlack} alt="Packet logo" />
         )}
-      </div>
+      </div> */}
       <div className="nav-content">
-        <Links
-          asset={props.asset}
-          handleClose={props.handleClose}
-          logout={props.logout}
-          login={props.login}
-        />
+        <Links asset={props.asset} handleClose={props.handleClose} />
       </div>
+      <div className="midline" />
+      <div className="nav-resources">support resources</div>
     </div>
   );
 };

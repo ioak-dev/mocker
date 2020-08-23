@@ -15,6 +15,8 @@ import { removeAuth } from '../../actions/AuthActions';
 import NavPopover from './NavPopover';
 import NavMenuIcon from './NavMenuIcon';
 import Links from './Links';
+import NavAccountIcon from './NavAccountIcon';
+import DarkModeIcon from './DarkModeIcon';
 // import menuBg from '../../images/video.mp4';
 
 interface Props {
@@ -127,20 +129,30 @@ const Navigation = (props: Props) => {
 
   return (
     <>
-      <div className="nav-header">
+      <div
+        className={`${
+          isPopoverOpen
+            ? 'nav-header nav-header-expanded'
+            : 'nav-header nav-header-collapsed'
+        }`}
+      >
         <div className="nav-header-container">
-          <NavMenuIcon
-            showClose={isPopoverOpen}
-            handleClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          />
-          {/* <div className="">
+          <div>
             {profile.theme === 'theme_light' && (
               <img className="logo" src={packetBlack} alt="Packet logo" />
             )}
             {profile.theme === 'theme_dark' && (
               <img className="logo" src={packetWhite} alt="Packet logo" />
             )}
-          </div> */}
+          </div>
+          <div className="nav-header-container--right">
+            <DarkModeIcon />
+            <NavAccountIcon logout={logout} login={login} />
+            <NavMenuIcon
+              showClose={isPopoverOpen}
+              handleClick={() => setIsPopoverOpen(!isPopoverOpen)}
+            />
+          </div>
         </div>
       </div>
       <div className={`nav ${isPopoverOpen ? 'active' : 'inactive'}`}>

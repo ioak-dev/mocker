@@ -1,10 +1,12 @@
 .nav-header {
   z-index: 3;
   width: 100%;
+  height: var(--height-nav);
   position: fixed;
   .nav-header-container {
-    padding: 20px;
+    padding: 0 20px;
     display: flex;
+    height: 100%;
     justify-content: space-between;
     align-items: center;
     img.logo {
@@ -12,6 +14,32 @@
       width: auto;
       @media (max-width: 767px) {
         height: 24px;
+      }
+    }
+    .nav-header-container--right {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: center;
+      column-gap: 20px;
+    }
+  }
+
+  &.nav-header-expanded {
+    .nav-header-container {
+      img {
+        visibility: hidden;
+        transition: visibility 0.4s;
+        animation: opacityAnimateNoDelayRev 0.4s ease;
+      }
+    }
+  }
+
+  &.nav-header-collapsed {
+    .nav-header-container {
+      img {
+        visibility: visible;
+        transition: visibility 0.4s;
+        animation: opacityAnimateNoDelay 0.4s ease;
       }
     }
   }
@@ -31,14 +59,14 @@
     width: 100vw;
     height: 100vh;
     // background: rgba(#eaeaea, 0.2);
-    background: var(--color-foreground-2);
+    background: var(--color-background-2);
     // background: #e0c8a4;
-    transition: transform cubic-bezier(0.77, 0, 0.175, 1) 0.8s;
+    transition: transform cubic-bezier(0.77, 0, 0.175, 1) 0.4s;
     transform: translateX(0%) translateY(-100%);
   }
   .nav-after {
     // background: rgba(#ffffff, 1);
-    background: var(--color-foreground-1);
+    background: var(--color-nav);
     // background: url('../../images/login_bg.jpg') no-repeat center center;
     // background-size: cover;
     // background: #d4b483;
@@ -70,11 +98,11 @@
   z-index: 2;
   height: 100vh;
   &.inactive {
-    transition: visibility 0.4s;
+    transition: visibility 0.2s;
   }
   &.active {
     visibility: visible;
-    animation: opacityAnimate 0.8s ease-in;
+    animation: opacityAnimate 0.4s ease-in;
   }
   width: 100vw;
 }
@@ -85,37 +113,55 @@ img.logo {
 }
 
 .links {
-  display: flex;
+  display: grid;
+  row-gap: 30px;
+
   // align-content: center;
-  font-family: 'Roboto Slab', serif;
-  font-size: var(--metric-typography-14);
+  // font-family: 'Roboto Slab', serif;
+  font-size: 42px;
+  font-weight: 100;
   @media (max-width: 767px) {
     flex-direction: column;
     font-size: var(--metric-typography-10);
   }
   a {
-    color: var(--color-background-2);
-    margin-right: 25px;
-
     &.active {
       color: var(--color-primary-1);
+      opacity: 1;
     }
+  }
+  &:hover {
+    a {
+      color: var(--color-foreground-1);
+      transition: opacity 0.4s ease, color 0.4s ease;
+      opacity: 0.3;
+    }
+  }
+  a {
+    transition: opacity 0.4s ease, color 0.4s ease;
+    display: flex;
+    // justify-self: flex-start;
+    color: var(--color-foreground-1);
+    opacity: 0.8;
+    // line-height: 1.2;
     position: relative;
-    &:before {
-      content: '';
-      position: absolute;
-      background: var(--color-background-2);
-      width: 20px;
-      height: 2px;
-      top: 100%;
-      transform: translate(0%, 0%);
-      transition: all 0.3s ease;
-      z-index: -1;
-    }
+    // &:before {
+    //   content: '';
+    //   position: absolute;
+    //   background: var(--color-background-2);
+    //   width: 20px;
+    //   height: 2px;
+    //   top: 100%;
+    //   transform: translate(0%, 0%);
+    //   transition: all 0.3s ease;
+    //   z-index: -1;
+    // }
     &:hover {
-      &:before {
-        width: 100%;
-      }
+      // &:before {
+      //   width: 100%;
+      // }
+      color: var(--color-foreground-1);
+      opacity: 1;
     }
     @media (max-width: 767px) {
       margin-bottom: 20px;
@@ -135,9 +181,48 @@ img.logo {
   }
 }
 
+@keyframes opacityAnimateNoDelay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes opacityAnimateNoDelayRev {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .videoTag {
   position: fixed;
   // z-index: -1;
   height: 100%;
   width: auto;
+}
+
+.nav-account-icon {
+  i {
+    cursor: pointer;
+    font-size: 2.4em;
+    &:hover {
+      color: var(--color-failure);
+    }
+  }
+}
+
+.dark-mode-icon {
+  i {
+    cursor: pointer;
+    font-size: 2.4em;
+    opacity: 0.8;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

@@ -23,6 +23,9 @@ import OneAuth from '../Login/OneAuth/index';
 import Login from '../Login/index';
 import { receiveMessage } from '../../events/MessageService';
 import { fetchAllSpaces } from '../../actions/SpaceActions';
+import ListTemplate from '../Template/ListTemplate';
+import ListProject from '../Project/ListProject';
+import CreateProject from '../Project/CreateProject';
 
 const themes = {
   themecolor1: getTheme('#69A7BF'),
@@ -158,15 +161,37 @@ const Content = (props: Props) => {
                   />
                 )}
               />
-
               <Route
-                path="/:space"
+                path="/:space/project"
                 exact
                 render={propsLocal => (
                   <OakRoute
                     {...propsLocal}
                     {...props}
-                    component={Home}
+                    component={ListProject}
+                    middleware={['readAuthentication']}
+                  />
+                )}
+              />
+              <Route
+                path="/:space/project/create"
+                render={propsLocal => (
+                  <OakRoute
+                    {...propsLocal}
+                    {...props}
+                    component={CreateProject}
+                    middleware={['readAuthentication']}
+                  />
+                )}
+              />
+              <Route
+                path="/:space/template"
+                exact
+                render={propsLocal => (
+                  <OakRoute
+                    {...propsLocal}
+                    {...props}
+                    component={ListTemplate}
                     middleware={['readAuthentication']}
                   />
                 )}

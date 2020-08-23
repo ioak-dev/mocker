@@ -25,7 +25,7 @@
 
   &.close {
     .__line {
-      background-color: #000;
+      background-color: var(--color-foreground-1);
       transform: translateX(0px) rotate(-45deg);
     }
     .__line-left {
