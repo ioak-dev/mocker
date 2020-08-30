@@ -54,12 +54,12 @@ const Navigation = (props: Props) => {
 
   const dispatch = useDispatch();
 
-  const [asset, setAsset] = useState('210');
+  const [space, setSpace] = useState('');
 
   useEffect(() => {
     receiveMessage().subscribe(event => {
       if (event.name === 'spaceChange') {
-        setAsset(event.data);
+        setSpace(event.data);
       }
     });
   }, []);
@@ -137,21 +137,28 @@ const Navigation = (props: Props) => {
         }`}
       >
         <div className="nav-header-container">
-          <div>
-            {profile.theme === 'theme_light' && (
-              <img className="logo" src={packetBlack} alt="Packet logo" />
-            )}
-            {profile.theme === 'theme_dark' && (
-              <img className="logo" src={packetWhite} alt="Packet logo" />
-            )}
+          <div className="nav-header-container--left">
+            <div>
+              {profile.theme === 'theme_light' && (
+                <img className="logo" src={packetBlack} alt="Packet logo" />
+              )}
+              {profile.theme === 'theme_dark' && (
+                <img className="logo" src={packetWhite} alt="Packet logo" />
+              )}
+            </div>
+            <div className="desktop-only">
+              <Links space={space} />
+            </div>
           </div>
           <div className="nav-header-container--right">
             <DarkModeIcon />
             <NavAccountIcon logout={logout} login={login} />
-            <NavMenuIcon
-              showClose={isPopoverOpen}
-              handleClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            />
+            <div className="mobile-only">
+              <NavMenuIcon
+                showClose={isPopoverOpen}
+                handleClick={() => setIsPopoverOpen(!isPopoverOpen)}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -164,7 +171,7 @@ const Navigation = (props: Props) => {
               <source src={menuBg} type="video/mp4" />
             </video> */}
             <NavPopover
-              asset={asset}
+              space={space}
               handleClose={() => setIsPopoverOpen(false)}
               logout={logout}
               login={login}

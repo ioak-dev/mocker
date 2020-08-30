@@ -21,6 +21,8 @@ const constants = {
   API_SIGNUP: '/signup',
   API_KEYS: '/keys',
   API_JWT: '/signin/jwt',
+
+  API_URL_PROJECT: '/project',
 };
 
 export default constants;

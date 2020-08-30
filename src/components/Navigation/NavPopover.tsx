@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, connect, useDispatch } from 'react-redux';
 
 import { receiveMessage, sendMessage } from '../../events/MessageService';
-import Links from './Links';
 import packetWhite from '../../images/mockback_white.svg';
 import packetBlack from '../../images/mockback_black.svg';
 import './NavPopover.scss';
+import DropLinks from './DropLinks';
 
 interface Props {
-  asset: string;
+  space: string;
   handleClose: any;
   logout: Function;
   login: Function;
@@ -30,7 +30,7 @@ const NavPopover = (props: Props) => {
         )}
       </div> */}
       <div className="nav-content">
-        <Links asset={props.asset} handleClose={props.handleClose} />
+        <DropLinks space={props.space} handleClose={props.handleClose} />
       </div>
       <div className="midline" />
       <div className="nav-resources">support resources</div>

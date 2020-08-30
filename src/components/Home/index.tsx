@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './style.scss';
 import cover from '../../images/cover.jpg';
 import SearchBar from '../../oakui/SearchBar';
@@ -28,7 +28,16 @@ interface Props {
 }
 
 const Home = (props: Props) => {
-  return <div className="home full">Home page</div>;
+  const authorization = useSelector(state => state.authorization);
+  return (
+    <div className="home full">
+      <div className="space-bottom-4">
+        Copy below token as "Authorization" key on the request header from
+        postman
+      </div>
+      <div className="auth-token">{authorization.token}</div>
+    </div>
+  );
 };
 
 export default Home;

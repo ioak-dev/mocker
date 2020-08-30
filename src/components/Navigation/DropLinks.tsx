@@ -1,20 +1,22 @@
 import React from 'react';
 
-import './Links.scss';
+import './DropLinks.scss';
 import { NavLink } from 'react-router-dom';
 import OakButton from '../../oakui/OakButton';
 
 interface Props {
   space: string;
+  handleClose: any;
 }
 
-const Links = (props: Props) => {
+const DropLinks = (props: Props) => {
   return (
-    <div className="links">
+    <div className="drop-links">
       <NavLink
         to={`/${props.space}/home`}
         className="navitem"
         activeClassName="active"
+        onClick={props.handleClose}
       >
         Home
       </NavLink>
@@ -22,6 +24,7 @@ const Links = (props: Props) => {
         to={`/${props.space}/project`}
         className="navitem"
         activeClassName="active"
+        onClick={props.handleClose}
       >
         Projects
       </NavLink>
@@ -29,6 +32,7 @@ const Links = (props: Props) => {
         to={`/${props.space}/template`}
         className="navitem"
         activeClassName="active"
+        onClick={props.handleClose}
       >
         Endpoints
       </NavLink>
@@ -36,4 +40,4 @@ const Links = (props: Props) => {
   );
 };
 
-export default Links;
+export default DropLinks;

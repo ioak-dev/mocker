@@ -59,21 +59,21 @@ const OakRoute = (props: Props) => {
     const cookieKey = `mockback_${props.match.params.space}`;
     const authKey = props.cookies.get(cookieKey);
     const baseAuthUrl = `/auth/${props.match.params.space}`;
-    console.log(baseAuthUrl);
     if (authKey) {
       httpGet(`${baseAuthUrl}/session/${authKey}`, null)
         .then(sessionResponse => {
           if (sessionResponse.status === 200) {
+            console.log('@@@@@@@@@');
             dispatch(
               addAuth({
                 isAuth: true,
-                token: sessionResponse.data.token,
+                token: sessionResponse.data.data.token,
                 secret: '',
-                firstName: sessionResponse.data.firstName,
-                lastName: sessionResponse.data.lastName,
-                email: sessionResponse.data.email,
-                type: sessionResponse.data.type,
-                userId: sessionResponse.data.userId,
+                firstName: sessionResponse.data.data.firstName,
+                lastName: sessionResponse.data.data.lastName,
+                email: sessionResponse.data.data.email,
+                type: sessionResponse.data.data.type,
+                userId: sessionResponse.data.data.userId,
               })
             );
           }

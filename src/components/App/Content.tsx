@@ -26,6 +26,7 @@ import { fetchAllSpaces } from '../../actions/SpaceActions';
 import ListTemplate from '../Template/ListTemplate';
 import ListProject from '../Project/ListProject';
 import CreateProject from '../Project/CreateProject';
+import Init from './Init';
 
 const themes = {
   themecolor1: getTheme('#69A7BF'),
@@ -87,6 +88,7 @@ const Content = (props: Props) => {
       <HashRouter>
         <div className="body">
           <div className="body-content">
+            <Init />
             <Notification />
             <MuiThemeProvider theme={themes.themecolor1}>
               <Navigation {...props} />
