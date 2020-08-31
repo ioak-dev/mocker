@@ -27,6 +27,7 @@ import ListTemplate from '../Template/ListTemplate';
 import ListProject from '../Project/ListProject';
 import CreateProject from '../Project/CreateProject';
 import Init from './Init';
+import ViewProject from '../Project/ViewProject';
 
 const themes = {
   themecolor1: getTheme('#69A7BF'),
@@ -171,6 +172,17 @@ const Content = (props: Props) => {
                     {...propsLocal}
                     {...props}
                     component={ListProject}
+                    middleware={['readAuthentication']}
+                  />
+                )}
+              />
+              <Route
+                path="/:space/project/view"
+                render={propsLocal => (
+                  <OakRoute
+                    {...propsLocal}
+                    {...props}
+                    component={ViewProject}
                     middleware={['readAuthentication']}
                   />
                 )}

@@ -1,0 +1,27 @@
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import './ProjectLink.scss';
+
+interface Props {
+  space: string;
+  history: any;
+  project: any;
+}
+
+const ProjectLink = (props: Props) => {
+  const goToViewPage = () =>
+    props.history.push(`/${props.space}/project/view?id=${props.project._id}`);
+  return (
+    <div className="project-link">
+      <div className="project-link--name typography-10" onClick={goToViewPage}>
+        {props.project.name}
+      </div>
+      <div className="project-link--description">
+        {props.project.description}
+      </div>
+    </div>
+  );
+};
+
+export default ProjectLink;

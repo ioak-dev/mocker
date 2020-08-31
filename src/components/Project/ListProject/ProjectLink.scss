@@ -1,0 +1,11 @@
+.project-link {
+  display: grid;
+  grid-auto-flow: row;
+  justify-items: flex-start;
+  .project-link--name {
+    cursor: pointer;
+    &:hover {
+      color: var(--color-primary-1);
+    }
+  }
+}
