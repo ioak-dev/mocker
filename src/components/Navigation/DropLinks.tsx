@@ -29,7 +29,7 @@ const DropLinks = (props: Props) => {
         Projects
       </NavLink>
       <NavLink
-        to={`/${props.space}/template`}
+        to={`/${props.space}/endpoint`}
         className="navitem"
         activeClassName="active"
         onClick={props.handleClose}

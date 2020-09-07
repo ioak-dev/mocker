@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { receiveMessage } from '../../events/MessageService';
 import { fetchAllProjects } from '../../actions/ProjectActions';
+import { fetchAllDomains } from '../../actions/DomainActions';
 
 const Init = () => {
   const authorization = useSelector(state => state.authorization);
@@ -33,10 +34,9 @@ const Init = () => {
   }, []);
 
   const initialize = () => {
-    console.log(authorization.token);
-    console.log(space);
     console.log('Initialization logic here');
     dispatch(fetchAllProjects(space, authorization));
+    dispatch(fetchAllDomains(space, authorization));
   };
   return <></>;
 };

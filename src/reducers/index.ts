@@ -4,6 +4,7 @@ import ProfileReducer from './ProfileReducer';
 import UserReducer from './UserReducer';
 import SpaceReducer from './SpaceReducer';
 import ProjectReducer from './ProjectReducer';
+import DomainReducer from './DomainReducer';
 
 export default combineReducers({
   authorization: AuthReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   user: UserReducer,
   space: SpaceReducer,
   project: ProjectReducer,
+  domain: DomainReducer,
 });

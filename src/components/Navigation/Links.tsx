@@ -26,7 +26,7 @@ const Links = (props: Props) => {
         Projects
       </NavLink>
       <NavLink
-        to={`/${props.space}/template`}
+        to={`/${props.space}/endpoint`}
         className="navitem"
         activeClassName="active"
       >
