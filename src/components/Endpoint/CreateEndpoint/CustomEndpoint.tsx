@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import './DomainEndpoint.scss';
+import './CustomEndpoint.scss';
 import OakPage from '../../../oakui/OakPage';
 import OakSection from '../../../oakui/OakSection';
 import OakHeading from '../../../oakui/OakHeading';
@@ -12,7 +12,6 @@ import OakFooter from '../../../oakui/OakFooter';
 import OakButton from '../../../oakui/OakButton';
 import { saveDomainEndpoint } from './service';
 import { sendMessage, newMessageId } from '../../../events/MessageService';
-import DataStructureBuilder from './DataStructureBuilder';
 
 interface Props {
   space: string;
@@ -20,7 +19,7 @@ interface Props {
   projectId: string;
 }
 
-const DomainEndpoint = (props: Props) => {
+const CustomEndpoint = (props: Props) => {
   const goBack = () => props.history.goBack();
   const [state, setState] = useState({
     projectId: props.projectId,
@@ -28,57 +27,6 @@ const DomainEndpoint = (props: Props) => {
     description: '',
     structure: '',
   });
-  const testData = [
-    {
-      reference: '1',
-      parentReference: undefined,
-      datatype: 'object',
-      array: false,
-      name: 'fieldOne',
-    },
-    {
-      reference: '2',
-      parentReference: '1',
-      datatype: 'object',
-      array: true,
-      name: 'fieldTwo',
-    },
-    {
-      reference: '3',
-      parentReference: undefined,
-      datatype: 'word',
-      array: false,
-      name: 'fieldThree',
-    },
-    {
-      reference: '4',
-      parentReference: undefined,
-      datatype: 'word',
-      array: true,
-      name: 'fieldFour',
-    },
-    {
-      reference: '5',
-      parentReference: '1',
-      datatype: 'word',
-      array: false,
-      name: 'fieldFive',
-    },
-    {
-      reference: '6',
-      parentReference: '2',
-      datatype: 'word',
-      array: false,
-      name: 'fieldSix',
-    },
-    {
-      reference: '7',
-      parentReference: '2',
-      datatype: 'sentence',
-      array: true,
-      name: 'fieldSeven',
-    },
-  ];
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
 
@@ -125,10 +73,39 @@ const DomainEndpoint = (props: Props) => {
   };
 
   return (
-    <div className="domain-endpoint">
-      <DataStructureBuilder data={testData} />
+    <div className="create-project">
+      <OakForm>
+        <OakText
+          data={state}
+          id="name"
+          handleChange={handleNameChange}
+          label="Name of the domain"
+        />
+        <OakText
+          data={state}
+          id="description"
+          handleChange={handleChange}
+          label="Short description about the project"
+          multiline
+        />
+        <OakText
+          data={state}
+          id="structure"
+          handleChange={handleChange}
+          label="Domain data structure"
+          multiline
+        />
+      </OakForm>
+      <OakFooter>
+        <OakButton theme="primary" variant="appear" action={save}>
+          Save
+        </OakButton>
+        <OakButton theme="default" variant="appear">
+          Cancel
+        </OakButton>
+      </OakFooter>
     </div>
   );
 };
 
-export default DomainEndpoint;
+export default CustomEndpoint;

@@ -8,6 +8,7 @@ import OakHeading from '../../../oakui/OakHeading';
 import OakForm from '../../../oakui/OakForm';
 import OakSelect from '../../../oakui/OakSelect';
 import DomainEndpoint from './DomainEndpoint';
+import CustomEndpoint from './CustomEndpoint';
 
 const queryString = require('query-string');
 
@@ -54,11 +55,18 @@ const CreateEndpoint = (props: Props) => {
               id="type"
               handleChange={handleChange}
               label="Choose type of endpoint to mock"
-              elements={['Domain', 'Custom endpoint']}
+              elements={['Domain', 'Custom']}
             />
           </OakForm>
           {state.type === 'Domain' && (
             <DomainEndpoint
+              space={props.space}
+              history={props.history}
+              projectId={query?.project}
+            />
+          )}
+          {state.type === 'Custom' && (
+            <CustomEndpoint
               space={props.space}
               history={props.history}
               projectId={query?.project}

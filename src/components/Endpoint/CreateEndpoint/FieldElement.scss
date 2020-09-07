@@ -1,0 +1,25 @@
+.field-element-parent {
+  .field-element-parent--name {
+  }
+  .field-element-parent--dtype {
+    color: var(--color-foreground-4);
+  }
+  //   margin-bottom: -10px;
+  //   padding: 10px 0;
+}
+
+.field-element-children {
+  display: grid;
+  grid-auto-flow: row;
+  justify-content: flex-start;
+  margin: 10px 0;
+  .field-element-children--element {
+    margin: 0 0 8px 4px;
+    padding: 0 0 0 4px;
+    // padding: 4px;
+    border-left: 2px solid var(--color-foreground-4);
+    &:hover {
+      border-left: 2px solid var(--color-primary-1);
+    }
+  }
+}
