@@ -1,23 +1,30 @@
 import React, { useState, useEffect, ReactElement } from 'react';
 import './styles/oak-tab.scss';
+import { useLocation } from 'react-router';
+import { isEmptyOrSpaces } from '../components/Utils';
 
 interface Props {
   meta: any[];
   children: any;
+  variant?: 'default' | 'fullpage';
 }
 
 const OakTab = (props: Props) => {
   const [activeTab, setActiveTab] = useState('');
   const [slots, setSlots] = useState<any | {}>({});
+  const location = useLocation();
 
   useEffect(() => {
-    if (!activeTab) {
-      setActiveTab(
-        props.meta && props.meta.length > 0 ? props.meta[0].slotName : ''
-      );
-    }
     initializeViews();
   }, [props.meta, props.children]);
+
+  useEffect(() => {
+    setActiveTab(
+      isEmptyOrSpaces(location.hash)
+        ? props.meta[0]?.slotName
+        : location.hash.substr(1)
+    );
+  }, [location.hash]);
 
   const initializeViews = () => {
     let newSlots = {};
@@ -27,51 +34,48 @@ const OakTab = (props: Props) => {
     setSlots(newSlots);
   };
 
-  const switchTab = tab => {
-    setActiveTab(tab);
-  };
-
   return (
-    <div className="oak-tab">
-      <div className="header">
+    <div className={`oak-tab ${props.variant}`}>
+      <div className="oak-tab--header">
         {props.meta.map(item => (
-          <div
+          <a
             key={item.slotName}
             className={`tab typography-6 ${
-              activeTab === item.slotName ? 'active' : ''
+              activeTab === item.slotName ? 'active' : 'inactive'
             }`}
-            onClick={() => switchTab(item.slotName)}
+            // onClick={event => switchTab(event, item.slotName)}
+            // href={`#${item.slotName}`}
+            href={`#${location.pathname}${location.search}#${item.slotName}`}
           >
-            <div className="icon">
-              <i
-                className={`material-icons typography-8 ${
-                  activeTab === item.slotName ? 'active' : ''
-                }`}
-              >
-                {item.icon}
-              </i>
-            </div>
+            {/* <div className="icon"> */}
+            <i
+              className={`material-icons typography-8 ${
+                activeTab === item.slotName ? 'active' : ''
+              }`}
+            >
+              {item.icon}
+            </i>
             <div className="label">{item.label}</div>
-          </div>
+          </a>
         ))}
       </div>
-      {props.meta.map(item => (
+      {/* {props.meta.map(item => (
         <div
           key={item.slotName}
           className={`tab typography-6 ${
             activeTab === item.slotName ? 'active' : ''
           }`}
-          onClick={() => switchTab(item.slotName)}
+          onClick={event => switchTab(event, item.slotName)}
         />
-      ))}
+      ))} */}
       {props.meta.map(item => (
         <div
           key={item.slotName}
           className={`content ${
-            item.slotName === activeTab ? 'active' : 'inactive'
+            activeTab === item.slotName ? 'active' : 'inactive'
           }`}
         >
-          {slots[item.slotName]}
+          {slots[activeTab]}
           {/* <slot v-bind:name="item.slotName" /> */}
         </div>
       ))}

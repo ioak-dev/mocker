@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './DomainEndpoint.scss';
@@ -28,7 +28,7 @@ const DomainEndpoint = (props: Props) => {
     description: '',
     structure: '',
   });
-  const testData = [
+  const [testData, setTestData] = useState([
     {
       reference: '1',
       parentReference: undefined,
@@ -78,7 +78,7 @@ const DomainEndpoint = (props: Props) => {
       array: true,
       name: 'fieldSeven',
     },
-  ];
+  ]);
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
 
@@ -89,6 +89,10 @@ const DomainEndpoint = (props: Props) => {
     });
   };
 
+  useEffect(() => {
+    console.log(testData);
+  }, [testData]);
+
   const handleNameChange = event => {
     setState({
       ...state,
@@ -97,6 +101,29 @@ const DomainEndpoint = (props: Props) => {
         .replace(/\s/g, '')
         .replace(/\W/g, ''),
     });
+  };
+
+  const handleDataStructureChange = (actionType, changeData) => {
+    console.log(actionType, changeData);
+    let newData: any[] = [];
+    switch (actionType) {
+      case 'remove':
+        newData = testData.filter(
+          item =>
+            item.parentReference !== changeData && item.reference !== changeData
+        );
+        break;
+
+      case 'edit':
+        newData = testData.filter(
+          item => item.reference !== changeData.reference
+        );
+        newData.push(changeData);
+        break;
+      default:
+        break;
+    }
+    setTestData(newData);
   };
 
   const save = async () => {
@@ -126,7 +153,26 @@ const DomainEndpoint = (props: Props) => {
 
   return (
     <div className="domain-endpoint">
-      <DataStructureBuilder data={testData} />
+      <OakForm>
+        <OakText
+          data={state}
+          id="name"
+          handleChange={handleNameChange}
+          label="Name of the domain"
+        />
+      </OakForm>
+      <DataStructureBuilder
+        data={testData}
+        handleChange={handleDataStructureChange}
+      />
+      <OakFooter>
+        <OakButton theme="primary" variant="appear" action={save}>
+          Save
+        </OakButton>
+        <OakButton theme="default" variant="appear">
+          Cancel
+        </OakButton>
+      </OakFooter>
     </div>
   );
 };

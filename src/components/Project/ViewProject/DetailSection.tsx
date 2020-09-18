@@ -3,6 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
 import OakSubheading from '../../../oakui/OakSubheading';
+import OakButton from '../../../oakui/OakButton';
+import OakFooter from '../../../oakui/OakFooter';
+import OakForm from '../../../oakui/OakForm';
+import OakText from '../../../oakui/OakText';
 
 const queryString = require('query-string');
 
@@ -13,31 +17,87 @@ interface Props {
 }
 
 const DetailSection = (props: Props) => {
+  const [state, setState] = useState({
+    reference: '',
+    description: '',
+    name: '',
+  });
+
+  const [isEdited, setIsEdited] = useState(false);
+
+  useEffect(() => {
+    setState({ ...state, ...props.project });
+  }, [props.project]);
+
   const gotoEditPage = () => {
     console.log('edit page');
   };
+
+  const handleChange = event => {
+    setState({
+      ...state,
+      [event.currentTarget.name]: event.currentTarget.value,
+    });
+    setIsEdited(true);
+  };
+
+  const handleNameChange = event => {
+    setState({
+      ...state,
+      name: event.currentTarget.value,
+      reference:
+        state.name === state.reference
+          ? event.currentTarget.value
+          : state.reference,
+    });
+    setIsEdited(true);
+  };
+
+  const discardChanges = () => {
+    setState({ ...state, ...props.project });
+    setIsEdited(false);
+  };
+
   return (
     <div className="project-detail-section">
-      <OakSubheading
-        title="Project details"
-        links={[
-          {
-            label: 'Edit',
-            icon: 'edit',
-            action: gotoEditPage,
-          },
-        ]}
-        linkSize="large"
-      />
       {props.project && (
-        <div className="project-detail-section--content">
-          <div className="project-detail-section--content--reference">
-            {props.project.reference}
-          </div>
-          <div className="project-detail-section--content--description">
-            {props.project.description}
-          </div>
-        </div>
+        <OakForm>
+          <OakText
+            data={state}
+            id="name"
+            handleChange={handleNameChange}
+            label="Project name"
+          />
+          <OakText
+            data={{
+              ...state,
+              reference: state.reference
+                .toLowerCase()
+                .replace(/\s/g, '')
+                .replace(/\W/g, ''),
+            }}
+            id="reference"
+            handleChange={handleChange}
+            label="Reference word for URL path prefix"
+          />
+          <OakText
+            data={state}
+            id="description"
+            handleChange={handleChange}
+            label="Short description about the project"
+            multiline
+          />
+        </OakForm>
+      )}
+      {isEdited && (
+        <OakFooter>
+          <OakButton theme="primary" variant="appear" action={gotoEditPage}>
+            Save
+          </OakButton>
+          <OakButton theme="default" variant="appear" action={discardChanges}>
+            Discard
+          </OakButton>
+        </OakFooter>
       )}
     </div>
   );

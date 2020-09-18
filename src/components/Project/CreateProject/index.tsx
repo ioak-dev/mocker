@@ -76,8 +76,7 @@ const CreateProject = (props: Props) => {
     <OakPage>
       <OakSection>
         <OakHeading
-          title="New Project"
-          subtitle="Ipsum omnis unde ratione iure molestias perspiciatis omnis accusamus"
+          title="Create new project"
           links={[
             {
               label: 'Back',
