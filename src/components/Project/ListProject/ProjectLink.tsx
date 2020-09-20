@@ -13,10 +13,8 @@ const ProjectLink = (props: Props) => {
   const goToViewPage = () =>
     props.history.push(`/${props.space}/project/view?id=${props.project._id}`);
   return (
-    <div className="project-link">
-      <div className="project-link--name" onClick={goToViewPage}>
-        {props.project.name}
-      </div>
+    <div className="project-link" onClick={goToViewPage}>
+      <div className="project-link--name">{props.project.name}</div>
     </div>
   );
 };

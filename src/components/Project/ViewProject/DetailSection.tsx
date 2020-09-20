@@ -7,6 +7,8 @@ import OakButton from '../../../oakui/OakButton';
 import OakFooter from '../../../oakui/OakFooter';
 import OakForm from '../../../oakui/OakForm';
 import OakText from '../../../oakui/OakText';
+import { newMessageId, sendMessage } from '../../../events/MessageService';
+import { saveProject } from '../service';
 
 const queryString = require('query-string');
 
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const DetailSection = (props: Props) => {
+  const authorization = useSelector(state => state.authorization);
   const [state, setState] = useState({
     reference: '',
     description: '',
@@ -58,6 +61,32 @@ const DetailSection = (props: Props) => {
     setIsEdited(false);
   };
 
+  const save = async () => {
+    const jobId = newMessageId();
+    sendMessage('notification', true, {
+      id: jobId,
+      type: 'running',
+      message: `Saving project [${state.name}]`,
+    });
+    const response = await saveProject(props.space, authorization, {
+      ...state,
+      reference: state.reference
+        .toLowerCase()
+        .replace(/\s/g, '')
+        .replace(/\W/g, ''),
+    });
+    console.log(response);
+    if (response.status === 200) {
+      sendMessage('notification', true, {
+        id: jobId,
+        type: 'success',
+        message: `Project [${state.name}] saved successfully`,
+        duration: 3000,
+      });
+      props.history.push(`/${props.space}/project`);
+    }
+  };
+
   return (
     <div className="project-detail-section">
       {props.project && (
@@ -91,7 +120,7 @@ const DetailSection = (props: Props) => {
       )}
       {isEdited && (
         <OakFooter>
-          <OakButton theme="primary" variant="appear" action={gotoEditPage}>
+          <OakButton theme="primary" variant="appear" action={save}>
             Save
           </OakButton>
           <OakButton theme="default" variant="appear" action={discardChanges}>

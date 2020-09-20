@@ -23,6 +23,7 @@ const constants = {
   API_JWT: '/signin/jwt',
 
   API_URL_PROJECT: '/project',
+  API_URL_PROJECTMEMBER: '/projectmember',
   API_URL_ENDPOINT_DOMAIN: '/domain',
 };
 

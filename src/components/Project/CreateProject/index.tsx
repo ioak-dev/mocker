@@ -10,7 +10,7 @@ import OakForm from '../../../oakui/OakForm';
 import OakText from '../../../oakui/OakText';
 import OakFooter from '../../../oakui/OakFooter';
 import OakButton from '../../../oakui/OakButton';
-import { saveProject } from './service';
+import { saveProject } from '../service';
 import { sendMessage, newMessageId } from '../../../events/MessageService';
 
 interface Props {

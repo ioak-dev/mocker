@@ -19,6 +19,7 @@ export default function(state = initialState, action) {
       };
     case FETCH_ALL_USERS:
       console.log('FETCH_ALL_USERS reducer');
+      console.log(action);
       return {
         ...state,
         ...action.payload,
