@@ -10,9 +10,12 @@ import OakForm from '../../../oakui/OakForm';
 import OakSelect from '../../../oakui/OakSelect';
 import ListDomain from './ListDomain';
 
+const queryString = require('query-string');
+
 interface Props {
   space: string;
   history: any;
+  location: any;
 }
 
 const ListEndpoint = (props: Props) => {
@@ -23,6 +26,11 @@ const ListEndpoint = (props: Props) => {
   const [projectElements, setProjectElements] = useState<any>([]);
 
   useEffect(() => {
+    const query = queryString.parse(props.location.search);
+    setState({ ...state, projectId: query?.projectId });
+  }, [props.location.search]);
+
+  useEffect(() => {
     const localState: any[] = [];
     projects.map(item => {
       localState.push({ key: item._id, value: item.name });
@@ -31,32 +39,28 @@ const ListEndpoint = (props: Props) => {
   }, [projects]);
 
   const gotoCreatePage = () =>
-    props.history.push(`/${props.space}/endpoint/create`);
+    props.history.push(
+      `/${props.space}/endpoint/create?projectId=${state.projectId}`
+    );
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.value });
+  const handleProjectChange = event => {
+    props.history.push(
+      `/${props.space}/endpoint?projectId=${event.currentTarget.value}`
+    );
   };
 
   return (
     <OakPage>
       <OakSection>
         <OakHeading
-          title="Manage templates"
-          subtitle="Ipsum omnis unde ratione iure molestias perspiciatis omnis accusamus"
-          links={[
-            {
-              label: 'New endpoint',
-              icon: 'playlist_add',
-              action: gotoCreatePage,
-            },
-          ]}
-          linkSize="large"
+          title="Endpoint management console"
+          subtitle="Creation and maintainance of your project API endpoints"
         />
         <OakForm>
           <OakSelect
             id="projectId"
             data={state}
-            handleChange={handleChange}
+            handleChange={handleProjectChange}
             label="Choose project"
             objects={projectElements}
           />

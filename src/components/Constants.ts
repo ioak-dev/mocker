@@ -24,7 +24,7 @@ const constants = {
 
   API_URL_PROJECT: '/project',
   API_URL_PROJECTMEMBER: '/projectmember',
-  API_URL_ENDPOINT_DOMAIN: '/domain',
+  API_URL_ENDPOINT_DOMAIN: '/endpoint/domain',
 };
 
 export default constants;

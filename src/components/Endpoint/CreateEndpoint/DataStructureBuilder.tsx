@@ -4,7 +4,8 @@ import './DataStructureBuilder.scss';
 import FieldElement from './FieldElement';
 
 interface Props {
-  data: any[];
+  data: any;
+  id: string;
   handleChange: any;
 }
 
@@ -13,7 +14,7 @@ const DataStructureBuilder = (props: Props) => {
     <div className="data-structure-builder">
       <div className="data-structure-builder--label">Domain data structure</div>
       <FieldElement
-        data={props.data}
+        data={props.data[props.id]}
         reference={undefined}
         handleChange={props.handleChange}
       />

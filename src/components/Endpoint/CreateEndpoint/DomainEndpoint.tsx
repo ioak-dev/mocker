@@ -22,63 +22,63 @@ interface Props {
 
 const DomainEndpoint = (props: Props) => {
   const goBack = () => props.history.goBack();
-  const [state, setState] = useState({
+  const [state, setState] = useState<any>({
     projectId: props.projectId,
     name: '',
     description: '',
-    structure: '',
+    structure: [],
   });
-  const [testData, setTestData] = useState([
-    {
-      reference: '1',
-      parentReference: undefined,
-      datatype: 'object',
-      array: false,
-      name: 'fieldOne',
-    },
-    {
-      reference: '2',
-      parentReference: '1',
-      datatype: 'object',
-      array: true,
-      name: 'fieldTwo',
-    },
-    {
-      reference: '3',
-      parentReference: undefined,
-      datatype: 'word',
-      array: false,
-      name: 'fieldThree',
-    },
-    {
-      reference: '4',
-      parentReference: undefined,
-      datatype: 'word',
-      array: true,
-      name: 'fieldFour',
-    },
-    {
-      reference: '5',
-      parentReference: '1',
-      datatype: 'word',
-      array: false,
-      name: 'fieldFive',
-    },
-    {
-      reference: '6',
-      parentReference: '2',
-      datatype: 'word',
-      array: false,
-      name: 'fieldSix',
-    },
-    {
-      reference: '7',
-      parentReference: '2',
-      datatype: 'sentence',
-      array: true,
-      name: 'fieldSeven',
-    },
-  ]);
+  // const [testData, setTestData] = useState([
+  //   {
+  //     reference: '1',
+  //     parentReference: undefined,
+  //     datatype: 'object',
+  //     array: false,
+  //     name: 'fieldOne',
+  //   },
+  //   {
+  //     reference: '2',
+  //     parentReference: '1',
+  //     datatype: 'object',
+  //     array: true,
+  //     name: 'fieldTwo',
+  //   },
+  //   {
+  //     reference: '3',
+  //     parentReference: undefined,
+  //     datatype: 'word',
+  //     array: false,
+  //     name: 'fieldThree',
+  //   },
+  //   {
+  //     reference: '4',
+  //     parentReference: undefined,
+  //     datatype: 'word',
+  //     array: true,
+  //     name: 'fieldFour',
+  //   },
+  //   {
+  //     reference: '5',
+  //     parentReference: '1',
+  //     datatype: 'word',
+  //     array: false,
+  //     name: 'fieldFive',
+  //   },
+  //   {
+  //     reference: '6',
+  //     parentReference: '2',
+  //     datatype: 'word',
+  //     array: false,
+  //     name: 'fieldSix',
+  //   },
+  //   {
+  //     reference: '7',
+  //     parentReference: '2',
+  //     datatype: 'sentence',
+  //     array: true,
+  //     name: 'fieldSeven',
+  //   },
+  // ]);
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
 
@@ -88,10 +88,6 @@ const DomainEndpoint = (props: Props) => {
       [event.currentTarget.name]: event.currentTarget.value,
     });
   };
-
-  useEffect(() => {
-    console.log(testData);
-  }, [testData]);
 
   const handleNameChange = event => {
     setState({
@@ -108,14 +104,14 @@ const DomainEndpoint = (props: Props) => {
     let newData: any[] = [];
     switch (actionType) {
       case 'remove':
-        newData = testData.filter(
+        newData = state.structure.filter(
           item =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
-        newData = testData.filter(
+        newData = state.structure.filter(
           item => item.reference !== changeData.reference
         );
         newData.push(changeData);
@@ -123,7 +119,7 @@ const DomainEndpoint = (props: Props) => {
       default:
         break;
     }
-    setTestData(newData);
+    setState({ ...state, structure: newData });
   };
 
   const save = async () => {
@@ -134,11 +130,10 @@ const DomainEndpoint = (props: Props) => {
       type: 'running',
       message: `Saving domain endpoint [${state.name}]`,
     });
-    const response = await saveDomainEndpoint(
-      props.space,
-      authorization,
-      state
-    );
+    const response = await saveDomainEndpoint(props.space, authorization, {
+      ...state,
+      projectId: props.projectId,
+    });
     console.log(response);
     if (response.status === 200) {
       sendMessage('notification', true, {
@@ -162,7 +157,8 @@ const DomainEndpoint = (props: Props) => {
         />
       </OakForm>
       <DataStructureBuilder
-        data={testData}
+        data={state}
+        id="structure"
         handleChange={handleDataStructureChange}
       />
       <OakFooter>
