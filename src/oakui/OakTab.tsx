@@ -7,6 +7,7 @@ interface Props {
   meta: any[];
   children: any;
   variant?: 'default' | 'fullpage';
+  noBookmarking?: boolean;
 }
 
 const OakTab = (props: Props) => {
@@ -19,11 +20,13 @@ const OakTab = (props: Props) => {
   }, [props.meta, props.children]);
 
   useEffect(() => {
-    setActiveTab(
-      isEmptyOrSpaces(location.hash)
-        ? props.meta[0]?.slotName
-        : location.hash.substr(1)
-    );
+    if (!props.noBookmarking) {
+      setActiveTab(
+        isEmptyOrSpaces(location.hash)
+          ? props.meta[0]?.slotName
+          : location.hash.substr(1)
+      );
+    }
   }, [location.hash]);
 
   const initializeViews = () => {
@@ -32,32 +35,57 @@ const OakTab = (props: Props) => {
       newSlots = { ...newSlots, [node.props.slot]: node };
     });
     setSlots(newSlots);
+    if (props.noBookmarking && !activeTab) {
+      setActiveTab(Object.keys(newSlots)[0]);
+    }
   };
 
   return (
     <div className={`oak-tab ${props.variant}`}>
       <div className="oak-tab--header">
-        {props.meta.map(item => (
-          <a
-            key={item.slotName}
-            className={`tab typography-6 ${
-              activeTab === item.slotName ? 'active' : 'inactive'
-            }`}
-            // onClick={event => switchTab(event, item.slotName)}
-            // href={`#${item.slotName}`}
-            href={`#${location.pathname}${location.search}#${item.slotName}`}
-          >
-            {/* <div className="icon"> */}
-            <i
-              className={`material-icons typography-8 ${
-                activeTab === item.slotName ? 'active' : ''
+        {props.noBookmarking &&
+          props.meta.map(item => (
+            <button
+              key={item.slotName}
+              className={`oak-tab--header--button tab typography-6 ${
+                activeTab === item.slotName ? 'active' : 'inactive'
               }`}
+              onClick={event => setActiveTab(item.slotName)}
             >
-              {item.icon}
-            </i>
-            <div className="label">{item.label}</div>
-          </a>
-        ))}
+              {/* <div className="icon"> */}
+              <i
+                className={`material-icons typography-8 ${
+                  activeTab === item.slotName ? 'active' : ''
+                }`}
+              >
+                {item.icon}
+              </i>
+              <div className="label">{item.label}</div>
+            </button>
+          ))}
+
+        {!props.noBookmarking &&
+          props.meta.map(item => (
+            <a
+              key={item.slotName}
+              className={`tab typography-6 ${
+                activeTab === item.slotName ? 'active' : 'inactive'
+              }`}
+              // onClick={event => switchTab(event, item.slotName)}
+              // href={`#${item.slotName}`}
+              href={`#${location.pathname}${location.search}#${item.slotName}`}
+            >
+              {/* <div className="icon"> */}
+              <i
+                className={`material-icons typography-8 ${
+                  activeTab === item.slotName ? 'active' : ''
+                }`}
+              >
+                {item.icon}
+              </i>
+              <div className="label">{item.label}</div>
+            </a>
+          ))}
       </div>
       {/* {props.meta.map(item => (
         <div

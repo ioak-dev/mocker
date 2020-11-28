@@ -8,22 +8,22 @@ a {
   color: var(--color-foreground-1);
 }
 
-@media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 10px; /* for vertical scrollbars */
-    height: 10px; /* for horizontal scrollbars */
-  }
+// @media (min-width: 768px) {
+//   ::-webkit-scrollbar {
+//     width: 10px; /* for vertical scrollbars */
+//     height: 10px; /* for horizontal scrollbars */
+//   }
 
-  ::-webkit-scrollbar-track {
-    background: var(--color-foreground-5);
-    border-radius: 10px;
-  }
+//   ::-webkit-scrollbar-track {
+//     background: var(--color-foreground-5);
+//     border-radius: 10px;
+//   }
 
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-foreground-3);
-    border-radius: 10px;
-  }
-}
+//   ::-webkit-scrollbar-thumb {
+//     background: var(--color-foreground-3);
+//     border-radius: 10px;
+//   }
+// }
 
 .App {
   width: 100%;

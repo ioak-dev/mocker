@@ -11,7 +11,9 @@ interface Props {
 
 const DomainLink = (props: Props) => {
   const goToViewPage = () =>
-    props.history.push(`/${props.space}/endpoint/view?id=${props.domain._id}`);
+    props.history.push(
+      `/${props.space}/endpoint/domain/view?id=${props.domain._id}`
+    );
   return (
     <div className="domain-link">
       <div className="domain-link--name typography-6" onClick={goToViewPage}>

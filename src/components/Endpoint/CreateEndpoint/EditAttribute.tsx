@@ -28,8 +28,8 @@ const EditAttribute = (props: Props) => {
   const [state, setState] = useState({
     name: '',
     datatype: '',
-    lower: '',
-    upper: '',
+    lower: 1,
+    upper: 2,
     array: false,
   });
 
@@ -38,10 +38,16 @@ const EditAttribute = (props: Props) => {
   }, [props.data]);
 
   const handleChange = event => {
-    console.log(event.currentTarget.checked);
     setState({
       ...state,
       [event.currentTarget.name]: event.currentTarget.value,
+    });
+  };
+
+  const handleNumberChange = event => {
+    setState({
+      ...state,
+      [event.currentTarget.name]: parseInt(event.currentTarget.value, 10),
     });
   };
 
@@ -70,18 +76,30 @@ const EditAttribute = (props: Props) => {
           id="datatype"
           handleChange={handleChange}
           label="Datatype"
-          elements={['char', 'word', 'sentence', 'object']}
+          elements={[
+            'char',
+            'word',
+            'sentence',
+            'integer',
+            'decimal',
+            'alphanumeric',
+            'boolean',
+            'sequence_number',
+            'object',
+          ]}
         />
         <OakText
           data={state}
           id="lower"
-          handleChange={handleChange}
+          handleChange={handleNumberChange}
+          type="number"
           label="Lower bound"
         />
         <OakText
           data={state}
           id="upper"
-          handleChange={handleChange}
+          handleChange={handleNumberChange}
+          type="number"
           label="Upper bound"
         />
         <OakCheckbox

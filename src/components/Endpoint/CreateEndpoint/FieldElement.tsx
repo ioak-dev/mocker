@@ -11,14 +11,14 @@ import { newId } from '../../../events/MessageService';
 
 interface Props {
   data: any[];
-  reference: string | undefined;
+  reference: string | null;
   handleChange: any;
 }
 const emptyField = {
   name: '',
   datatype: '',
-  lower: '',
-  upper: '',
+  lower: 1,
+  upper: 2,
   array: false,
 };
 const FieldElement = (props: Props) => {
@@ -73,27 +73,41 @@ const FieldElement = (props: Props) => {
       <div className="field-element">
         <div className="field-element-parent">
           <div className="field-element-parent--title typography-5">
-            <div>{currentField?.name}</div>
+            {currentField && <div>{currentField?.name}</div>}
+            {!currentField && <div>Root</div>}
           </div>
-          <div className="field-element-parent--subtitle typography-4">
-            <div>
-              Datatype:{' '}
-              {`${currentField?.datatype}${currentField?.array ? ' [ ]' : ''}`}
+          {currentField && (
+            <div className="field-element-parent--subtitle typography-4">
+              <div>
+                {`Datatype: ${currentField.datatype}${
+                  currentField.array ? ' [ ]' : ''
+                }`}
+              </div>
+              {!currentField && <div>Root</div>}
             </div>
-          </div>
+          )}
           <div className="field-element-parent--action typography-4">
-            <div className="field-element-action hyperlink" onClick={editNode}>
-              edit
-            </div>
-            <div
-              className="field-element-action hyperlink"
-              onClick={onRemoveNode}
-            >
-              delete
-            </div>
-            <div className="field-element-action hyperlink" onClick={newNode}>
-              new-attribute
-            </div>
+            {currentField && (
+              <>
+                <div
+                  className="field-element-action hyperlink"
+                  onClick={editNode}
+                >
+                  edit
+                </div>
+                <div
+                  className="field-element-action hyperlink"
+                  onClick={onRemoveNode}
+                >
+                  delete
+                </div>
+              </>
+            )}
+            {(!currentField || currentField.datatype === 'object') && (
+              <div className="field-element-action hyperlink" onClick={newNode}>
+                new-attribute
+              </div>
+            )}
           </div>
         </div>
         {children?.length > 0 && (

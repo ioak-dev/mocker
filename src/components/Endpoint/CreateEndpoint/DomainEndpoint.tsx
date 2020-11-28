@@ -114,7 +114,7 @@ const DomainEndpoint = (props: Props) => {
         newData = state.structure.filter(
           item => item.reference !== changeData.reference
         );
-        newData.push(changeData);
+        newData.push({ ...changeData });
         break;
       default:
         break;

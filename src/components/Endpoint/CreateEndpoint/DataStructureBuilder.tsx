@@ -15,7 +15,7 @@ const DataStructureBuilder = (props: Props) => {
       <div className="data-structure-builder--label">Domain data structure</div>
       <FieldElement
         data={props.data[props.id]}
-        reference={undefined}
+        reference={null}
         handleChange={props.handleChange}
       />
     </div>

@@ -29,6 +29,7 @@ import Init from './Init';
 import ViewProject from '../Project/ViewProject';
 import ListEndpoint from '../Endpoint/ListEndpoint';
 import CreateEndpoint from '../Endpoint/CreateEndpoint';
+import ViewDomainEndpoint from '../Endpoint/ViewDomainEndpoint';
 
 const themes = {
   themecolor1: getTheme('#69A7BF'),
@@ -218,6 +219,17 @@ const Content = (props: Props) => {
                     {...propsLocal}
                     {...props}
                     component={CreateEndpoint}
+                    middleware={['readAuthentication']}
+                  />
+                )}
+              />
+              <Route
+                path="/:space/endpoint/domain/view"
+                render={propsLocal => (
+                  <OakRoute
+                    {...propsLocal}
+                    {...props}
+                    component={ViewDomainEndpoint}
                     middleware={['readAuthentication']}
                   />
                 )}
