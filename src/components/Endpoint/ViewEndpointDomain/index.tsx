@@ -5,16 +5,17 @@ import './style.scss';
 import OakPage from '../../../oakui/OakPage';
 import OakSection from '../../../oakui/OakSection';
 import OakForm from '../../../oakui/OakForm';
-import DataStructureBuilder from '../CreateEndpoint/DataStructureBuilder';
 import OakTab from '../../../oakui/OakTab';
 import OakSubheading from '../../../oakui/OakSubheading';
 import OakButton from '../../../oakui/OakButton';
 import OakFooter from '../../../oakui/OakFooter';
 import { newMessageId, sendMessage } from '../../../events/MessageService';
-import { saveDomainEndpoint } from '../CreateEndpoint/service';
 import OakText from '../../../oakui/OakText';
 import OakSelect from '../../../oakui/OakSelect';
 import ApiSpecification from './ApiSpecification';
+import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
+import { saveDomainEndpoint } from '../service';
+import DomainEndpoint from '../CreateEndpointDomain/DomainEndpoint';
 
 const queryString = require('query-string');
 
@@ -24,7 +25,7 @@ interface Props {
   location: any;
 }
 
-const ViewDomainEndpoint = (props: Props) => {
+const ViewEndpointDomain = (props: Props) => {
   const [query, setQuery] = useState({
     id: '',
   });
@@ -137,42 +138,17 @@ const ViewDomainEndpoint = (props: Props) => {
         ]}
       >
         <div slot="settings">
-          <OakSection>
-            <OakFooter>
-              <OakButton variant="appear" theme="primary" action={save}>
-                Save
-              </OakButton>
-              <OakButton variant="appear" theme="default" action={goBack}>
-                Cancel and Go back
-              </OakButton>
-            </OakFooter>
-            <OakSubheading title="Basic details" />
-            {project && (
-              <OakForm>
-                <OakText
-                  data={project}
-                  handleChange={handleChange}
-                  disabled
-                  id="name"
-                  label="Project name"
-                />
-                <OakText
-                  data={state}
-                  handleChange={handleNameChange}
-                  id="name"
-                  label="Name of the domain"
-                />
-              </OakForm>
-            )}
-            <OakSubheading title="Domain structure" />
-            <OakForm>
-              <DataStructureBuilder
-                data={state}
-                id="structure"
-                handleChange={handleDataStructureChange}
+          {domainEndpoint && (
+            <OakSection>
+              <DomainEndpoint
+                data={domainEndpoint}
+                history={props.history}
+                space={props.space}
+                freezeProject
+                projectId={domainEndpoint?.projectId}
               />
-            </OakForm>
-          </OakSection>
+            </OakSection>
+          )}
         </div>
         <div slot="endpoints">
           <OakSection>
@@ -188,4 +164,4 @@ const ViewDomainEndpoint = (props: Props) => {
   );
 };
 
-export default ViewDomainEndpoint;
+export default ViewEndpointDomain;

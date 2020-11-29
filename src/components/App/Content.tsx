@@ -28,8 +28,10 @@ import CreateProject from '../Project/CreateProject';
 import Init from './Init';
 import ViewProject from '../Project/ViewProject';
 import ListEndpoint from '../Endpoint/ListEndpoint';
-import CreateEndpoint from '../Endpoint/CreateEndpoint';
-import ViewDomainEndpoint from '../Endpoint/ViewDomainEndpoint';
+import CreateEndpointDomain from '../Endpoint/CreateEndpointDomain';
+import ViewEndpointDomain from '../Endpoint/ViewEndpointDomain';
+import CreateEndpointCustom from '../Endpoint/CreateEndpointCustom';
+import ViewEndpointCustom from '../Endpoint/ViewEndpointCustom';
 
 const themes = {
   themecolor1: getTheme('#69A7BF'),
@@ -213,12 +215,23 @@ const Content = (props: Props) => {
                 )}
               />
               <Route
-                path="/:space/endpoint/create"
+                path="/:space/endpoint/domain/create"
                 render={propsLocal => (
                   <OakRoute
                     {...propsLocal}
                     {...props}
-                    component={CreateEndpoint}
+                    component={CreateEndpointDomain}
+                    middleware={['readAuthentication']}
+                  />
+                )}
+              />
+              <Route
+                path="/:space/endpoint/custom/create"
+                render={propsLocal => (
+                  <OakRoute
+                    {...propsLocal}
+                    {...props}
+                    component={CreateEndpointCustom}
                     middleware={['readAuthentication']}
                   />
                 )}
@@ -229,7 +242,18 @@ const Content = (props: Props) => {
                   <OakRoute
                     {...propsLocal}
                     {...props}
-                    component={ViewDomainEndpoint}
+                    component={ViewEndpointDomain}
+                    middleware={['readAuthentication']}
+                  />
+                )}
+              />
+              <Route
+                path="/:space/endpoint/custom/view"
+                render={propsLocal => (
+                  <OakRoute
+                    {...propsLocal}
+                    {...props}
+                    component={ViewEndpointCustom}
                     middleware={['readAuthentication']}
                   />
                 )}

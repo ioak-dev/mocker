@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './FieldElement.scss';
-import OakDialog from '../../../oakui/OakDialog';
-import OakModal from '../../../oakui/OakModal';
-import OakForm from '../../../oakui/OakForm';
-import OakText from '../../../oakui/OakText';
+import { any } from 'prop-types';
+import { newId } from '../../events/MessageService';
 import EditAttribute from './EditAttribute';
-import { newId } from '../../../events/MessageService';
 
 interface Props {
   data: any[];
   reference: string | null;
   handleChange: any;
+  id: string;
 }
 const emptyField = {
   name: '',
@@ -20,6 +18,7 @@ const emptyField = {
   lower: 1,
   upper: 2,
   array: false,
+  id: '',
 };
 const FieldElement = (props: Props) => {
   const [currentField, setCurrentField] = useState<any>();
@@ -29,6 +28,7 @@ const FieldElement = (props: Props) => {
     ...emptyField,
     parentReference: props.reference,
     reference: newId(),
+    id: props.id,
   });
 
   useEffect(() => {
@@ -60,11 +60,11 @@ const FieldElement = (props: Props) => {
   };
 
   const onRemoveNode = () => {
-    props.handleChange('remove', props.reference);
+    props.handleChange('remove', props.reference, props.id);
   };
 
   const onEditNode = updatedNode => {
-    props.handleChange('edit', updatedNode);
+    props.handleChange('edit', updatedNode, props.id);
     setShowEditDialog(false);
   };
 
@@ -118,6 +118,7 @@ const FieldElement = (props: Props) => {
                 key={child.reference}
               >
                 <FieldElement
+                  id={props.id}
                   data={props.data}
                   reference={child.reference}
                   handleChange={props.handleChange}

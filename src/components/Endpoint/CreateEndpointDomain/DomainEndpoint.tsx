@@ -2,85 +2,53 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './DomainEndpoint.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakHeading from '../../../oakui/OakHeading';
-import OakSubheading from '../../../oakui/OakSubheading';
 import OakForm from '../../../oakui/OakForm';
 import OakText from '../../../oakui/OakText';
 import OakFooter from '../../../oakui/OakFooter';
 import OakButton from '../../../oakui/OakButton';
-import { saveDomainEndpoint } from './service';
+import { saveDomainEndpoint } from '../service';
 import { sendMessage, newMessageId } from '../../../events/MessageService';
-import DataStructureBuilder from './DataStructureBuilder';
+import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
+import OakSubheading from '../../../oakui/OakSubheading';
+import OakSelect from '../../../oakui/OakSelect';
 
 interface Props {
   space: string;
   history: any;
   projectId: string;
+  data: any;
+  freezeProject?: boolean;
 }
 
 const DomainEndpoint = (props: Props) => {
   const goBack = () => props.history.goBack();
+  const projects = useSelector(state => state.project.projects);
   const [state, setState] = useState<any>({
     projectId: props.projectId,
     name: '',
     description: '',
     structure: [],
   });
-  // const [testData, setTestData] = useState([
-  //   {
-  //     reference: '1',
-  //     parentReference: undefined,
-  //     datatype: 'object',
-  //     array: false,
-  //     name: 'fieldOne',
-  //   },
-  //   {
-  //     reference: '2',
-  //     parentReference: '1',
-  //     datatype: 'object',
-  //     array: true,
-  //     name: 'fieldTwo',
-  //   },
-  //   {
-  //     reference: '3',
-  //     parentReference: undefined,
-  //     datatype: 'word',
-  //     array: false,
-  //     name: 'fieldThree',
-  //   },
-  //   {
-  //     reference: '4',
-  //     parentReference: undefined,
-  //     datatype: 'word',
-  //     array: true,
-  //     name: 'fieldFour',
-  //   },
-  //   {
-  //     reference: '5',
-  //     parentReference: '1',
-  //     datatype: 'word',
-  //     array: false,
-  //     name: 'fieldFive',
-  //   },
-  //   {
-  //     reference: '6',
-  //     parentReference: '2',
-  //     datatype: 'word',
-  //     array: false,
-  //     name: 'fieldSix',
-  //   },
-  //   {
-  //     reference: '7',
-  //     parentReference: '2',
-  //     datatype: 'sentence',
-  //     array: true,
-  //     name: 'fieldSeven',
-  //   },
-  // ]);
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
+
+  const [projectElements, setProjectElements] = useState<any>([]);
+
+  useEffect(() => {
+    setState({
+      ...state,
+      ...props.data,
+      projectId: props.projectId,
+    });
+  }, [props.projectId, props.data]);
+
+  useEffect(() => {
+    const localState: any[] = [];
+    projects.map(item => {
+      localState.push({ key: item._id, value: item.name });
+    });
+    setProjectElements(localState);
+  }, [projects]);
 
   const handleChange = event => {
     setState({
@@ -145,31 +113,51 @@ const DomainEndpoint = (props: Props) => {
       props.history.push(`/${props.space}/endpoint`);
     }
   };
+  const handleProjectChange = event => {
+    props.history.push(
+      `/${props.space}/endpoint/domain/create?projectId=${event.currentTarget.value}`
+    );
+  };
 
   return (
-    <div className="domain-endpoint">
-      <OakForm>
-        <OakText
-          data={state}
-          id="name"
-          handleChange={handleNameChange}
-          label="Name of the domain"
-        />
-      </OakForm>
-      <DataStructureBuilder
-        data={state}
-        id="structure"
-        handleChange={handleDataStructureChange}
-      />
+    <>
       <OakFooter>
         <OakButton theme="primary" variant="appear" action={save}>
           Save
         </OakButton>
-        <OakButton theme="default" variant="appear">
-          Cancel
+        <OakButton theme="default" variant="appear" action={goBack}>
+          Close
         </OakButton>
       </OakFooter>
-    </div>
+      <OakForm>
+        <OakSubheading title="Basic details" />
+        <OakSelect
+          id="projectId"
+          data={state}
+          disabled={props.freezeProject}
+          handleChange={handleProjectChange}
+          label="Choose project"
+          objects={projectElements}
+        />
+      </OakForm>
+      {props.projectId && (
+        <OakForm>
+          <OakText
+            data={state}
+            id="name"
+            handleChange={handleNameChange}
+            label="Name of the domain"
+          />
+          <OakSubheading title="Domain structure" />
+          <DataStructureBuilder
+            data={state}
+            id="structure"
+            label="Domain data structure"
+            handleChange={handleDataStructureChange}
+          />
+        </OakForm>
+      )}
+    </>
   );
 };
 

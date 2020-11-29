@@ -4,6 +4,7 @@ import { receiveMessage } from '../../events/MessageService';
 import { fetchAllProjects } from '../../actions/ProjectActions';
 import { fetchAllDomains } from '../../actions/DomainActions';
 import { fetchAllUsers } from '../../actions/UserActions';
+import { fetchAllCustomEndpoints } from '../../actions/CustomEndpointActions';
 
 const Init = () => {
   const authorization = useSelector(state => state.authorization);
@@ -39,6 +40,7 @@ const Init = () => {
     dispatch(fetchAllUsers(space, authorization));
     dispatch(fetchAllProjects(space, authorization));
     dispatch(fetchAllDomains(space, authorization));
+    dispatch(fetchAllCustomEndpoints(space, authorization));
   };
   return <></>;
 };

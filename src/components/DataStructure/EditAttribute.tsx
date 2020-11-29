@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import './CustomEndpoint.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakHeading from '../../../oakui/OakHeading';
-import OakSubheading from '../../../oakui/OakSubheading';
-import OakForm from '../../../oakui/OakForm';
-import OakText from '../../../oakui/OakText';
-import OakFooter from '../../../oakui/OakFooter';
-import OakButton from '../../../oakui/OakButton';
-import { saveDomainEndpoint } from './service';
-import { sendMessage, newMessageId } from '../../../events/MessageService';
-import OakDialog from '../../../oakui/OakDialog';
-import OakModal from '../../../oakui/OakModal';
-import OakSelect from '../../../oakui/OakSelect';
-import OakCheckbox from '../../../oakui/OakCheckbox';
+import OakForm from '../../oakui/OakForm';
+import OakText from '../../oakui/OakText';
+import OakFooter from '../../oakui/OakFooter';
+import OakButton from '../../oakui/OakButton';
+import OakModal from '../../oakui/OakModal';
+import OakSelect from '../../oakui/OakSelect';
+import OakCheckbox from '../../oakui/OakCheckbox';
 
 interface Props {
   data: any;

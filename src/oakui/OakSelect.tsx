@@ -11,6 +11,7 @@ interface Props {
   objects?: Array<any>;
   first?: string;
   firstAction?: string;
+  disabled?: boolean;
   variant?: 'outline' | 'no-outline' | 'block' | 'normal';
   theme?: 'primary' | 'secondary' | 'tertiary' | 'default';
   width?: 'width-25' | 'width-50' | 'width-75' | 'width-100';
@@ -65,6 +66,7 @@ const OakSelect = (props: Props) => {
         name={props.id}
         className="select"
         value={props.data[props.id]}
+        disabled={props.disabled}
       >
         <option value=""> </option>
         {props.firstAction && (

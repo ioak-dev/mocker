@@ -2,18 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakForm from '../../../oakui/OakForm';
-import DataStructureBuilder from '../CreateEndpoint/DataStructureBuilder';
-import OakTab from '../../../oakui/OakTab';
-import OakSubheading from '../../../oakui/OakSubheading';
-import OakButton from '../../../oakui/OakButton';
-import OakFooter from '../../../oakui/OakFooter';
-import { newMessageId, sendMessage } from '../../../events/MessageService';
-import { saveDomainEndpoint } from '../CreateEndpoint/service';
-import OakText from '../../../oakui/OakText';
-import OakSelect from '../../../oakui/OakSelect';
 import ApiSpecificationLink from './ApiSpecificationLink';
 
 const queryString = require('query-string');

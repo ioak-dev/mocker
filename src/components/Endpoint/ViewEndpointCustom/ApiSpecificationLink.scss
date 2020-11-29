@@ -1,0 +1,40 @@
+.api-specification {
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 20px;
+}
+.api-specification-link {
+  background-color: var(--color-background-2);
+  padding: 10px 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  column-gap: 10px;
+
+  .material-icons {
+    display: flex;
+    cursor: pointer;
+    opacity: 0.4;
+    &:hover {
+      opacity: 1;
+    }
+    transition: opacity 250ms ease-in-out;
+  }
+
+  .GET {
+    color: green;
+    font-weight: bold;
+  }
+  .POST {
+    color: orange;
+    font-weight: bold;
+  }
+  .PUT {
+    color: blue;
+    font-weight: bold;
+  }
+  .DELETE {
+    color: red;
+    font-weight: bold;
+  }
+}

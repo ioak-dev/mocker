@@ -9,6 +9,8 @@ import OakSubheading from '../../../oakui/OakSubheading';
 import OakForm from '../../../oakui/OakForm';
 import OakSelect from '../../../oakui/OakSelect';
 import ListDomain from './ListDomain';
+import OakTab from '../../../oakui/OakTab';
+import ListCustom from './ListCustom';
 
 const queryString = require('query-string');
 
@@ -65,11 +67,44 @@ const ListEndpoint = (props: Props) => {
             objects={projectElements}
           />
         </OakForm>
-        <ListDomain
-          space={props.space}
-          projectId={state.projectId}
-          history={props.history}
-        />
+        {state.projectId && (
+          <OakTab
+            noBookmarking
+            meta={[
+              {
+                slotName: 'domain',
+                label: 'Domain endpoints',
+                icon: 'api',
+              },
+              {
+                slotName: 'custom',
+                label: 'Custom endpoints',
+                icon: 'build',
+              },
+              {
+                slotName: 'mockdata',
+                label: 'Data defined endpoints',
+                icon: 'construction',
+              },
+            ]}
+            variant="fullpage"
+          >
+            <div slot="domain">
+              <ListDomain
+                space={props.space}
+                projectId={state.projectId}
+                history={props.history}
+              />
+            </div>
+            <div slot="custom">
+              <ListCustom
+                space={props.space}
+                projectId={state.projectId}
+                history={props.history}
+              />
+            </div>
+          </OakTab>
+        )}
       </OakSection>
     </OakPage>
   );

@@ -13,18 +13,20 @@ interface Props {
   history: any;
 }
 
-const ListDomain = (props: Props) => {
-  const domains = useSelector(state =>
-    state.domain.domains.filter(item => item.projectId === props.projectId)
+const ListCustom = (props: Props) => {
+  const customEndpoints = useSelector(state =>
+    state.customEndpoint.customEndpoints.filter(
+      item => item.projectId === props.projectId
+    )
   );
 
   useEffect(() => {
-    console.log(domains);
-  }, [domains]);
+    console.log(customEndpoints);
+  }, [customEndpoints]);
 
   const gotoCreatePage = () =>
     props.history.push(
-      `/${props.space}/endpoint/domain/create?projectId=${props.projectId}`
+      `/${props.space}/endpoint/custom/create?projectId=${props.projectId}`
     );
 
   return (
@@ -33,21 +35,21 @@ const ListDomain = (props: Props) => {
         <>
           <OakFooter>
             <OakButton action={gotoCreatePage} theme="primary" variant="appear">
-              Create new domain
+              Create new custom endpoint
             </OakButton>
           </OakFooter>
-          <div className="list-domain">
-            {domains?.map(item => (
+          <div className="list-custom">
+            {customEndpoints?.map(item => (
               <EndpointLink
                 key={item._id}
                 space={props.space}
                 endpoint={item}
                 history={props.history}
-                type="domain"
+                type="custom"
               />
             ))}
-            {!domains ||
-              (domains.length === 0 && (
+            {!customEndpoints ||
+              (customEndpoints.length === 0 && (
                 <div className="typography-4">No endpoints yet</div>
               ))}
           </div>
@@ -57,4 +59,4 @@ const ListDomain = (props: Props) => {
   );
 };
 
-export default ListDomain;
+export default ListCustom;
