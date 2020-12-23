@@ -1,37 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, connect, useDispatch } from 'react-redux';
 
-import { Route } from 'react-router-dom';
 import './style.scss';
 import { HashRouter } from 'react-router-dom/cjs/react-router-dom.min';
 import { withCookies } from 'react-cookie';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import Home from '../Home';
-import OaLogin from '../Auth/OaLogin';
-import Landing from '../Landing';
 import { getUser, addUser } from '../../actions/UserActions';
 import { getProfile, setProfile } from '../../actions/ProfileActions';
 
 import Notification from '../Notification';
-import Navigation from '../Navigation';
 import { Authorization } from '../Types/GeneralTypes';
-import Tenant from '../Tenant';
-import OakRoute from '../Auth/OakRoute';
-import Unauthorized from '../Auth/Unauthorized';
-import OneAuth from '../Login/OneAuth/index';
-import Login from '../Login/index';
 import { receiveMessage } from '../../events/MessageService';
 import { fetchAllSpaces } from '../../actions/SpaceActions';
-import ListProject from '../Project/ListProject';
-import CreateProject from '../Project/CreateProject';
 import Init from './Init';
-import ViewProject from '../Project/ViewProject';
-import ListEndpoint from '../Endpoint/ListEndpoint';
-import CreateEndpointDomain from '../Endpoint/CreateEndpointDomain';
-import ViewEndpointDomain from '../Endpoint/ViewEndpointDomain';
-import CreateEndpointCustom from '../Endpoint/CreateEndpointCustom';
-import ViewEndpointCustom from '../Endpoint/ViewEndpointCustom';
+import Topbar from '../Topbar';
+import RouterView from './RouterView';
+import Sidebar from '../Sidebar';
 
 const themes = {
   themecolor1: getTheme('#69A7BF'),
@@ -70,6 +55,7 @@ interface Props {
 
 const Content = (props: Props) => {
   const authorization = useSelector(state => state.authorization);
+  const profile = useSelector(state => state.profile);
   const [space, setSpace] = useState('');
   const dispatch = useDispatch();
 
@@ -91,175 +77,45 @@ const Content = (props: Props) => {
       className={`App ${props.profile.theme} ${props.profile.textSize} ${props.profile.themeColor}`}
     >
       <HashRouter>
-        <div className="body">
-          <div className="body-content">
-            <Init />
-            <Notification />
-            <MuiThemeProvider theme={themes.themecolor1}>
-              <Navigation {...props} />
-              <Route
-                path="/login"
-                render={propsLocal => (
-                  <OakRoute {...propsLocal} {...props} component={OaLogin} />
-                )}
-              />
-              <Route
-                path="/:space/unauthorized"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={Unauthorized}
-                    middleware={['isAuthenticated']}
-                  />
-                )}
-              />
-              <Route
-                path="/"
-                exact
-                render={propsLocal => (
-                  <OakRoute {...propsLocal} {...props} component={Landing} />
-                )}
-              />
-              <Route
-                path="/home"
-                exact
-                render={propsLocal => (
-                  <OakRoute {...propsLocal} {...props} component={Landing} />
-                )}
-              />
-              <Route
-                path="/tenant"
-                exact
-                render={propsLocal => (
-                  <OakRoute {...propsLocal} {...props} component={Tenant} />
-                )}
-              />
-              <Route
-                path="/:space/home"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={Home}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/login/home"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={Login}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/login/oa"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={OneAuth}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/project"
-                exact
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={ListProject}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/project/view"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={ViewProject}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/project/create"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={CreateProject}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/endpoint"
-                exact
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={ListEndpoint}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/endpoint/domain/create"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={CreateEndpointDomain}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/endpoint/custom/create"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={CreateEndpointCustom}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/endpoint/domain/view"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={ViewEndpointDomain}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-              <Route
-                path="/:space/endpoint/custom/view"
-                render={propsLocal => (
-                  <OakRoute
-                    {...propsLocal}
-                    {...props}
-                    component={ViewEndpointCustom}
-                    middleware={['readAuthentication']}
-                  />
-                )}
-              />
-            </MuiThemeProvider>
-          </div>
+        <div className="app-container body">
+          <Init />
+          <Notification />
+          <MuiThemeProvider theme={themes.themecolor1}>
+            <div
+              className={`app-container--sidebar ${
+                profile.sidebar && authorization.isAuth ? 'show' : 'hide'
+              }`}
+            >
+              <div
+                className={`app-container--sidebar--content ${
+                  profile.hideSidebarOnDesktop ? 'mobile-only' : ''
+                }`}
+              >
+                <Sidebar />
+              </div>
+            </div>
+            <div className="app-container--main">
+              <div
+                className={`app-container--main--topbar ${
+                  profile.sidebar ? 'sidebar-shown' : 'sidebar-hidden'
+                }`}
+              >
+                {/* <Navigation {...props} /> */}
+                <Topbar
+                  space={space}
+                  cookies={props.cookies}
+                  hideSidebarOnDesktop={profile.hideSidebarOnDesktop}
+                />
+              </div>
+              <div
+                className={`app-container--main--body ${
+                  profile.sidebar ? 'sidebar-shown' : 'sidebar-hidden'
+                }`}
+              >
+                <RouterView {...props} />
+              </div>
+            </div>
+          </MuiThemeProvider>
         </div>
       </HashRouter>
     </div>

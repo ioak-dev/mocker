@@ -22,6 +22,7 @@ interface Props {
   invert?: boolean;
   children?: ReactNode;
   type?: 'button' | 'submit';
+  disabled?: boolean;
 }
 
 const OakButton = (props: Props) => {
@@ -46,7 +47,11 @@ const OakButton = (props: Props) => {
 
   return (
     // eslint-disable-next-line react/button-has-type
-    <button className={`oak-button ${getStyle()}`} onClick={props.action}>
+    <button
+      className={`oak-button ${getStyle()}`}
+      onClick={props.action}
+      disabled={props.disabled}
+    >
       <div className="button-label-container">
         {props.icon && <OakIcon mat={props.icon} size="1.2em" />}
         {props.fa && <OakIcon fa={props.fa} size="1.2em" />}

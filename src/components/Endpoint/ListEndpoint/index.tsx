@@ -5,12 +5,11 @@ import './style.scss';
 import OakPage from '../../../oakui/OakPage';
 import OakSection from '../../../oakui/OakSection';
 import OakHeading from '../../../oakui/OakHeading';
-import OakSubheading from '../../../oakui/OakSubheading';
 import OakForm from '../../../oakui/OakForm';
 import OakSelect from '../../../oakui/OakSelect';
-import ListDomain from './ListDomain';
-import OakTab from '../../../oakui/OakTab';
-import ListCustom from './ListCustom';
+import OakButton from '../../../oakui/OakButton';
+import OakFooter from '../../../oakui/OakFooter';
+import EndpointLink from './EndpointLink';
 
 const queryString = require('query-string');
 
@@ -25,7 +24,16 @@ const ListEndpoint = (props: Props) => {
   const [state, setState] = useState({
     projectId: '',
   });
+  const [endpoints, setEndpoints] = useState<any[]>();
   const [projectElements, setProjectElements] = useState<any>([]);
+
+  const allEndpoints = useSelector(state => state.endpoint.endpoints);
+
+  useEffect(() => {
+    setEndpoints(
+      allEndpoints.filter(item => item.projectId === state.projectId)
+    );
+  }, [state.projectId, allEndpoints]);
 
   useEffect(() => {
     const query = queryString.parse(props.location.search);
@@ -68,42 +76,31 @@ const ListEndpoint = (props: Props) => {
           />
         </OakForm>
         {state.projectId && (
-          <OakTab
-            noBookmarking
-            meta={[
-              {
-                slotName: 'domain',
-                label: 'Domain endpoints',
-                icon: 'api',
-              },
-              {
-                slotName: 'custom',
-                label: 'Custom endpoints',
-                icon: 'build',
-              },
-              {
-                slotName: 'mockdata',
-                label: 'Data defined endpoints',
-                icon: 'construction',
-              },
-            ]}
-            variant="fullpage"
-          >
-            <div slot="domain">
-              <ListDomain
-                space={props.space}
-                projectId={state.projectId}
-                history={props.history}
-              />
+          <>
+            <OakFooter>
+              <OakButton
+                action={gotoCreatePage}
+                theme="primary"
+                variant="appear"
+              >
+                New endpoint
+              </OakButton>
+            </OakFooter>
+            <div className="list-domain">
+              {endpoints?.map(item => (
+                <EndpointLink
+                  key={item._id}
+                  space={props.space}
+                  endpoint={item}
+                  history={props.history}
+                />
+              ))}
+              {!endpoints ||
+                (endpoints.length === 0 && (
+                  <div className="typography-4">No endpoints yet</div>
+                ))}
             </div>
-            <div slot="custom">
-              <ListCustom
-                space={props.space}
-                projectId={state.projectId}
-                history={props.history}
-              />
-            </div>
-          </OakTab>
+          </>
         )}
       </OakSection>
     </OakPage>

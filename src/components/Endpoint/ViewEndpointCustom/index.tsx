@@ -5,8 +5,8 @@ import './style.scss';
 import OakPage from '../../../oakui/OakPage';
 import OakSection from '../../../oakui/OakSection';
 import OakTab from '../../../oakui/OakTab';
-import ApiSpecification from './ApiSpecification';
-import CustomEndpoint from '../CreateEndpointCustom/CustomEndpoint';
+import CustomEndpoint from '../CustomEndpoint';
+import ListApiSpecification from './ListApiSpecification';
 
 const queryString = require('query-string');
 
@@ -23,7 +23,7 @@ const ViewEndpointCustom = (props: Props) => {
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
   const customEndpoint = useSelector(state =>
-    state.customEndpoint.customEndpoints.find(item => item._id === query.id)
+    state.endpoint.endpoints.find(item => item._id === query.id)
   );
   const project = useSelector(state =>
     state.project.projects.find(item => item._id === customEndpoint?.projectId)
@@ -62,7 +62,6 @@ const ViewEndpointCustom = (props: Props) => {
                 data={customEndpoint}
                 history={props.history}
                 space={props.space}
-                freezeProject
                 projectId={customEndpoint?.projectId}
               />
             </OakSection>
@@ -70,8 +69,9 @@ const ViewEndpointCustom = (props: Props) => {
         </div>
         <div slot="endpoints">
           <OakSection>
-            <ApiSpecification
+            <ListApiSpecification
               space={props.space}
+              history={props.history}
               endpoint={customEndpoint}
               project={project}
             />

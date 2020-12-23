@@ -10,11 +10,12 @@
     justify-content: space-between;
     align-items: center;
     img.logo {
-      height: 24px;
+      height: 40px;
       width: auto;
       @media (max-width: 767px) {
-        height: 24px;
+        height: 32px;
       }
+      cursor: pointer;
     }
     .nav-header-container--left {
       display: grid;
@@ -156,10 +157,17 @@ img.logo {
   width: auto;
 }
 
+.dark-mode-icon,
 .nav-account-icon {
+  display: flex;
   i {
     cursor: pointer;
-    font-size: 2.4em;
+    font-size: 1.6em;
+  }
+}
+
+.nav-account-icon {
+  i {
     &:hover {
       color: var(--color-failure);
     }
@@ -168,9 +176,6 @@ img.logo {
 
 .dark-mode-icon {
   i {
-    cursor: pointer;
-    font-size: 2.4em;
-    opacity: 0.8;
     &:hover {
       opacity: 1;
     }

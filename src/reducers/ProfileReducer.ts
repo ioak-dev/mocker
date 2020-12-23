@@ -4,6 +4,8 @@ const initialState = {
   theme: 'theme_dark',
   textSize: 'textsize_medium',
   themeColor: 'themecolor1',
+  sidebar: false,
+  hideSidebarOnDesktop: true,
 };
 
 export default function(state = initialState, action) {

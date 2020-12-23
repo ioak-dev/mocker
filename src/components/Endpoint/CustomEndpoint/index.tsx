@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import './CustomEndpoint.scss';
+import './style.scss';
 import OakForm from '../../../oakui/OakForm';
 import OakText from '../../../oakui/OakText';
 import OakFooter from '../../../oakui/OakFooter';
 import OakButton from '../../../oakui/OakButton';
-import { saveCustomEndpoint, saveDomainEndpoint } from '../service';
+import {
+  saveCustomEndpoint,
+  saveDomainEndpoint,
+  saveEndpoint,
+} from '../service';
 import { sendMessage, newMessageId } from '../../../events/MessageService';
 import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
 import OakSelect from '../../../oakui/OakSelect';
@@ -17,13 +21,11 @@ interface Props {
   space: string;
   history: any;
   projectId: string;
-  data: any;
-  freezeProject?: boolean;
+  data?: any;
 }
 
 const CustomEndpoint = (props: Props) => {
   const goBack = () => props.history.goBack();
-  const projects = useSelector(state => state.project.projects);
   const [state, setState] = useState<any>({
     ...props.data,
     projectId: props.projectId,
@@ -38,23 +40,21 @@ const CustomEndpoint = (props: Props) => {
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
 
-  const [projectElements, setProjectElements] = useState<any>([]);
-
   useEffect(() => {
-    setState({
-      ...state,
-      ...props.data,
-      projectId: props.projectId,
-    });
+    if (props.data) {
+      setState({
+        ...state,
+        ...props.data,
+        projectId: props.projectId,
+      });
+    } else {
+      setState({
+        ...state,
+        ...props.data,
+        projectId: props.projectId,
+      });
+    }
   }, [props.projectId, props.data]);
-
-  useEffect(() => {
-    const localState: any[] = [];
-    projects.map(item => {
-      localState.push({ key: item._id, value: item.name });
-    });
-    setProjectElements(localState);
-  }, [projects]);
 
   const handleChange = event => {
     setState({
@@ -104,8 +104,9 @@ const CustomEndpoint = (props: Props) => {
       type: 'running',
       message: `Saving custom endpoint [${state.name}]`,
     });
-    const response = await saveCustomEndpoint(props.space, authorization, {
+    const response = await saveEndpoint(props.space, authorization, {
       ...state,
+      type: 'custom',
       projectId: props.projectId,
     });
     console.log(response);
@@ -127,24 +128,7 @@ const CustomEndpoint = (props: Props) => {
 
   return (
     <>
-      <OakFooter>
-        <OakButton theme="primary" variant="appear" action={save}>
-          Save
-        </OakButton>
-        <OakButton theme="default" variant="appear" action={goBack}>
-          Close
-        </OakButton>
-      </OakFooter>
       <OakForm>
-        <OakSubheading title="Basic details" />
-        <OakSelect
-          id="projectId"
-          data={state}
-          disabled={props.freezeProject}
-          handleChange={handleProjectChange}
-          label="Choose project"
-          objects={projectElements}
-        />
         {props.projectId && (
           <>
             <OakText
@@ -203,6 +187,14 @@ const CustomEndpoint = (props: Props) => {
           </OakForm>
         </>
       )}
+      <OakFooter>
+        <OakButton theme="primary" variant="appear" action={save}>
+          Save
+        </OakButton>
+        <OakButton theme="default" variant="appear" action={goBack}>
+          Close
+        </OakButton>
+      </OakFooter>
     </>
   );
 };

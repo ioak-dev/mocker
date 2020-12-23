@@ -14,6 +14,7 @@ interface Props {
   multiline?: boolean;
   handleFocus?: Function;
   placeholder?: string;
+  subtitle?: string;
 }
 const OakText = (props: Props) => {
   const handleFocus = () => {
@@ -58,6 +59,7 @@ const OakText = (props: Props) => {
       >
         {props.label}
       </label>
+      {props.subtitle && <div className="typography-3">{props.subtitle}</div>}
       {props.errorData && props.errorData[props.id] && (
         <div className="text-field-error">
           <i className="material-icons">warning</i>

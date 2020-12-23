@@ -27,3 +27,16 @@ export const saveCustomEndpoint = async (space, authorization, payload) => {
   );
   return response;
 };
+
+export const saveEndpoint = async (space, authorization, payload) => {
+  const response = await httpPut(
+    `${constants.API_URL_ENDPOINT}/${space}/`,
+    payload,
+    {
+      headers: {
+        Authorization: authorization.token,
+      },
+    }
+  );
+  return response;
+};

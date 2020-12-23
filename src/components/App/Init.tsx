@@ -5,6 +5,7 @@ import { fetchAllProjects } from '../../actions/ProjectActions';
 import { fetchAllDomains } from '../../actions/DomainActions';
 import { fetchAllUsers } from '../../actions/UserActions';
 import { fetchAllCustomEndpoints } from '../../actions/CustomEndpointActions';
+import { fetchAllEndpoints } from '../../actions/EndpointActions';
 
 const Init = () => {
   const authorization = useSelector(state => state.authorization);
@@ -39,8 +40,9 @@ const Init = () => {
     console.log('Initialization logic here');
     dispatch(fetchAllUsers(space, authorization));
     dispatch(fetchAllProjects(space, authorization));
-    dispatch(fetchAllDomains(space, authorization));
-    dispatch(fetchAllCustomEndpoints(space, authorization));
+    // dispatch(fetchAllDomains(space, authorization));
+    // dispatch(fetchAllCustomEndpoints(space, authorization));
+    dispatch(fetchAllEndpoints(space, authorization));
   };
   return <></>;
 };

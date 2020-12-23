@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import './DomainEndpoint.scss';
+import './style.scss';
 import OakForm from '../../../oakui/OakForm';
 import OakText from '../../../oakui/OakText';
 import OakFooter from '../../../oakui/OakFooter';
 import OakButton from '../../../oakui/OakButton';
-import { saveDomainEndpoint } from '../service';
+import { saveDomainEndpoint, saveEndpoint } from '../service';
 import { sendMessage, newMessageId } from '../../../events/MessageService';
 import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
 import OakSubheading from '../../../oakui/OakSubheading';
@@ -16,39 +16,57 @@ interface Props {
   space: string;
   history: any;
   projectId: string;
-  data: any;
-  freezeProject?: boolean;
+  data?: any;
 }
 
 const DomainEndpoint = (props: Props) => {
   const goBack = () => props.history.goBack();
-  const projects = useSelector(state => state.project.projects);
   const [state, setState] = useState<any>({
     projectId: props.projectId,
     name: '',
     description: '',
-    structure: [],
+    key: '',
+    response: [],
   });
+  const [keyList, setKeyList] = useState<any[]>([
+    { key: 'None', value: 'None - We do not have a unique identifier' },
+  ]);
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
 
-  const [projectElements, setProjectElements] = useState<any>([]);
-
   useEffect(() => {
-    setState({
-      ...state,
-      ...props.data,
-      projectId: props.projectId,
-    });
+    if (props.data) {
+      setState({
+        ...state,
+        ...props.data,
+        projectId: props.projectId,
+      });
+    } else {
+      setState({
+        ...state,
+        projectId: props.projectId,
+      });
+    }
   }, [props.projectId, props.data]);
 
   useEffect(() => {
-    const localState: any[] = [];
-    projects.map(item => {
-      localState.push({ key: item._id, value: item.name });
-    });
-    setProjectElements(localState);
-  }, [projects]);
+    setKeyList([
+      { key: 'None', value: 'None - We do not have a unique identifier' },
+      ...state.response
+        .filter(node => {
+          if (
+            !node.parentReference &&
+            node.datatype !== 'object' &&
+            !node.array
+          ) {
+            return true;
+          }
+        })
+        .map(node => {
+          return { key: node.reference, value: node.name };
+        }),
+    ]);
+  }, [state.response]);
 
   const handleChange = event => {
     setState({
@@ -72,14 +90,14 @@ const DomainEndpoint = (props: Props) => {
     let newData: any[] = [];
     switch (actionType) {
       case 'remove':
-        newData = state.structure.filter(
+        newData = state.response.filter(
           item =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
-        newData = state.structure.filter(
+        newData = state.response.filter(
           item => item.reference !== changeData.reference
         );
         newData.push({ ...changeData });
@@ -87,7 +105,7 @@ const DomainEndpoint = (props: Props) => {
       default:
         break;
     }
-    setState({ ...state, structure: newData });
+    setState({ ...state, response: newData });
   };
 
   const save = async () => {
@@ -98,8 +116,9 @@ const DomainEndpoint = (props: Props) => {
       type: 'running',
       message: `Saving domain endpoint [${state.name}]`,
     });
-    const response = await saveDomainEndpoint(props.space, authorization, {
+    const response = await saveEndpoint(props.space, authorization, {
       ...state,
+      type: 'domain',
       projectId: props.projectId,
     });
     console.log(response);
@@ -113,33 +132,9 @@ const DomainEndpoint = (props: Props) => {
       props.history.push(`/${props.space}/endpoint`);
     }
   };
-  const handleProjectChange = event => {
-    props.history.push(
-      `/${props.space}/endpoint/domain/create?projectId=${event.currentTarget.value}`
-    );
-  };
 
   return (
     <>
-      <OakFooter>
-        <OakButton theme="primary" variant="appear" action={save}>
-          Save
-        </OakButton>
-        <OakButton theme="default" variant="appear" action={goBack}>
-          Close
-        </OakButton>
-      </OakFooter>
-      <OakForm>
-        <OakSubheading title="Basic details" />
-        <OakSelect
-          id="projectId"
-          data={state}
-          disabled={props.freezeProject}
-          handleChange={handleProjectChange}
-          label="Choose project"
-          objects={projectElements}
-        />
-      </OakForm>
       {props.projectId && (
         <OakForm>
           <OakText
@@ -151,12 +146,27 @@ const DomainEndpoint = (props: Props) => {
           <OakSubheading title="Domain structure" />
           <DataStructureBuilder
             data={state}
-            id="structure"
+            id="response"
             label="Domain data structure"
             handleChange={handleDataStructureChange}
           />
+          <OakSelect
+            data={state}
+            id="key"
+            handleChange={handleChange}
+            objects={keyList}
+            label="Primary key"
+          />
         </OakForm>
       )}
+      <OakFooter>
+        <OakButton theme="primary" variant="appear" action={save}>
+          Save
+        </OakButton>
+        <OakButton theme="default" variant="appear" action={goBack}>
+          Close
+        </OakButton>
+      </OakFooter>
     </>
   );
 };

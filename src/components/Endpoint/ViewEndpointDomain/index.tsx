@@ -4,18 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import './style.scss';
 import OakPage from '../../../oakui/OakPage';
 import OakSection from '../../../oakui/OakSection';
-import OakForm from '../../../oakui/OakForm';
 import OakTab from '../../../oakui/OakTab';
-import OakSubheading from '../../../oakui/OakSubheading';
-import OakButton from '../../../oakui/OakButton';
-import OakFooter from '../../../oakui/OakFooter';
 import { newMessageId, sendMessage } from '../../../events/MessageService';
-import OakText from '../../../oakui/OakText';
-import OakSelect from '../../../oakui/OakSelect';
-import ApiSpecification from './ApiSpecification';
-import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
 import { saveDomainEndpoint } from '../service';
-import DomainEndpoint from '../CreateEndpointDomain/DomainEndpoint';
+import DomainEndpoint from '../DomainEndpoint';
+import ListApiSpecification from './ListApiSpecification';
 
 const queryString = require('query-string');
 
@@ -32,7 +25,7 @@ const ViewEndpointDomain = (props: Props) => {
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
   const domainEndpoint = useSelector(state =>
-    state.domain.domains.find(item => item._id === query.id)
+    state.endpoint.endpoints.find(item => item._id === query.id)
   );
   const project = useSelector(state =>
     state.project.projects.find(item => item._id === domainEndpoint?.projectId)
@@ -43,7 +36,7 @@ const ViewEndpointDomain = (props: Props) => {
     projectId: '',
     name: '',
     description: '',
-    structure: [],
+    response: [],
   });
 
   useEffect(() => {
@@ -81,14 +74,14 @@ const ViewEndpointDomain = (props: Props) => {
     let newData: any[] = [];
     switch (actionType) {
       case 'remove':
-        newData = state.structure.filter(
+        newData = state.response.filter(
           item =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
-        newData = state.structure.filter(
+        newData = state.response.filter(
           item => item.reference !== changeData.reference
         );
         newData.push({ ...changeData });
@@ -96,7 +89,7 @@ const ViewEndpointDomain = (props: Props) => {
       default:
         break;
     }
-    setState({ ...state, structure: newData });
+    setState({ ...state, response: newData });
   };
 
   const save = async () => {
@@ -144,7 +137,6 @@ const ViewEndpointDomain = (props: Props) => {
                 data={domainEndpoint}
                 history={props.history}
                 space={props.space}
-                freezeProject
                 projectId={domainEndpoint?.projectId}
               />
             </OakSection>
@@ -152,8 +144,9 @@ const ViewEndpointDomain = (props: Props) => {
         </div>
         <div slot="endpoints">
           <OakSection>
-            <ApiSpecification
+            <ListApiSpecification
               space={props.space}
+              history={props.history}
               endpoint={domainEndpoint}
               project={project}
             />
