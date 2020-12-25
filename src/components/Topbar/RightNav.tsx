@@ -11,7 +11,7 @@ import NavAccountIcon from '../Navigation/NavAccountIcon';
 import { removeAuth } from '../../actions/AuthActions';
 
 interface Props {
-  cookies: any;
+    cookies: any;
   //   location: any;
   //   match: any;
 }
@@ -20,7 +20,7 @@ const RightNav = (props: Props) => {
   const authorization = useSelector(state => state.authorization);
   const dispatch = useDispatch();
   const history = useHistory();
-
+  
   const logout = (
     event: any,
     type = 'success',

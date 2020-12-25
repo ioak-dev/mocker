@@ -1,4 +1,5 @@
 .oak-select {
+  margin-top: 16px;
   .select {
     width: 100%;
     // background-color: var(--color-formelement-bg-1);
@@ -21,8 +22,8 @@
       background-color: var(--color-formelement-bg-1);
     }
   }
-  margin-top: 16px;
-  margin-bottom: 16px;
+  // margin-top: 16px;
+  // margin-bottom: 16px;
   text-align: left;
   position: relative;
   label {

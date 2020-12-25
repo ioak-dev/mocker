@@ -4,11 +4,7 @@ button {
     --btn-text-color-dark: #000000;
     user-select: none;
     border-radius: 4px;
-    height: var(--metric-formelement-height);
     white-space: nowrap;
-    @media (max-width: 767px) {
-      height: var(--metric-formelement-height-mobile);
-    }
 
     .button-label-container {
       display: grid;
@@ -48,8 +44,8 @@ button {
     overflow: hidden;
     z-index: 0;
     border: 2px solid var(--color-bg);
-
-    padding: 0 16px;
+    padding: 5px 5px;
+    border-radius: 2px;
 
     &.small {
       padding: 0 8px;
@@ -143,8 +139,11 @@ button {
     }
 
     &.icon {
-      height: 38px;
-      width: 38px;
+      height: 32px;
+      width: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-width: 2px;
       padding: 4px 4px;
       border-radius: 50%;

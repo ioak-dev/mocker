@@ -11,9 +11,9 @@ import './style.scss';
 
 import { Profile } from '../Types/GeneralTypes';
 import { receiveMessage, sendMessage } from '../../events/MessageService';
-
+import './style.scss';
 import Header from './Header';
-import CommonNav from './CommonNav';
+import NavElements from './NavElements';
 
 const Sidebar = () => {
   const [space, setSpace] = useState('');
@@ -34,13 +34,13 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar--header">
-        <Header />
+      <Header />
       </div>
       <div className="sidebar--nav desktop-only">
-        <CommonNav space={space} />
+        <NavElements space={space} />
       </div>
       <div className="sidebar--nav mobile-only">
-        <CommonNav space={space} closeAfterRouteChange />
+        <NavElements space={space} closeAfterRouteChange />
       </div>
     </div>
   );

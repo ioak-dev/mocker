@@ -157,8 +157,7 @@ img.logo {
   width: auto;
 }
 
-.dark-mode-icon,
-.nav-account-icon {
+.dark-mode-icon, .nav-account-icon {
   display: flex;
   i {
     cursor: pointer;
@@ -171,6 +170,12 @@ img.logo {
     &:hover {
       color: var(--color-failure);
     }
+  }
+
+  .nav-account-icon--username {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 10px;
   }
 }
 

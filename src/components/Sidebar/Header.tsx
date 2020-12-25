@@ -7,8 +7,6 @@ import { getProfile, setProfile } from '../../actions/ProfileActions';
 import packetWhite from '../../images/ir_white.svg';
 import packetBlack from '../../images/ir_black.svg';
 
-import './style.scss';
-
 import { Profile } from '../Types/GeneralTypes';
 import { receiveMessage, sendMessage } from '../../events/MessageService';
 import './Header.scss';
