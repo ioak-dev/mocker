@@ -139,7 +139,7 @@ const ApiSpecification = (props: Props) => {
                 key={`${props.pathKey}-${alias.path}`}
               />
             ))}
-          {state.addNewAlias && (
+          {/* {state.addNewAlias && (
             <OakText
               data={state}
               id="alias"
@@ -165,7 +165,6 @@ const ApiSpecification = (props: Props) => {
                 action={addAlias}
                 theme="primary"
                 variant={state.alias ? 'regular' : 'disabled'}
-                disabled={!state.alias}
               >
                 Save
               </OakButton>
@@ -175,7 +174,7 @@ const ApiSpecification = (props: Props) => {
                 Close
               </OakButton>
             )}
-          </OakFooter>
+          </OakFooter> */}
         </>
       )}
     </div>

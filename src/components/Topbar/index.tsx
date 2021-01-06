@@ -42,9 +42,9 @@ const Topbar = (props: Props) => {
             <Logo />
           </div>
         )}
-        <div className="topbar--left--nav desktop-only">
+        {authorization.isAuth && <div className="topbar--left--nav desktop-only">
           <Links space={props.space} />
-        </div>
+        </div>}
         {/* <div className="mobile-only"><Logo /></div> */}
       </div>
       <div className="topbar--right">

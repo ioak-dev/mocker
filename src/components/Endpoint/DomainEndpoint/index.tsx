@@ -11,6 +11,7 @@ import { sendMessage, newMessageId } from '../../../events/MessageService';
 import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
 import OakSubheading from '../../../oakui/OakSubheading';
 import OakSelect from '../../../oakui/OakSelect';
+import { fetchAllEndpoints } from '../../../actions/EndpointActions';
 
 interface Props {
   space: string;
@@ -120,16 +121,18 @@ const DomainEndpoint = (props: Props) => {
       ...state,
       type: 'domain',
       projectId: props.projectId,
+      alias: []
     });
     console.log(response);
     if (response.status === 200) {
+      dispatch(fetchAllEndpoints(props.space, authorization));
       sendMessage('notification', true, {
         id: jobId,
         type: 'success',
         message: `Domain endpoint [${state.name}] saved successfully`,
         duration: 3000,
       });
-      props.history.push(`/${props.space}/endpoint`);
+      props.history.push(`/${props.space}/endpoint?projectId=${props.projectId}`);
     }
   };
 
@@ -143,7 +146,6 @@ const DomainEndpoint = (props: Props) => {
             handleChange={handleNameChange}
             label="Name of the domain"
           />
-          <OakSubheading title="Domain structure" />
           <DataStructureBuilder
             data={state}
             id="response"

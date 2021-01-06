@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { receiveMessage } from '../../events/MessageService';
 import { fetchAllProjects } from '../../actions/ProjectActions';
-import { fetchAllDomains } from '../../actions/DomainActions';
 import { fetchAllUsers } from '../../actions/UserActions';
-import { fetchAllCustomEndpoints } from '../../actions/CustomEndpointActions';
 import { fetchAllEndpoints } from '../../actions/EndpointActions';
 
 const Init = () => {
@@ -17,22 +15,23 @@ const Init = () => {
   useEffect(() => {
     if (
       authorization.isAuth &&
-      authorization.isAuth !== previousAuthorizationState.isAuth &&
+      // authorization.isAuth !== previousAuthorizationState.isAuth &&
       space
     ) {
       initialize();
     }
     setPreviousAuthorizationState(authorization);
-  }, [authorization]);
+  }, [authorization, space]);
 
   useEffect(() => {
     receiveMessage().subscribe(event => {
+      console.log(event);
       if (event.name === 'spaceChange') {
         setSpace(event.data);
       }
-      if (event.name === 'spaceChange' && authorization.isAuth) {
-        initialize();
-      }
+      // if (event.name === 'spaceChange' && authorization.isAuth) {
+      //   initialize();
+      // }
     });
   }, []);
 
@@ -40,8 +39,6 @@ const Init = () => {
     console.log('Initialization logic here');
     dispatch(fetchAllUsers(space, authorization));
     dispatch(fetchAllProjects(space, authorization));
-    // dispatch(fetchAllDomains(space, authorization));
-    // dispatch(fetchAllCustomEndpoints(space, authorization));
     dispatch(fetchAllEndpoints(space, authorization));
   };
   return <></>;

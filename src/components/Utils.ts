@@ -1,5 +1,5 @@
 export function isEmptyOrSpaces(str) {
-  return str === null || str.match(/^ *$/) !== null;
+  return str === null || str === undefined || str.toString().match(/^ *$/) !== null;
 }
 
 export function isEmptyAttributes(object: Record<string, any>) {

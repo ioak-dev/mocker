@@ -22,6 +22,9 @@ const EditAttribute = (props: Props) => {
     datatype: '',
     lower: 1,
     upper: 2,
+    startSequenceFrom: 0,
+    enumValues: '',
+    delimiter: ',',
     array: false,
   });
 
@@ -55,59 +58,93 @@ const EditAttribute = (props: Props) => {
   };
 
   return (
-    <OakModal visible={props.visible} toggleVisibility={props.toggleVisibility}>
-      <OakForm>
-        <OakText
-          data={state}
-          id="name"
-          handleChange={handleChange}
-          label="Field name"
-        />
-        <OakSelect
-          data={state}
-          id="datatype"
-          handleChange={handleChange}
-          label="Datatype"
-          elements={[
-            'char',
-            'word',
-            'sentence',
-            'integer',
-            'decimal',
-            'alphanumeric',
-            'boolean',
-            'sequence_number',
-            'object',
-          ]}
-        />
-        <OakText
-          data={state}
-          id="lower"
-          handleChange={handleNumberChange}
-          type="number"
-          label="Lower bound"
-        />
-        <OakText
-          data={state}
-          id="upper"
-          handleChange={handleNumberChange}
-          type="number"
-          label="Upper bound"
-        />
-        <OakCheckbox
-          id="array"
-          data={state}
-          handleChange={handleCheckboxChange}
-          theme="primary"
-          variant="circle"
-          label="Array type"
-        />
-      </OakForm>
-      <OakFooter>
+    <OakModal
+      visible={props.visible}
+      toggleVisibility={props.toggleVisibility}
+      label="Attribute setting"
+    >
+      <div slot="modal-body" className="modal-body">
+        <OakForm>
+          <OakText
+            data={state}
+            id="name"
+            handleChange={handleChange}
+            label="Field name"
+          />
+          <OakSelect
+            data={state}
+            id="datatype"
+            handleChange={handleChange}
+            label="Datatype"
+            elements={[
+              'object',
+              'integer',
+              'decimal',
+              'char',
+              'word',
+              'sentence',
+              'alphanumeric',
+              'boolean',
+              'enum',
+              'sequence_number',
+            ]}
+          />
+          {['sequence_number'].includes(state.datatype) && (
+            <OakText
+              data={state}
+              id="startSequenceFrom"
+              handleChange={handleNumberChange}
+              type="number"
+              label="Start from"
+            />
+          )}
+          {state.datatype && !['sequence_number', 'boolean', 'enum', 'object'].includes(state.datatype) && (
+            <>
+              <OakText
+                data={state}
+                id="lower"
+                handleChange={handleNumberChange}
+                type="number"
+                label="Lower bound"
+              />
+              <OakText
+                data={state}
+                id="upper"
+                handleChange={handleNumberChange}
+                type="number"
+                label="Upper bound"
+              />
+            </>
+          )}
+          {['enum'].includes(state.datatype) && (<>
+          <OakText
+            data={state}
+            id="enumValues"
+            handleChange={handleChange}
+            label="Possible values"
+          />
+          <OakText
+            data={state}
+            id="delimiter"
+            handleChange={handleChange}
+            label="Possible values delimited by"
+          /></>)}
+          {state.datatype &&
+          <OakCheckbox
+            id="array"
+            data={state}
+            handleChange={handleCheckboxChange}
+            theme="primary"
+            variant="circle"
+            label="Array type"
+          />}
+        </OakForm>
+      </div>
+      <div className="modal-footer">
         <OakButton theme="primary" variant="appear" action={save}>
           Update
         </OakButton>
-      </OakFooter>
+      </div>
     </OakModal>
   );
 };

@@ -6,7 +6,6 @@ import { sendMessage } from '../../events/MessageService';
 import { httpGet } from '../Lib/RestTemplate';
 
 interface Props {
-  authorization: Authorization;
   path?: string;
   render?: any;
   component: any;
@@ -109,8 +108,8 @@ const OakRoute = (props: Props) => {
   };
 
   const redirectToLogin = space => {
-    // window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/${spaceId}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
-    props.history.push(`/${space}/login/home`);
+    window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/${props.match.params.space}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
+    // props.history.push(`/${space}/login/home`);
   };
 
   const redirectToUnauthorized = () => {

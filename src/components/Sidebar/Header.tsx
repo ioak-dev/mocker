@@ -4,8 +4,8 @@ import { useSelector, connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 import { withCookies } from 'react-cookie';
 import { getProfile, setProfile } from '../../actions/ProfileActions';
-import packetWhite from '../../images/ir_white.svg';
-import packetBlack from '../../images/ir_black.svg';
+import packetWhite from '../../images/expenso_white.svg';
+import packetBlack from '../../images/expenso_black.svg';
 
 import { Profile } from '../Types/GeneralTypes';
 import { receiveMessage, sendMessage } from '../../events/MessageService';
@@ -25,10 +25,10 @@ const Header = () => {
 
   return (
     <div className="header">
+    <i className="material-icons mobile-only" onClick={toggleSidebar}>
+      menu_open
+    </i>
       <Logo />
-      <i className="material-icons" onClick={toggleSidebar}>
-        menu_open
-      </i>
     </div>
   );
 };

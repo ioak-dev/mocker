@@ -48,7 +48,7 @@
       margin: 0 0 0 4px;
       padding: 0 0 0 4px;
       // padding: 4px;
-      border-left: 4px solid var(--color-foreground-4);
+      border-left: 4px solid transparent;
       &:hover {
         border-left: 4px solid var(--color-primary-1);
       }

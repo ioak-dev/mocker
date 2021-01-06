@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Route } from 'react-router-dom';
-import './style.scss';
+import './RouterView.scss';
 import Home from '../Home';
 import OaLogin from '../Auth/OaLogin';
 import Landing from '../Landing';
@@ -20,23 +20,12 @@ import CreateEndpoint from '../Endpoint/CreateEndpoint';
 import ListEndpoint from '../Endpoint/ListEndpoint';
 
 interface Props {
-  getProfile: Function;
-  setProfile: Function;
-  getAuth: Function;
-  addAuth: Function;
-  removeAuth: Function;
-  getUser: Function;
-  addUser: Function;
   cookies: any;
-
-  // event: PropTypes.object,
-  profile: any;
-  authorization: Authorization;
 }
 
 const RouterView = (props: Props) => {
   return (
-    <div className="app-container--main--body">
+    <div className="router-view">
       <Route
         path="/login"
         render={propsLocal => (
@@ -82,7 +71,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={Home}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />
@@ -116,7 +105,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={ListProject}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />
@@ -127,7 +116,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={ViewProject}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />
@@ -138,7 +127,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={CreateProject}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />
@@ -150,7 +139,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={ListEndpoint}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />
@@ -161,7 +150,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={CreateEndpoint}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />
@@ -172,7 +161,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={ViewEndpointDomain}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />
@@ -183,7 +172,7 @@ const RouterView = (props: Props) => {
             {...propsLocal}
             {...props}
             component={ViewEndpointCustom}
-            middleware={['readAuthentication']}
+            middleware={['authenticate']}
           />
         )}
       />

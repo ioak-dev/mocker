@@ -16,6 +16,7 @@ import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
 import OakSelect from '../../../oakui/OakSelect';
 import OakSection from '../../../oakui/OakSection';
 import OakSubheading from '../../../oakui/OakSubheading';
+import { fetchAllEndpoints } from '../../../actions/EndpointActions';
 
 interface Props {
   space: string;
@@ -108,15 +109,18 @@ const CustomEndpoint = (props: Props) => {
       ...state,
       type: 'custom',
       projectId: props.projectId,
+      alias: []
     });
     console.log(response);
     if (response.status === 200) {
+      dispatch(fetchAllEndpoints(props.space, authorization));
       sendMessage('notification', true, {
         id: jobId,
         type: 'success',
         message: `Domain endpoint [${state.name}] saved successfully`,
         duration: 3000,
       });
+      props.history.push(`/${props.space}/endpoint?projectId=${props.projectId}`);
     }
   };
 
@@ -149,7 +153,7 @@ const CustomEndpoint = (props: Props) => {
       </OakForm>
       {props.projectId && (
         <>
-          <OakForm>
+          {/* <OakForm>
             <OakSubheading title="Request payload" />
             <OakSelect
               data={state}
@@ -166,9 +170,9 @@ const CustomEndpoint = (props: Props) => {
                 handleChange={handleDataStructureChange}
               />
             )}
-          </OakForm>
+          </OakForm> */}
           <OakForm>
-            <OakSubheading title="Web service response" />
+            {/* <OakSubheading title="Web service response" /> */}
             <OakSelect
               data={state}
               handleChange={handleChange}

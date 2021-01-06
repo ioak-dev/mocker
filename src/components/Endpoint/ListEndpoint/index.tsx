@@ -10,6 +10,7 @@ import OakSelect from '../../../oakui/OakSelect';
 import OakButton from '../../../oakui/OakButton';
 import OakFooter from '../../../oakui/OakFooter';
 import EndpointLink from './EndpointLink';
+import OakFormRow from '../../../oakui/OakFormRow';
 
 const queryString = require('query-string');
 
@@ -66,7 +67,7 @@ const ListEndpoint = (props: Props) => {
           title="Endpoint management console"
           subtitle="Creation and maintainance of your project API endpoints"
         />
-        <OakForm>
+        <OakFormRow>
           <OakSelect
             id="projectId"
             data={state}
@@ -74,7 +75,7 @@ const ListEndpoint = (props: Props) => {
             label="Choose project"
             objects={projectElements}
           />
-        </OakForm>
+          </OakFormRow>
         {state.projectId && (
           <>
             <OakFooter>

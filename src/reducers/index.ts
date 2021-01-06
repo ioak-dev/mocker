@@ -4,8 +4,6 @@ import ProfileReducer from './ProfileReducer';
 import UserReducer from './UserReducer';
 import SpaceReducer from './SpaceReducer';
 import ProjectReducer from './ProjectReducer';
-import DomainReducer from './DomainReducer';
-import CustomEndpointReducer from './CustomEndpointReducer';
 import EndpointReducer from './EndpointReducer';
 
 export default combineReducers({
@@ -14,7 +12,5 @@ export default combineReducers({
   user: UserReducer,
   space: SpaceReducer,
   project: ProjectReducer,
-  domain: DomainReducer,
-  customEndpoint: CustomEndpointReducer,
   endpoint: EndpointReducer,
 });

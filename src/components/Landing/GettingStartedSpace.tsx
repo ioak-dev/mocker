@@ -7,7 +7,7 @@ interface Props {
   history: any;
 }
 
-const GettingStarted = (props: Props) => {
+const GettingStartedSpace = (props: Props) => {
   const goToCreatePage = () => {
     props.history.push('/asset/create');
   };
@@ -20,17 +20,17 @@ const GettingStarted = (props: Props) => {
           <div className="typography-4">
             An asset represents an application or product being supported.
             Create an asset to get started with the process of onboarding your
-            product into Mockback.
+            product into Expenso.
           </div>
-          <div className="typography-7">Set Mockback URL in your product</div>
+          <div className="typography-7">Set Expenso URL in your product</div>
           <div className="typography-4">
             To provide seemless experience to your users, add a link from your
-            product to Mockback. By triggering a button for example from your
-            product, your users will be securely transferred to Mockback with
+            product to Expenso. By triggering a button for example from your
+            product, your users will be securely transferred to Expenso with
             their details.
           </div>
           <div className="typography-7">
-            Securely transmit user information to Mockback
+            Securely transmit user information to Expenso
           </div>
           <div className="typography-4">
             When you redirect from your product, transmit the user information
@@ -48,4 +48,4 @@ const GettingStarted = (props: Props) => {
   );
 };
 
-export default GettingStarted;
+export default GettingStartedSpace;
