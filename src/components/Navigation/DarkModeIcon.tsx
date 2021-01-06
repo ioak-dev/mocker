@@ -15,7 +15,7 @@ const DarkModeIcon = () => {
     );
   };
   return (
-    <div className="dark-mode-icon" onClick={toggleMode}>
+    <div className={`dark-mode-icon ${profile.theme}`} onClick={toggleMode}>
       {profile.theme === 'theme_dark' && (
         <WbSunny className="cursor-pointer" />
       )}

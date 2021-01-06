@@ -10,9 +10,10 @@ interface Props {
 
 const NavAccountIcon = (props: Props) => {
   const authorization = useSelector(state => state.authorization);
+  const profile = useSelector(state => state.profile);
   return (
     <div
-      className="nav-account-icon"
+      className={`nav-account-icon ${profile.theme}`}
       onClick={authorization.isAuth ? props.logout : props.login}
     >
       {authorization.isAuth && (

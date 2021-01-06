@@ -13,7 +13,8 @@ const Logo = () => {
 
   return (
     <div className="logo">
-      <img className="logo--image" src={mockbackWhite} alt="Mockback logo" />
+      {profile.theme === 'theme_light' && <img className="logo--image" src={mockbackBlack} alt="Expenso logo" />}
+      {profile.theme !== 'theme_light' && <img className="logo--image" src={mockbackWhite} alt="Expenso logo" />}
     </div>
   );
 };
