@@ -164,25 +164,3 @@ img.logo {
     font-size: 1.6em;
   }
 }
-
-.nav-account-icon {
-  i {
-    &:hover {
-      color: var(--color-failure);
-    }
-  }
-
-  .nav-account-icon--username {
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 10px;
-  }
-}
-
-.dark-mode-icon {
-  i {
-    &:hover {
-      opacity: 1;
-    }
-  }
-}

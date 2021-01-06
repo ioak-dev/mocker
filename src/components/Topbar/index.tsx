@@ -32,11 +32,11 @@ const Topbar = (props: Props) => {
   return (
     <div className="topbar">
       <div className="topbar--left">
-        {authorization.isAuth && (
+        {/* {authorization.isAuth && ( */}
           <div className={`${props.hideSidebarOnDesktop ? 'mobile-only' : ''}`}>
             <ExpandIcon />
           </div>
-        )}
+        {/* )} */}
         {props.hideSidebarOnDesktop && (
           <div className="desktop-only">
             <Logo />

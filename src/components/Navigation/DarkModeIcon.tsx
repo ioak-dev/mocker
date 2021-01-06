@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import './style.scss';
+import './DarkModeIcon.scss';
 import { setProfile } from '../../actions/ProfileActions';
+import { NightsStay, WbSunny } from '@material-ui/icons';
 
 const DarkModeIcon = () => {
   const profile = useSelector(state => state.profile);
@@ -16,10 +17,10 @@ const DarkModeIcon = () => {
   return (
     <div className="dark-mode-icon" onClick={toggleMode}>
       {profile.theme === 'theme_dark' && (
-        <i className="material-icons">wb_sunny</i>
+        <WbSunny className="cursor-pointer" />
       )}
       {profile.theme !== 'theme_dark' && (
-        <i className="material-icons">nights_stay</i>
+        <NightsStay className="cursor-pointer" />
       )}
     </div>
   );
