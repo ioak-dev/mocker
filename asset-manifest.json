@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.06f4fb96.chunk.css",
+    "main.js": "/static/js/main.a5640ad4.chunk.js",
+    "main.js.map": "/static/js/main.a5640ad4.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.454f82fd.js",
+    "runtime-main.js.map": "/static/js/runtime-main.454f82fd.js.map",
+    "static/js/2.c34a6474.chunk.js": "/static/js/2.c34a6474.chunk.js",
+    "static/js/2.c34a6474.chunk.js.map": "/static/js/2.c34a6474.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.c649947b5a09b2b2db56f96145ba50b2.js": "/precache-manifest.c649947b5a09b2b2db56f96145ba50b2.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.06f4fb96.chunk.css.map": "/static/css/main.06f4fb96.chunk.css.map",
+    "static/js/2.c34a6474.chunk.js.LICENSE.txt": "/static/js/2.c34a6474.chunk.js.LICENSE.txt",
+    "static/media/Login.scss": "/static/media/login_bg.bc9580be.jpg",
+    "static/media/mockback_black.svg": "/static/media/mockback_black.fb9493fe.svg",
+    "static/media/mockback_white.svg": "/static/media/mockback_white.182166ff.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.454f82fd.js",
+    "static/js/2.c34a6474.chunk.js",
+    "static/css/main.06f4fb96.chunk.css",
+    "static/js/main.a5640ad4.chunk.js"
+  ]
+}
