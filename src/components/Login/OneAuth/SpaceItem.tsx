@@ -17,7 +17,7 @@ const SpaceItem = (props: Props) => {
           {props.space.name}
         </div>
       </div>
-      ( <div className="typography-4">{props.space.spaceId}</div> )
+      <div className="typography-4">{props.space.spaceId}</div>
     </div>
   );
 };

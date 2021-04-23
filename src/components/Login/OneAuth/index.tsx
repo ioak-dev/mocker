@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import OakButton from '../../../oakui/OakButton';
-import OakText from '../../../oakui/OakText';
+import OakButton from '../../../oakui/wc/OakButton';
 import { isEmptyOrSpaces, isEmptyAttributes } from '../../Utils';
-import OakHeading from '../../../oakui/OakHeading';
 import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
+import OakSection from '../../../oakui/wc/OakSection';
 import { fetchSpace } from '../../Auth/AuthService';
 import SpaceItem from './SpaceItem';
 import './style.scss';
+import OakTypography from '../../../oakui/wc/OakTypography';
 
 interface Props {
   history: any;
@@ -19,7 +18,7 @@ interface Props {
 const queryString = require('query-string');
 
 const OneAuth = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state) => state.authorization);
   const [view, setView] = useState<Array<any> | undefined>(undefined);
   const [searchCriteria, setSearchCriteria] = useState({ text: '' });
 
@@ -31,7 +30,7 @@ const OneAuth = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    fetchSpace().then(response => {
+    fetchSpace().then((response) => {
       setView(search(response.data, searchCriteria.text));
     });
   }, [searchCriteria]);
@@ -41,11 +40,11 @@ const OneAuth = (props: Props) => {
       return existingSpace;
     }
     return existingSpace.filter(
-      item => item.name.toLowerCase().indexOf(criteria.toLowerCase()) !== -1
+      (item) => item.name.toLowerCase().indexOf(criteria.toLowerCase()) !== -1
     );
   };
 
-  const handleSearchCriteria = event => {
+  const handleSearchCriteria = (event: any) => {
     setSearchCriteria({
       ...searchCriteria,
       [event.target.name]: event.target.value,
@@ -79,33 +78,23 @@ const OneAuth = (props: Props) => {
       <OakSection>
         <div className="view-space-item">
           <div className="page-header">
-            <OakHeading
-              title="Login via Oneauth"
-              subtitle="You will be redirected to oneauth for signing in to your space"
-              links={getHeadingLinks()}
-              linkSize="large"
-            />
-            {/* <div className="action-header position-right">
-              {props.history.length > 2 && (
-                <OakButton
-                  action={() => cancelCreation()}
-                  theme="default"
-                  variant="appear"
-                >
-                  <i className="material-icons">close</i>Back
-                </OakButton>
-              )}
-            </div> */}
+            <OakTypography variant="h2">
+              {/* links={getHeadingLinks()} */}
+              Login via Oneauth
+            </OakTypography>
+            <OakTypography variant="subtitle1">
+              You will be redirected to oneauth for signing in to your space
+            </OakTypography>
           </div>
-          <OakText
+          {/* <OakText
             label="Type company name to filter"
             handleChange={handleSearchCriteria}
             id="text"
             data={searchCriteria}
-          />
+          /> */}
           <div className="list-spaces">
             <div className="list-spaces--content">
-              {view?.map(space => (
+              {view?.map((space) => (
                 <SpaceItem
                   history={props.history}
                   space={space}

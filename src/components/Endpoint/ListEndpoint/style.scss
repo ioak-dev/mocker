@@ -1,0 +1,30 @@
+.list-endpoint {
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 10px;
+  margin: 20px 0;
+}
+.list-endpoint__item {
+  padding: 12px 6px;
+  background-color: var(--color-container);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  &:hover {
+    background-color: var(--color-primary-semitransparent1);
+  }
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+.list-endpoint__item__left__description {
+  font-size: 12px;
+}
+.list-endpoint__item__left__name {
+  font-size: 16px;
+}
+.list-endpoint__item__right__type {
+  text-transform: uppercase;
+  color: var(--color-3);
+  font-size: 10px;
+}

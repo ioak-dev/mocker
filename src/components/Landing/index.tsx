@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import './style.scss';
-import OakButton from '../../oakui/OakButton';
 import ListSpaces from './ListSpaces';
-import OakFooter from '../../oakui/OakFooter';
-import OakPage from '../../oakui/OakPage';
 import GettingStartedSpace from './GettingStartedSpace';
 
 interface Props {
@@ -19,13 +16,11 @@ const Landing = (props: Props) => {
   }
 
   return (
-    <OakPage>
     <div className="landing">
           <ListSpaces history={props.history} />
           <hr />
           <GettingStartedSpace history={props.history} />
     </div>
-    </OakPage>
   );
 };
 

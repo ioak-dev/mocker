@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakTab from '../../../oakui/OakTab';
 import CustomEndpoint from '../CustomEndpoint';
 import ListApiSpecification from './ListApiSpecification';
+import OakTab from '../../../oakui/wc/OakTab';
 
 const queryString = require('query-string');
 
@@ -21,12 +19,14 @@ const ViewEndpointCustom = (props: Props) => {
     id: '',
   });
   const dispatch = useDispatch();
-  const authorization = useSelector(state => state.authorization);
-  const customEndpoint = useSelector(state =>
-    state.endpoint.endpoints.find(item => item._id === query.id)
+  const authorization = useSelector((state) => state.authorization);
+  const customEndpoint = useSelector((state) =>
+    state.endpoint.endpoints.find((item) => item._id === query.id)
   );
-  const project = useSelector(state =>
-    state.project.projects.find(item => item._id === customEndpoint?.projectId)
+  const project = useSelector((state) =>
+    state.project.projects.find(
+      (item) => item._id === customEndpoint?.projectId
+    )
   );
   const goBack = () => props.history.goBack();
 
@@ -36,49 +36,37 @@ const ViewEndpointCustom = (props: Props) => {
   }, [props.location.search]);
 
   const [projectElements, setProjectElements] = useState<any>([]);
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (detail: any) => {
+    setTabIndex(detail.value);
+  };
 
   return (
-    <OakPage>
-      <OakTab
-        noBookmarking
-        variant="fullpage"
-        meta={[
-          {
-            slotName: 'endpoints',
-            label: 'API Spec',
-            icon: 'link',
-          },
-          {
-            slotName: 'settings',
-            label: 'Settings',
-            icon: 'settings',
-          },
-        ]}
-      >
-        <div slot="settings">
+    <OakTab tabs={['API Spec', 'Settings']} handleChange={handleTabChange}>
+      {tabIndex === 0 && (
+        <div>
           {customEndpoint && (
-            <OakSection>
-              <CustomEndpoint
-                data={customEndpoint}
-                history={props.history}
-                space={props.space}
-                projectId={customEndpoint?.projectId}
-              />
-            </OakSection>
+            <CustomEndpoint
+              data={customEndpoint}
+              history={props.history}
+              space={props.space}
+              projectId={customEndpoint?.projectId}
+            />
           )}
         </div>
-        <div slot="endpoints">
-          <OakSection>
-            <ListApiSpecification
-              space={props.space}
-              history={props.history}
-              endpoint={customEndpoint}
-              project={project}
-            />
-          </OakSection>
+      )}
+      {tabIndex === 1 && (
+        <div>
+          <ListApiSpecification
+            space={props.space}
+            history={props.history}
+            endpoint={customEndpoint}
+            project={project}
+          />
         </div>
-      </OakTab>
-    </OakPage>
+      )}
+    </OakTab>
   );
 };
 

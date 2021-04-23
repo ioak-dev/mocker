@@ -10,11 +10,11 @@ interface Props {
 }
 
 const TopbarContainer = (props: Props) => {
-  const profile = useSelector(state => state.profile);
+  const profile = useSelector((state) => state.profile);
   const [space, setSpace] = useState('');
 
   useEffect(() => {
-    receiveMessage().subscribe(event => {
+    receiveMessage().subscribe((event: any) => {
       if (event.name === 'spaceChange') {
         setSpace(event.data);
       }
@@ -22,17 +22,17 @@ const TopbarContainer = (props: Props) => {
   }, []);
 
   return (
-        <div
-          className={`topbar-container ${
-            profile.sidebar ? 'sidebar-shown' : 'sidebar-hidden'
-          }`}
-        >
-          <Topbar
-            space={space}
-            cookies={props.cookies}
-            hideSidebarOnDesktop={profile.hideSidebarOnDesktop}
-          />
-        </div>
+    <div
+      className={`topbar-container ${
+        profile.sidebar ? 'sidebar-shown' : 'sidebar-hidden'
+      }`}
+    >
+      <Topbar
+        space={space}
+        cookies={props.cookies}
+        hideSidebarOnDesktop={profile.hideSidebarOnDesktop}
+      />
+    </div>
   );
 };
 

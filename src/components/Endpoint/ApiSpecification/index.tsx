@@ -7,10 +7,6 @@ import {
   receiveMessage,
   sendMessage,
 } from '../../../events/MessageService';
-import OakButton from '../../../oakui/OakButton';
-import OakForm from '../../../oakui/OakForm';
-import OakFooter from '../../../oakui/OakFooter';
-import OakText from '../../../oakui/OakText';
 import ApiSpecificationLink from './ApiSpecificationLink';
 
 import './style.scss';
@@ -29,7 +25,7 @@ interface Props {
 }
 
 const ApiSpecification = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state) => state.authorization);
   const [copied, setCopied] = useState(false);
   const [state, setState] = useState({
     alias: '',
@@ -38,14 +34,14 @@ const ApiSpecification = (props: Props) => {
   const [identifier, setIdentifier] = useState(newId());
 
   useEffect(() => {
-    receiveMessage().subscribe(message => {
+    receiveMessage().subscribe((message) => {
       if (message.name === 'clipboard-updated' && message.data !== identifier) {
         setCopied(false);
       }
     });
   }, []);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setState({
       ...state,
       [event.currentTarget.name]: event.currentTarget.value,
@@ -87,7 +83,7 @@ const ApiSpecification = (props: Props) => {
     reset();
   };
 
-  const removeAlias = async alias => {
+  const removeAlias = async (alias) => {
     const jobId = newMessageId();
     sendMessage('notification', true, {
       id: jobId,
@@ -97,7 +93,7 @@ const ApiSpecification = (props: Props) => {
     const response = await saveEndpoint(props.space, authorization, {
       ...props.endpoint,
       alias: props.endpoint.alias.filter(
-        item => item.pathKey !== props.pathKey || item.path !== alias
+        (item) => item.pathKey !== props.pathKey || item.path !== alias
       ),
     });
     if (response.status === 200) {
@@ -126,19 +122,20 @@ const ApiSpecification = (props: Props) => {
       />
       {!props.noAlias && (
         <>
-          {props.endpoint.alias
-            .filter(alias => alias.pathKey === props.pathKey)
-            .map(alias => (
-              <ApiSpecificationLink
-                baseUrl={props.baseUrl + (props.extendedUrl || '')}
-                extendedUrl={`${alias.path}`}
-                endpoint={props.endpoint}
-                pathKey={props.pathKey}
-                type="ALIAS"
-                handleRemoveAlias={removeAlias}
-                key={`${props.pathKey}-${alias.path}`}
-              />
-            ))}
+          {props.endpoint.alias &&
+            props.endpoint.alias
+              .filter((alias) => alias.pathKey === props.pathKey)
+              .map((alias) => (
+                <ApiSpecificationLink
+                  baseUrl={props.baseUrl + (props.extendedUrl || '')}
+                  extendedUrl={`${alias.path}`}
+                  endpoint={props.endpoint}
+                  pathKey={props.pathKey}
+                  type="ALIAS"
+                  handleRemoveAlias={removeAlias}
+                  key={`${props.pathKey}-${alias.path}`}
+                />
+              ))}
           {/* {state.addNewAlias && (
             <OakText
               data={state}

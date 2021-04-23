@@ -1,0 +1,116 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  TABLE_DATA_CHANGE_EVENT,
+  TABLE_PAGINATE_EVENT,
+} from '@oakui/core-stage/types/TableEventTypes';
+import { compose } from '@oakui/core-stage/style-composer/OakTableComposer';
+import { TableHeader } from '@oakui/core-stage/types/TableHeaderType';
+import { PaginatePref } from '@oakui/core-stage/types/PaginatePrefType';
+
+interface Props {
+  children: any;
+  totalRows?: number;
+  elevation?:
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | 18
+    | 19
+    | 20
+    | 21
+    | 22
+    | 23
+    | 24;
+  rounded?: boolean;
+  dense?: boolean;
+  variant?: 'outlined';
+  color?: 'global' | 'container' | 'surface' | 'float' | 'none';
+  formElementSize?: 'xsmall' | 'small' | 'medium' | 'large';
+  formElementShape?: 'sharp' | 'rectangle' | 'rounded' | 'leaf';
+  navPlacement?: 'top' | 'bottom' | 'none';
+  paginatePref?: PaginatePref;
+  handleChange?: any;
+
+  // not used yet
+  showAll?: boolean;
+}
+
+const OakTable = (props: Props) => {
+  const elementRef = useRef();
+  const [slots, setSlots] = useState<any>({});
+
+  useEffect(() => {
+    (elementRef.current as any)!.rounded = props.rounded;
+  }, [props.rounded]);
+
+  useEffect(() => {
+    (elementRef.current as any)!.dense = props.dense;
+  }, [props.dense]);
+
+  useEffect(() => {
+    (elementRef.current as any)!.paginatePref = props.paginatePref;
+  }, [props.paginatePref]);
+
+  useEffect(() => {
+    (elementRef as any).current.addEventListener(
+      TABLE_PAGINATE_EVENT,
+      handleChange
+    );
+
+    return () => {
+      (elementRef as any).current?.removeEventListener(
+        TABLE_PAGINATE_EVENT,
+        handleChange
+      );
+    };
+  });
+
+  useEffect(() => {
+    let newSlots = {};
+    React.Children.toArray(props.children).forEach((node: any) => {
+      newSlots = { ...newSlots, [node.props.slot]: node };
+    });
+    setSlots(newSlots);
+  }, [props.children]);
+
+  const handleChange = (event: any) => {
+    if (props.handleChange) {
+      const { detail } = event;
+      props.handleChange(detail);
+    }
+  };
+
+  return (
+    <oak-table
+      elevation={props.elevation}
+      variant={props.variant}
+      color={props.color}
+      formElementSize={props.formElementSize}
+      formElementShape={props.formElementShape}
+      navPlacement={props.navPlacement}
+      totalRows={props.totalRows}
+      ref={elementRef}
+    >
+      {slots.top}
+      {slots.grid}
+      {slots.bottom}
+    </oak-table>
+  );
+};
+
+export default OakTable;

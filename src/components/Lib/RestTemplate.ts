@@ -3,7 +3,8 @@ import axios from 'axios';
 const baseUrl = process.env.REACT_APP_API_URL;
 
 export function httpGet(endpoint: string, headers: any, url?: string) {
-  return axios.get(getTargetUrl(endpoint, url), headers);
+  console.log('***************');
+  return axios.get((url || baseUrl) + endpoint, headers);
   // .then(function(response) {
   //     return Promise.resolve(response);
   // }
@@ -16,8 +17,7 @@ export function httpPost(
   headers: any,
   url?: string
 ) {
-
-  return axios.post(getTargetUrl(endpoint, url), payload, headers);
+  return axios.post((url || baseUrl) + endpoint, payload, headers);
   //     .then(function(response) {
   //         return Promise.resolve(response);
   //     }
@@ -30,7 +30,7 @@ export function httpPut(
   headers: any,
   url?: string
 ) {
-  return axios.put(getTargetUrl(endpoint, url), payload, headers);
+  return axios.put((url || baseUrl) + endpoint, payload, headers);
   //     .then(function(response) {
   //         return Promise.resolve(response);
   //     }
@@ -38,17 +38,9 @@ export function httpPut(
 }
 
 export function httpDelete(endpoint: string, headers: any, url?: string) {
-  return axios.delete(getTargetUrl(endpoint, url), headers);
+  return axios.delete((url || baseUrl) + endpoint, headers);
   //     .then(function(response) {
   //         return Promise.resolve(response);
   //     }
   // )
-}
-
-function getTargetUrl(endpoint, url) {
-  let targetUrl = (url || baseUrl) + endpoint;
-  if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
-    targetUrl = endpoint;
-  }
-  return targetUrl;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './DropLinks.scss';
 import { NavLink } from 'react-router-dom';
-import OakButton from '../../oakui/OakButton';
+import OakButton from '../../oakui/wc/OakButton';
 
 interface Props {
   space: string;
@@ -29,12 +29,12 @@ const DropLinks = (props: Props) => {
         Projects
       </NavLink>
       <NavLink
-        to={`/${props.space}/endpoint`}
+        to={`/${props.space}/template`}
         className="navitem"
         activeClassName="active"
         onClick={props.handleClose}
       >
-        Endpoints
+        Templates
       </NavLink>
     </div>
   );

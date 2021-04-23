@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakHeading from '../../../oakui/OakHeading';
-import OakSubheading from '../../../oakui/OakSubheading';
-import OakForm from '../../../oakui/OakForm';
-import OakText from '../../../oakui/OakText';
-import OakFooter from '../../../oakui/OakFooter';
-import OakButton from '../../../oakui/OakButton';
 import { saveProject } from '../service';
-import { sendMessage, newMessageId } from '../../../events/MessageService';
+import { sendMessage, newMessageId, newId } from '../../../events/MessageService';
+import OakSection from '../../../oakui/wc/OakSection';
+import OakForm from '../../../oakui/wc/OakForm';
+import OakInput from '../../../oakui/wc/OakInput';
+import OakButton from '../../../oakui/wc/OakButton';
 
 interface Props {
   space: string;
@@ -28,20 +24,20 @@ const CreateProject = (props: Props) => {
   const dispatch = useDispatch();
   const authorization = useSelector(state => state.authorization);
 
-  const handleChange = event => {
+  const handleChange = detail => {
     setState({
       ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [detail.name]: detail.value,
     });
   };
 
-  const handleNameChange = event => {
+  const handleNameChange = detail => {
     setState({
       ...state,
-      name: event.currentTarget.value,
+      name: detail.value,
       reference:
         state.name === state.reference
-          ? event.currentTarget.value
+          ? detail.value
           : state.reference,
     });
   };
@@ -72,59 +68,45 @@ const CreateProject = (props: Props) => {
     }
   };
 
+  const formId = newId();
+
   return (
-    <OakPage>
-      <OakSection>
-        <OakHeading
-          title="Create new project"
-          links={[
-            {
-              label: 'Back',
-              icon: 'reply',
-              action: goBack,
-            },
-          ]}
-          linkSize="large"
-        />
+      <OakSection fillColor="container">
+        Create new project
         <div className="create-project">
-          <OakForm>
-            <OakText
-              data={state}
-              id="name"
-              handleChange={handleNameChange}
+          <OakForm formGroupName={formId} handleSubmit={save}>
+            <OakInput formGroupName={formId} 
+              value={state.name}
+              name="name"
+              handleInput={handleNameChange}
               label="Project name"
             />
-            <OakText
-              data={{
-                ...state,
-                reference: state.reference
+            <OakInput formGroupName={formId} 
+              value={state.reference
                   .toLowerCase()
                   .replace(/\s/g, '')
-                  .replace(/\W/g, ''),
-              }}
-              id="reference"
-              handleChange={handleChange}
+                  .replace(/\W/g, '')}
+              name="reference"
+              handleInput={handleChange}
               label="Reference word for URL path prefix"
             />
-            <OakText
-              data={state}
-              id="description"
-              handleChange={handleChange}
+            <OakInput formGroupName={formId} 
+              value={state.description}
+              name="description"
+              handleInput={handleChange}
               label="Short description about the project"
-              multiline
             />
           </OakForm>
-          <OakFooter>
-            <OakButton theme="primary" variant="appear" action={save}>
+        <div>
+            <OakButton theme="primary" variant="appear" type="submit" formGroupName={formId}>
               Save
             </OakButton>
             <OakButton theme="default" variant="appear">
               Cancel
             </OakButton>
-          </OakFooter>
-        </div>
-      </OakSection>
-    </OakPage>
+          </div>
+      </div>
+    </OakSection>
   );
 };
 

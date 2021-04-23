@@ -13,10 +13,9 @@ const OaLogin = (props: Props) => {
   useEffect(() => {
     if (props.location.search) {
       const query = queryString.parse(props.location.search);
+      console.log('--------------', query);
       props.cookies.set(`mockback_${query.space}`, query.authKey);
-      console.log(typeof query.from);
-      console.log(query.from || `/${query.space}/home`);
-      props.history.push(query.from ? query.from : `/${query.space}/home`);
+      props.history.push(query.from ? query.from : `/${query.space}/project`);
     }
   }, []);
 

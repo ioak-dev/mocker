@@ -1,7 +1,6 @@
 import React from 'react';
+import OakButton from '../../oakui/wc/OakButton';
 import './style.scss';
-import OakButton from '../../oakui/OakButton';
-import OakHeading from '../../oakui/OakHeading';
 
 interface Props {
   history: any;
@@ -14,7 +13,7 @@ const GettingStartedSpace = (props: Props) => {
   return (
     <div className="getting-started">
       <div>
-        <OakHeading title="Getting Started" />
+        Getting Started
         <div className="getting-started--steps space-top-2">
           <div className="typography-7">Create Space</div>
           <div className="typography-4">
@@ -40,7 +39,7 @@ const GettingStartedSpace = (props: Props) => {
         </div>
       </div>
       <div className="action-footer position-center">
-        <OakButton theme="primary" variant="disappear" action={goToCreatePage}>
+        <OakButton theme="primary" variant="disappear" handleClick={goToCreatePage}>
           Create a new space
         </OakButton>
       </div>

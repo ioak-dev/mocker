@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './style.scss';
 import LoginMethod from './LoginMethod';
-import OakHeading from '../../oakui/OakHeading';
 import OakPage from '../../oakui/OakPage';
-import OakSection from '../../oakui/OakSection';
-import oaBlack from '../../images/oneauth_black_small.svg';
-import oaWhite from '../../images/oneauth_white_small.svg';
+import OakSection from '../../oakui/wc/OakSection';
+import OakTypography from '../../oakui/wc/OakTypography';
 
 interface Props {
   history: any;
@@ -19,8 +17,8 @@ interface Props {
 const queryString = require('query-string');
 
 const Login = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
-  const profile = useSelector(state => state.profile);
+  const authorization = useSelector((state) => state.authorization);
+  const profile = useSelector((state) => state.profile);
   const [from, setFrom] = useState<string | undefined>();
   const oaLogin = () => {
     props.history.push(
@@ -33,7 +31,7 @@ const Login = (props: Props) => {
     );
   };
 
-  const mockbackLogin = () => {
+  const emailflowLogin = () => {
     console.log('not yet implemented');
   };
 
@@ -51,12 +49,12 @@ const Login = (props: Props) => {
   return (
     <OakPage>
       <OakSection>
-        <OakHeading
-          title="Sign in"
-          subtitle="Choose the preferred authentication method to continue"
-        />
+        <OakTypography variant="h2">Sign in</OakTypography>
+        <OakTypography variant="subtitle1">
+          Choose the preferred authentication method to continue
+        </OakTypography>
         <div className="view-asset-item">
-          <div className="space-top-3 mockback-signin">
+          <div className="space-top-3 infinite-reserve-signin">
             <div className="login-home">
               <LoginMethod
                 action={oaLogin}
@@ -64,7 +62,7 @@ const Login = (props: Props) => {
                 label="Enterprise Login"
               />
               <LoginMethod
-                action={mockbackLogin}
+                action={emailflowLogin}
                 icon="people"
                 label="Individual Login"
               />

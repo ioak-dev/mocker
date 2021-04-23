@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { newMessageId, sendMessage } from '../../../events/MessageService';
-import OakButton from '../../../oakui/OakButton';
+import OakButton from '../../../oakui/wc/OakButton';
 import { removeProjectMember } from '../service';
 
 import './MemberLink.scss';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const MemberLink = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state) => state.authorization);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const remove = async () => {
@@ -49,7 +49,7 @@ const MemberLink = (props: Props) => {
           <OakButton
             theme="primary"
             variant="regular"
-            action={() => setShowConfirm(true)}
+            handleClick={() => setShowConfirm(true)}
           >
             Remove
           </OakButton>
@@ -59,11 +59,11 @@ const MemberLink = (props: Props) => {
             <OakButton
               theme="default"
               variant="regular"
-              action={() => setShowConfirm(false)}
+              handleClick={() => setShowConfirm(false)}
             >
               Cancel
             </OakButton>
-            <OakButton theme="primary" variant="regular" action={remove}>
+            <OakButton theme="primary" variant="regular" handleClick={remove}>
               Confirm
             </OakButton>
           </>

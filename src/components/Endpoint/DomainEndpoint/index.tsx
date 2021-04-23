@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakForm from '../../../oakui/OakForm';
-import OakText from '../../../oakui/OakText';
-import OakFooter from '../../../oakui/OakFooter';
-import OakButton from '../../../oakui/OakButton';
 import { saveDomainEndpoint, saveEndpoint } from '../service';
-import { sendMessage, newMessageId } from '../../../events/MessageService';
+import {
+  sendMessage,
+  newMessageId,
+  newId,
+} from '../../../events/MessageService';
 import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
-import OakSubheading from '../../../oakui/OakSubheading';
-import OakSelect from '../../../oakui/OakSelect';
 import { fetchAllEndpoints } from '../../../actions/EndpointActions';
+import OakForm from '../../../oakui/wc/OakForm';
+import OakInput from '../../../oakui/wc/OakInput';
+import OakSelect from '../../../oakui/wc/OakSelect';
+import OakButton from '../../../oakui/wc/OakButton';
 
 interface Props {
   space: string;
@@ -30,10 +32,10 @@ const DomainEndpoint = (props: Props) => {
     response: [],
   });
   const [keyList, setKeyList] = useState<any[]>([
-    { key: 'None', value: 'None - We do not have a unique identifier' },
+    { id: 'None', value: 'None - We do not have a unique identifier' },
   ]);
   const dispatch = useDispatch();
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state) => state.authorization);
 
   useEffect(() => {
     if (props.data) {
@@ -52,9 +54,9 @@ const DomainEndpoint = (props: Props) => {
 
   useEffect(() => {
     setKeyList([
-      { key: 'None', value: 'None - We do not have a unique identifier' },
+      { id: 'None', value: 'None - We do not have a unique identifier' },
       ...state.response
-        .filter(node => {
+        .filter((node: any) => {
           if (
             !node.parentReference &&
             node.datatype !== 'object' &&
@@ -63,43 +65,41 @@ const DomainEndpoint = (props: Props) => {
             return true;
           }
         })
-        .map(node => {
-          return { key: node.reference, value: node.name };
+        .map((node: any) => {
+          return { id: node.reference, value: node.name };
         }),
     ]);
   }, [state.response]);
 
-  const handleChange = event => {
+  const handleChange = (detail: any) => {
+    console.log(detail);
     setState({
       ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [detail.name]: detail.value,
     });
   };
 
-  const handleNameChange = event => {
+  const handleNameChange = (detail: any) => {
     setState({
       ...state,
-      name: event.currentTarget.value
-        .toLowerCase()
-        .replace(/\s/g, '')
-        .replace(/\W/g, ''),
+      name: detail.value.toLowerCase().replace(/\s/g, '').replace(/\W/g, ''),
     });
   };
 
-  const handleDataStructureChange = (actionType, changeData) => {
+  const handleDataStructureChange = (actionType: string, changeData: any) => {
     console.log(actionType, changeData);
     let newData: any[] = [];
     switch (actionType) {
       case 'remove':
         newData = state.response.filter(
-          item =>
+          (item: any) =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
         newData = state.response.filter(
-          item => item.reference !== changeData.reference
+          (item: any) => item.reference !== changeData.reference
         );
         newData.push({ ...changeData });
         break;
@@ -110,7 +110,6 @@ const DomainEndpoint = (props: Props) => {
   };
 
   const save = async () => {
-    console.log(props);
     const jobId = newMessageId();
     sendMessage('notification', true, {
       id: jobId,
@@ -121,9 +120,8 @@ const DomainEndpoint = (props: Props) => {
       ...state,
       type: 'domain',
       projectId: props.projectId,
-      alias: []
+      alias: [],
     });
-    console.log(response);
     if (response.status === 200) {
       dispatch(fetchAllEndpoints(props.space, authorization));
       sendMessage('notification', true, {
@@ -132,17 +130,24 @@ const DomainEndpoint = (props: Props) => {
         message: `Domain endpoint [${state.name}] saved successfully`,
         duration: 3000,
       });
-      props.history.push(`/${props.space}/endpoint?projectId=${props.projectId}`);
+      props.history.push(
+        `/${props.space}/endpoint?projectId=${props.projectId}`
+      );
     }
   };
+
+  const formId = newId();
 
   return (
     <>
       {props.projectId && (
-        <OakForm>
-          <OakText
-            data={state}
-            id="name"
+        <OakForm formGroupName={formId} handleSubmit={save}>
+          <OakInput
+            color="container"
+            gutterBottom
+            formGroupName={formId}
+            value={state.name}
+            name="name"
             handleChange={handleNameChange}
             label="Name of the domain"
           />
@@ -153,22 +158,28 @@ const DomainEndpoint = (props: Props) => {
             handleChange={handleDataStructureChange}
           />
           <OakSelect
-            data={state}
-            id="key"
+            color="container"
+            gutterBottom
+            formGroupName={formId}
+            value={state.key}
+            name="key"
             handleChange={handleChange}
-            objects={keyList}
+            optionsAsKeyValue={keyList}
             label="Primary key"
           />
         </OakForm>
       )}
-      <OakFooter>
-        <OakButton theme="primary" variant="appear" action={save}>
-          Save
-        </OakButton>
-        <OakButton theme="default" variant="appear" action={goBack}>
-          Close
-        </OakButton>
-      </OakFooter>
+      <OakButton
+        theme="primary"
+        variant="appear"
+        formGroupName={formId}
+        type="submit"
+      >
+        Save
+      </OakButton>
+      <OakButton theme="default" variant="appear" handleClick={goBack}>
+        Close
+      </OakButton>
     </>
   );
 };

@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakTab from '../../../oakui/OakTab';
 import { newMessageId, sendMessage } from '../../../events/MessageService';
 import { saveDomainEndpoint } from '../service';
 import DomainEndpoint from '../DomainEndpoint';
 import ListApiSpecification from './ListApiSpecification';
+import OakTab from '../../../oakui/wc/OakTab';
 
 const queryString = require('query-string');
 
@@ -23,12 +21,14 @@ const ViewEndpointDomain = (props: Props) => {
     id: '',
   });
   const dispatch = useDispatch();
-  const authorization = useSelector(state => state.authorization);
-  const domainEndpoint = useSelector(state =>
-    state.endpoint.endpoints.find(item => item._id === query.id)
+  const authorization = useSelector((state) => state.authorization);
+  const domainEndpoint = useSelector((state) =>
+    state.endpoint.endpoints.find((item) => item._id === query.id)
   );
-  const project = useSelector(state =>
-    state.project.projects.find(item => item._id === domainEndpoint?.projectId)
+  const project = useSelector((state) =>
+    state.project.projects.find(
+      (item) => item._id === domainEndpoint?.projectId
+    )
   );
   const goBack = () => props.history.goBack();
 
@@ -52,14 +52,14 @@ const ViewEndpointDomain = (props: Props) => {
 
   const [projectElements, setProjectElements] = useState<any>([]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setState({
       ...state,
       [event.currentTarget.name]: event.currentTarget.value,
     });
   };
 
-  const handleNameChange = event => {
+  const handleNameChange = (event) => {
     setState({
       ...state,
       name: event.currentTarget.value
@@ -75,14 +75,14 @@ const ViewEndpointDomain = (props: Props) => {
     switch (actionType) {
       case 'remove':
         newData = state.response.filter(
-          item =>
+          (item) =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
         newData = state.response.filter(
-          item => item.reference !== changeData.reference
+          (item) => item.reference !== changeData.reference
         );
         newData.push({ ...changeData });
         break;
@@ -111,49 +111,39 @@ const ViewEndpointDomain = (props: Props) => {
       });
     }
   };
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (detail: any) => {
+    setTabIndex(detail.value);
+  };
 
   return (
-    <OakPage>
-      <OakTab
-        noBookmarking
-        variant="fullpage"
-        meta={[
-          {
-            slotName: 'endpoints',
-            label: 'API Spec',
-            icon: 'link',
-          },
-          {
-            slotName: 'settings',
-            label: 'Settings',
-            icon: 'settings',
-          },
-        ]}
-      >
-        <div slot="settings">
-          {domainEndpoint && (
-            <OakSection>
-              <DomainEndpoint
-                data={domainEndpoint}
-                history={props.history}
-                space={props.space}
-                projectId={domainEndpoint?.projectId}
-              />
-            </OakSection>
-          )}
-        </div>
-        <div slot="endpoints">
-          <OakSection>
-            <ListApiSpecification
-              space={props.space}
-              history={props.history}
-              endpoint={domainEndpoint}
-              project={project}
-            />
-          </OakSection>
-        </div>
-      </OakTab>
-    </OakPage>
+    <OakTab
+      variant="pills"
+      color="info"
+      rounded
+      tabs={['Configuration', 'API']}
+      handleChange={handleTabChange}
+    >
+      <div className="tab-section">
+        {tabIndex === 0 && domainEndpoint && (
+          <DomainEndpoint
+            data={domainEndpoint}
+            history={props.history}
+            space={props.space}
+            projectId={domainEndpoint?.projectId}
+          />
+        )}
+        {tabIndex === 1 && (
+          <ListApiSpecification
+            space={props.space}
+            history={props.history}
+            endpoint={domainEndpoint}
+            project={project}
+          />
+        )}
+      </div>
+    </OakTab>
   );
 };
 

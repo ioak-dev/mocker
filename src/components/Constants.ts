@@ -9,6 +9,8 @@ const constants = {
   API_URL_CODE: '/auth/sendResetCode',
   API_URL_USER_DETAILS: '/user/details',
 
+  API_URL_ASSET: '/asset',
+
   API_URL_STAGE: '/stage',
   API_URL_PREDICT: '/model/predict',
 

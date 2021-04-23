@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles/oak-pagination.scss';
-import OakSelect from './OakSelect';
-import OakSelectPlain from './OakSelectPlain';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import OakSelect from './wc/OakSelect';
 
 interface Props {
   onChangePage: any;
@@ -38,41 +37,39 @@ const OakPagination = (props: Props) => {
     }
   };
 
-  const handleChange = event => {
+  const handleChange = (event: { target: { name: any; value: any } }) => {
     setData({ ...data, [event.target.name]: event.target.value || 5 });
   };
 
   return (
     <div className="oak-pagination">
-      <div className="oak-pagination--left">
-        {props.children}
-      </div>
+      <div className="oak-pagination--left">{props.children}</div>
       <div className="oak-pagination--right">
         <div>{props.label ? props.label : 'Rows per page'}</div>
         <div>
-          <OakSelectPlain
-            data={data}
-            id="rowsPerPage"
-            handleChange={e => handleChange(e)}
-            elements={['5', '10', '20', '50']}
-            variant="underline"
+          <OakSelect
+            value={data.rowsPerPage}
+            name="rowsPerPage"
+            handleChange={(e: any) => handleChange(e)}
+            options={['5', '10', '20', '50']}
           />
         </div>
         <div className="page-number">
           <div>
-            {(data.pageNo - 1) * data.rowsPerPage + 1}-{' '}
-            {data.pageNo * data.rowsPerPage < props.totalRows
-              ? data.pageNo * data.rowsPerPage
-              : props.totalRows}
-            &nbsp;of&nbsp; {props.totalRows}{' '}
+            {`${(data.pageNo - 1) * data.rowsPerPage + 1}-
+            ${
+              data.pageNo * data.rowsPerPage < props.totalRows
+                ? data.pageNo * data.rowsPerPage
+                : props.totalRows
+            }
+            &nbsp;of&nbsp;`}
+            {props.totalRows}
           </div>
         </div>
         <div className="page-nav">
           <div>
             <KeyboardArrowLeft
-              className={
-                data.pageNo === 1 ? 'disabled' : ''
-              }
+              className={data.pageNo === 1 ? 'disabled' : ''}
               onClick={previousPage}
             />
           </div>

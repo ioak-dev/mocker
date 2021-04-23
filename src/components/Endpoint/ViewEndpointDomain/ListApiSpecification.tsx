@@ -22,6 +22,7 @@ const ListApiSpecification = (props: Props) => {
       `${process.env.REACT_APP_API_URL}/api/${props.space}/${props.project.reference}/${props.endpoint.type}/${props.endpoint.name}`
     );
   }, [props]);
+
   return (
     <>
       {props.project && props.endpoint && (

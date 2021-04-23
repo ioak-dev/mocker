@@ -9,8 +9,8 @@ interface Props {
 }
 
 const NavAccountIcon = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
-  const profile = useSelector(state => state.profile);
+  const authorization = useSelector((state) => state.authorization);
+  const profile = useSelector((state) => state.profile);
   return (
     <div
       className={`nav-account-icon ${profile.theme}`}
@@ -18,7 +18,7 @@ const NavAccountIcon = (props: Props) => {
     >
       {authorization.isAuth && (
         <div className="nav-account-icon--username">
-        <div>{`${authorization.firstName} ${authorization.lastName}`}</div>
+          <div>{`${authorization.firstName} ${authorization.lastName}`}</div>
           <PowerSettingsNew className="cursor-pointer" />
         </div>
       )}

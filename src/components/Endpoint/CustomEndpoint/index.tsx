@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakForm from '../../../oakui/OakForm';
-import OakText from '../../../oakui/OakText';
-import OakFooter from '../../../oakui/OakFooter';
-import OakButton from '../../../oakui/OakButton';
 import {
   saveCustomEndpoint,
   saveDomainEndpoint,
   saveEndpoint,
 } from '../service';
-import { sendMessage, newMessageId } from '../../../events/MessageService';
+import {
+  sendMessage,
+  newMessageId,
+  newId,
+} from '../../../events/MessageService';
 import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
-import OakSelect from '../../../oakui/OakSelect';
-import OakSection from '../../../oakui/OakSection';
-import OakSubheading from '../../../oakui/OakSubheading';
 import { fetchAllEndpoints } from '../../../actions/EndpointActions';
+import OakForm from '../../../oakui/wc/OakForm';
+import OakInput from '../../../oakui/wc/OakInput';
+import OakSelect from '../../../oakui/wc/OakSelect';
+import OakButton from '../../../oakui/wc/OakButton';
 
 interface Props {
   space: string;
@@ -39,7 +40,7 @@ const CustomEndpoint = (props: Props) => {
     payload: [],
   });
   const dispatch = useDispatch();
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state) => state.authorization);
 
   useEffect(() => {
     if (props.data) {
@@ -57,37 +58,38 @@ const CustomEndpoint = (props: Props) => {
     }
   }, [props.projectId, props.data]);
 
-  const handleChange = event => {
+  const handleChange = (detail: any) => {
     setState({
       ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [detail.name]: detail.value,
     });
   };
 
-  const handleNameChange = event => {
+  const handleNameChange = (detail: any) => {
     setState({
       ...state,
-      name: event.currentTarget.value
-        .toLowerCase()
-        .replace(/\s/g, '')
-        .replace(/\W/g, ''),
+      name: detail.value.toLowerCase().replace(/\s/g, '').replace(/\W/g, ''),
     });
   };
 
-  const handleDataStructureChange = (actionType, changeData, fieldName) => {
+  const handleDataStructureChange = (
+    actionType: string,
+    changeData: any,
+    fieldName: string
+  ) => {
     console.log(actionType, changeData, fieldName);
     let newData: any[] = [];
     switch (actionType) {
       case 'remove':
         newData = state[fieldName].filter(
-          item =>
+          (item) =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
         newData = state[fieldName].filter(
-          item => item.reference !== changeData.reference
+          (item) => item.reference !== changeData.reference
         );
         newData.push({ ...changeData });
         break;
@@ -98,7 +100,6 @@ const CustomEndpoint = (props: Props) => {
   };
 
   const save = async () => {
-    console.log(props);
     const jobId = newMessageId();
     sendMessage('notification', true, {
       id: jobId,
@@ -109,9 +110,8 @@ const CustomEndpoint = (props: Props) => {
       ...state,
       type: 'custom',
       projectId: props.projectId,
-      alias: []
+      alias: [],
     });
-    console.log(response);
     if (response.status === 200) {
       dispatch(fetchAllEndpoints(props.space, authorization));
       sendMessage('notification', true, {
@@ -120,33 +120,43 @@ const CustomEndpoint = (props: Props) => {
         message: `Domain endpoint [${state.name}] saved successfully`,
         duration: 3000,
       });
-      props.history.push(`/${props.space}/endpoint?projectId=${props.projectId}`);
+      props.history.push(
+        `/${props.space}/endpoint?projectId=${props.projectId}`
+      );
     }
   };
 
-  const handleProjectChange = event => {
+  const handleProjectChange = (detail: any) => {
     props.history.push(
-      `/${props.space}/endpoint/custom/create?projectId=${event.currentTarget.value}`
+      `/${props.space}/endpoint/custom/create?projectId=${detail.value}`
     );
   };
 
+  const formId = newId();
+
   return (
     <>
-      <OakForm>
+      <OakForm formGroupName={formId} handleSubmit={save}>
         {props.projectId && (
           <>
-            <OakText
-              data={state}
+            <OakInput
+              gutterBottom
+              fill="container"
+              formGroupName={formId}
+              value={state.name}
               handleChange={handleNameChange}
-              id="name"
+              name="name"
               label="Endpoint name"
             />
             <OakSelect
-              id="method"
-              data={state}
+              gutterBottom
+              fill="container"
+              formGroupName={formId}
+              name="method"
+              value={state.method}
               handleChange={handleChange}
               label="Request method"
-              elements={['GET', 'POST', 'PUT']}
+              options={['GET', 'POST', 'PUT']}
             />
           </>
         )}
@@ -171,13 +181,16 @@ const CustomEndpoint = (props: Props) => {
               />
             )}
           </OakForm> */}
-          <OakForm>
+          <OakForm handleSubmit={save} formGroupName={formId}>
             {/* <OakSubheading title="Web service response" /> */}
             <OakSelect
-              data={state}
+              gutterBottom
+              fill="container"
+              formGroupName={formId}
+              value={state.responseType}
               handleChange={handleChange}
-              elements={['None', 'Object', 'Array']}
-              id="responseType"
+              options={['None', 'Object', 'Array']}
+              name="responseType"
               label="Response type"
             />
             {['Object', 'Array'].includes(state.responseType) && (
@@ -191,14 +204,17 @@ const CustomEndpoint = (props: Props) => {
           </OakForm>
         </>
       )}
-      <OakFooter>
-        <OakButton theme="primary" variant="appear" action={save}>
-          Save
-        </OakButton>
-        <OakButton theme="default" variant="appear" action={goBack}>
-          Close
-        </OakButton>
-      </OakFooter>
+      <OakButton
+        theme="primary"
+        variant="appear"
+        type="submit"
+        formGroupName={formId}
+      >
+        Save
+      </OakButton>
+      <OakButton theme="default" variant="appear" handleClick={goBack}>
+        Close
+      </OakButton>
     </>
   );
 };

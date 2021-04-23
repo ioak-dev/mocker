@@ -16,11 +16,12 @@ interface Props {
 }
 
 const NavItem = (props: Props) => {
-  const profile = useSelector(state => state.profile);
+  const profile = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
   const routeChanged = () => {
+    window.scrollTo(0, 0);
     if (props.closeAfterRouteChange) {
       dispatch(setProfile({ ...profile, sidebar: false }));
     }

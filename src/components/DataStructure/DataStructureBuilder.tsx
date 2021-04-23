@@ -13,13 +13,15 @@ interface Props {
 const DataStructureBuilder = (props: Props) => {
   return (
     <div className="data-structure-builder">
-      <div className="data-structure-builder--label">{props.label}</div>
-      <FieldElement
-        data={props.data[props.id]}
-        id={props.id}
-        reference={null}
-        handleChange={props.handleChange}
-      />
+      <div className="data-structure-builder__label">{props.label}</div>
+      <div className="data-structure-builder__content">
+        <FieldElement
+          data={props.data[props.id]}
+          id={props.id}
+          reference={null}
+          handleChange={props.handleChange}
+        />
+      </div>
     </div>
   );
 };

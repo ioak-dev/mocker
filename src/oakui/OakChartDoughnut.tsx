@@ -16,28 +16,28 @@ interface Props {
 const OakChartDoughnut = (props: Props) => {
   const chartRef = useRef(null);
   const [refId, setRefId] = useState(newId());
-  const profile = useSelector(state => state.profile);
+  const profile = useSelector((state) => state.profile);
 
   useEffect(() => {
-    renderChart(findStepSize(props.datasets, props.type, props.stacked));
+    renderChart();
   }, [props.datasets]);
 
-  const renderChart = stepSize => {
+  const renderChart = () => {
     new Chart(document.getElementById(refId), {
       type: 'doughnut',
       data: { datasets: props.datasets, labels: props.categoryLabels },
       options: {
         responsive: true,
         maintainAspectRatio: true,
-        //Customize chart options,
+        // Customize chart options,
         cutoutPercentage: props.type === 'pie' ? 0 : 60,
         legend: {
           display: true,
-          position: "right"
+          position: 'right',
         },
         title: {
           display: props.title,
-          text: props.title
+          text: props.title,
         },
       },
     });

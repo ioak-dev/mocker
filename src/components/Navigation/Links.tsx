@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './Links.scss';
 import { NavLink } from 'react-router-dom';
-import OakButton from '../../oakui/OakButton';
+import OakButton from '../../oakui/wc/OakButton';
 
 interface Props {
   space: string;
 }
 
 const Links = (props: Props) => {
-  const profile = useSelector(state => state.profile);
+  const profile = useSelector((state) => state.profile);
 
   return (
     <div className={`links ${profile.theme}`}>
@@ -29,11 +29,18 @@ const Links = (props: Props) => {
         Projects
       </NavLink>
       <NavLink
-        to={`/${props.space}/endpoint`}
+        to={`/${props.space}/email-server`}
         className="navitem"
         activeClassName="active"
       >
-        Endpoints
+        Email Servers
+      </NavLink>
+      <NavLink
+        to={`/${props.space}/template`}
+        className="navitem"
+        activeClassName="active"
+      >
+        Templates
       </NavLink>
     </div>
   );

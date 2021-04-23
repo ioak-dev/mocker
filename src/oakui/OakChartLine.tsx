@@ -16,34 +16,35 @@ interface Props {
 const OakChartLine = (props: Props) => {
   const chartRef = useRef(null);
   const [refId, setRefId] = useState(newId());
-  const profile = useSelector(state => state.profile);
+  const profile = useSelector((state: any) => state.profile);
 
   useEffect(() => {
     renderChart(findStepSize(props.datasets, props.type, props.stacked));
   }, [props.datasets]);
 
-  const renderChart = stepSize => {
-    new Chart(document.getElementById(refId), {
+  const renderChart = (stepSize: number) => {
+    // eslint-disable-next-line no-new
+    new Chart(document.getElementById(refId) as any, {
       type: 'line',
       data: { datasets: props.datasets },
       options: {
         responsive: true,
         maintainAspectRatio: true,
-        //Customize chart options,
+        // Customize chart options,
         title: {
           display: props.title,
-          text: props.title
+          text: props.title,
         },
         scales: {
           yAxes: [
             {
               stacked: props.stacked,
               gridLines: {
-                color: profile.theme === 'theme_dark' ? "#000" : "#d6e0ea",
-                lineWidth: 0.5
+                color: profile.theme === 'theme_dark' ? '#000' : '#d6e0ea',
+                lineWidth: 0.5,
               },
               ticks: {
-                stepSize: stepSize,
+                stepSize,
                 // fontColor: profile.theme === 'theme_dark' ? "#e0e0e0" : "#828282",
               },
             },
