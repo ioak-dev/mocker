@@ -5,6 +5,7 @@ call npm run move-package
 cd ../npm-oakui
 call npm pack
 call npm run move-package
+call npm run move-package-to-oneauth
 call npm run move-package-to-janus
 call npm run move-package-to-mockback
 cd ../mockback

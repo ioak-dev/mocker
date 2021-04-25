@@ -17,6 +17,8 @@ import OakTable from '../../../oakui/wc/OakTable';
 import OakCheckbox from '../../../oakui/wc/OakCheckbox';
 
 import './MemberSection.scss';
+import OakPaginate from '../../../oakui/wc/OakPaginate';
+import OakSection from '../../../oakui/wc/OakSection';
 
 interface Props {
   space: string;
@@ -62,6 +64,7 @@ const MemberSection = (props: Props) => {
         headers,
         paginationPref
       );
+      console.log(result);
       setUserView(result.filteredResults);
       setTotalRows(result.totalRows);
     }
@@ -138,68 +141,67 @@ const MemberSection = (props: Props) => {
     }
   };
   return (
-    <div className="project-member-section">
-      {props.project && (
-        <OakTable
-          color="container"
-          navPlacement="top"
-          rounded
+    <OakSection
+      fillColor="container"
+      rounded
+      elevation={1}
+      className="project-member-section__root"
+    >
+      <div className="project-member-section">
+        <div className="project-member-section__heading">User permissions</div>
+        <OakPaginate
           paginatePref={paginationPref}
           handleChange={handlePageChange}
           totalRows={totalRows}
-        >
-          <div slot="top" className="project-member-section__heading">
-            User permissions
-          </div>
-          <div
-            slot="grid"
+          variant="table"
+        />
+        <div className="project-member-section__grid">
+          <table
             className={tableCompose({
               color: 'container',
-              elevation: 1,
+              navPosition: 'top',
             })}
           >
-            <table>
-              <thead>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>User</th>
+                <th>User</th>
+                <th>User</th>
+                <th>Member</th>
+                <th>Administrator</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userView.map((member) => (
                 <tr>
-                  <th>User</th>
-                  <th>User</th>
-                  <th>User</th>
-                  <th>User</th>
-                  <th>Member</th>
-                  <th>Administrator</th>
+                  <td>
+                    {member.firstName} {member.lastName}
+                  </td>
+                  <td>
+                    {member.firstName} {member.lastName}
+                  </td>
+                  <td>
+                    {member.firstName} {member.lastName}
+                  </td>
+                  <td>
+                    {member.firstName} {member.lastName}
+                  </td>
+                  <td>
+                    <OakCheckbox
+                      name={member.userId}
+                      value={true}
+                      handleChange={toggleMember}
+                    />
+                  </td>
+                  <td>test</td>
                 </tr>
-              </thead>
-              <tbody>
-                {userView.map((member) => (
-                  <tr>
-                    <td>
-                      {member.firstName} {member.lastName}
-                    </td>
-                    <td>
-                      {member.firstName} {member.lastName}
-                    </td>
-                    <td>
-                      {member.firstName} {member.lastName}
-                    </td>
-                    <td>
-                      {member.firstName} {member.lastName}
-                    </td>
-                    <td>
-                      <OakCheckbox
-                        name={member.userId}
-                        value={true}
-                        handleChange={toggleMember}
-                      />
-                    </td>
-                    <td>test</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </OakTable>
-      )}
-    </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </OakSection>
   );
 };
 

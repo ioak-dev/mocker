@@ -39,12 +39,11 @@ interface Props {
   rounded?: boolean;
   dense?: boolean;
   variant?: 'outlined';
-  color?: 'global' | 'container' | 'surface' | 'float' | 'none';
+  fill?: 'global' | 'container' | 'surface' | 'float' | 'none';
   formElementSize?: 'xsmall' | 'small' | 'medium' | 'large';
   formElementShape?: 'sharp' | 'rectangle' | 'rounded' | 'leaf';
   navPlacement?: 'top' | 'bottom' | 'none';
   paginatePref?: PaginatePref;
-  handleChange?: any;
 
   // not used yet
   showAll?: boolean;
@@ -52,7 +51,6 @@ interface Props {
 
 const OakTable = (props: Props) => {
   const elementRef = useRef();
-  const [slots, setSlots] = useState<any>({});
 
   useEffect(() => {
     (elementRef.current as any)!.rounded = props.rounded;
@@ -80,18 +78,9 @@ const OakTable = (props: Props) => {
     };
   });
 
-  useEffect(() => {
-    let newSlots = {};
-    React.Children.toArray(props.children).forEach((node: any) => {
-      newSlots = { ...newSlots, [node.props.slot]: node };
-    });
-    setSlots(newSlots);
-  }, [props.children]);
-
   const handleChange = (event: any) => {
-    if (props.handleChange) {
-      const { detail } = event;
-      props.handleChange(detail);
+    if (props.handleDataChange) {
+      props.handleDataChange(event);
     }
   };
 
@@ -99,16 +88,23 @@ const OakTable = (props: Props) => {
     <oak-table
       elevation={props.elevation}
       variant={props.variant}
-      color={props.color}
+      fill={props.fill}
       formElementSize={props.formElementSize}
       formElementShape={props.formElementShape}
       navPlacement={props.navPlacement}
       totalRows={props.totalRows}
       ref={elementRef}
     >
-      {slots.top}
-      {slots.grid}
-      {slots.bottom}
+      <div
+        className={compose({
+          dense: props.dense,
+          fill: props.fill,
+          elevation: props.elevation,
+          variant: props.variant,
+        })}
+      >
+        <table>{props.children}</table>
+      </div>
     </oak-table>
   );
 };

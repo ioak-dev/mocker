@@ -1,11 +1,21 @@
+.project-member-section__root {
+  overflow: auto;
+}
 .project-member-section {
-  overflow-y: hidden;
-  overflow-x: auto;
-  width: 100%;
+  overflow: auto;
+  // border-radius: 20px;
+}
+.project-member-section__grid {
+  overflow: auto;
 }
 .project-member-section__heading {
   font-size: 20px;
   margin-bottom: 20px;
   padding-top: 16px;
   padding-left: 8px;
+}
+
+.project-member-section__container {
+  // width: 100%;
+  // overflow-x: auto;
 }
