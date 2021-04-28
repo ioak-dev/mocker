@@ -119,9 +119,8 @@ const ViewEndpointDomain = (props: Props) => {
 
   return (
     <OakTab
-      variant="pills"
-      color="info"
-      rounded
+      variant="underline"
+      color="primary"
       tabs={['Configuration', 'API']}
       handleChange={handleTabChange}
     >

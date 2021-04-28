@@ -53,3 +53,18 @@
     }
   }
 }
+
+.api-specification-link--right__copy svg {
+  cursor: pointer;
+  font-size: 20px;
+  transition: fill 250ms ease-in-out;
+  path {
+    transition: fill 250ms ease-in-out;
+    fill: var(--color-1);
+  }
+  &:hover {
+    path {
+      fill: var(--color-primary);
+    }
+  }
+}

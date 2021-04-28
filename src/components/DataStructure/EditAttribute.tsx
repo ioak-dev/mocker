@@ -79,6 +79,7 @@ const EditAttribute = (props: Props) => {
               'enum',
               'sequence_number',
             ]}
+            positioningStrategy="fixed"
           />
           {['sequence_number'].includes(state.datatype) && (
             <OakInput

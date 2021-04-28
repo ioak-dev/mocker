@@ -14,6 +14,7 @@ import OakForm from '../../../oakui/wc/OakForm';
 import OakInput from '../../../oakui/wc/OakInput';
 import OakSelect from '../../../oakui/wc/OakSelect';
 import OakButton from '../../../oakui/wc/OakButton';
+import OakSection from '../../../oakui/wc/OakSection';
 
 interface Props {
   space: string;
@@ -142,44 +143,102 @@ const DomainEndpoint = (props: Props) => {
     <>
       {props.projectId && (
         <OakForm formGroupName={formId} handleSubmit={save}>
-          <OakInput
-            color="container"
-            gutterBottom
-            formGroupName={formId}
-            value={state.name}
-            name="name"
-            handleChange={handleNameChange}
-            label="Name of the domain"
-          />
-          <DataStructureBuilder
-            data={state}
-            id="response"
-            label="Domain data structure"
-            handleChange={handleDataStructureChange}
-          />
-          <OakSelect
-            color="container"
-            gutterBottom
-            formGroupName={formId}
-            value={state.key}
-            name="key"
-            handleChange={handleChange}
-            optionsAsKeyValue={keyList}
-            label="Primary key"
-          />
+          <div className="domain-endpoint-sections">
+            <OakSection
+              fillColor="container"
+              paddingHorizontal={2}
+              paddingVertical={4}
+              rounded
+              elevation={1}
+            >
+              <div className="section__heading">Endpoint configuration</div>
+              <div className="section__form">
+                <OakInput
+                  color="container"
+                  gutterBottom
+                  formGroupName={formId}
+                  value={state.name}
+                  name="name"
+                  handleChange={handleNameChange}
+                  label="Endpoint path"
+                />
+                <OakSelect
+                  color="container"
+                  gutterBottom
+                  formGroupName={formId}
+                  value={state.source}
+                  name="source"
+                  handleChange={handleChange}
+                  optionsAsKeyValue={[
+                    { id: 'Hard coded', value: 'Hard coded' },
+                    {
+                      id: 'Generated based on data structure',
+                      value: 'Generated based on data structure',
+                    },
+                  ]}
+                  label="Data source"
+                />
+              </div>
+            </OakSection>
+            {state.source && (
+              <OakSection
+                fillColor="container"
+                paddingHorizontal={2}
+                paddingVertical={4}
+                rounded
+                elevation={1}
+              >
+                <div className="section__heading">Response</div>
+                {state.source === 'Generated based on data structure' && (
+                  <>
+                    <DataStructureBuilder
+                      data={state}
+                      id="response"
+                      label="Domain data structure"
+                      handleChange={handleDataStructureChange}
+                    />
+                    <OakSelect
+                      color="container"
+                      gutterBottom
+                      formGroupName={formId}
+                      value={state.key}
+                      name="key"
+                      handleChange={handleChange}
+                      optionsAsKeyValue={keyList}
+                      label="Primary key"
+                    />
+                  </>
+                )}
+                {state.source === 'Hard coded' && (
+                  <OakInput
+                    type="textarea"
+                    color="container"
+                    gutterBottom
+                    formGroupName={formId}
+                    value={state.responseData}
+                    name="responseData"
+                    handleChange={handleChange}
+                    label="Response data as JSON"
+                  />
+                )}
+              </OakSection>
+            )}
+          </div>
         </OakForm>
       )}
-      <OakButton
-        theme="primary"
-        variant="appear"
-        formGroupName={formId}
-        type="submit"
-      >
-        Save
-      </OakButton>
-      <OakButton theme="default" variant="appear" handleClick={goBack}>
-        Close
-      </OakButton>
+      <div className="action-footer position-right">
+        <OakButton
+          theme="primary"
+          variant="appear"
+          formGroupName={formId}
+          type="submit"
+        >
+          Save
+        </OakButton>
+        <OakButton theme="default" variant="appear" handleClick={goBack}>
+          Close
+        </OakButton>
+      </div>
     </>
   );
 };

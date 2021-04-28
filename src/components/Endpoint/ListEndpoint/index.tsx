@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { compose as tableCompose } from '@oakui/core-stage/style-composer/OakTableComposer';
 
 import './style.scss';
-import OakSelect from '../../../oakui/wc/OakSelect';
 import OakButton from '../../../oakui/wc/OakButton';
 import OakClickArea from '../../../oakui/wc/OakClickArea';
-import OakTypography from '../../../oakui/wc/OakTypography';
-import OakSpacing from '../../../oakui/wc/OakSpacing';
-import OakDivider from '../../../oakui/wc/OakDivider';
 import OakFormActionsContainer from '../../../oakui/wc/OakFormActionsContainer';
+import OakLink from '../../../oakui/OakLink';
+import {
+  TableCellDatatype,
+  TableHeader,
+} from '@oakui/core-stage/types/TableHeaderType';
+import { PaginatePref } from '@oakui/core-stage/types/PaginatePrefType';
+import { getPage } from '@oakui/core-stage/service/OakTableService';
+import OakPaginate from '../../../oakui/wc/OakPaginate';
 
 const queryString = require('query-string');
 
@@ -22,6 +27,24 @@ const ListEndpoint = (props: Props) => {
   const projects = useSelector((state) => state.project.projects);
   const [endpoints, setEndpoints] = useState<any[]>();
   const [projectElements, setProjectElements] = useState<any>([]);
+
+  const [view, setView] = useState<any[]>([]);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [paginationPref, setPaginationPref] = useState<PaginatePref>({
+    pageNo: 1,
+    rowsPerPage: 5,
+    searchText: '',
+  });
+  const headers: TableHeader[] = [
+    {
+      name: 'name',
+      datatype: TableCellDatatype.text,
+    },
+    {
+      name: 'description',
+      datatype: TableCellDatatype.text,
+    },
+  ];
 
   const allEndpoints = useSelector((state) => state.endpoint.endpoints);
 
@@ -38,6 +61,18 @@ const ListEndpoint = (props: Props) => {
     });
     setProjectElements(localState);
   }, [projects]);
+
+  const handlePageChange = (detail: any) => {
+    setPaginationPref(detail);
+  };
+
+  useEffect(() => {
+    if (paginationPref && endpoints) {
+      const result = getPage(endpoints, headers, paginationPref);
+      setView(result.filteredResults);
+      setTotalRows(result.totalRows);
+    }
+  }, [paginationPref, endpoints]);
 
   const gotoCreatePage = () =>
     props.history.push(
@@ -67,27 +102,51 @@ const ListEndpoint = (props: Props) => {
             </OakButton>
           </OakFormActionsContainer>
           <div className="list-endpoint">
-            {endpoints?.map((item) => (
-              <OakClickArea handleClick={() => goToViewPage(item)}>
-                <div className="list-endpoint__item">
-                  <div className="list-endpoint__item__left">
-                    <div className="list-endpoint__item__left__name">
-                      {item.name}
-                    </div>
-                    <div className="list-endpoint__item__left__description">
-                      {item.description}
-                    </div>
-                  </div>
-                  <div className="list-endpoint__item__right">
-                    <div className="list-endpoint__item__right__type">
-                      {item.method
-                        ? `${item.type} (${item.method})`
-                        : item.type}
-                    </div>
-                  </div>
-                </div>
-              </OakClickArea>
-            ))}
+            {/* <OakPaginate
+              paginatePref={paginationPref}
+              handleChange={handlePageChange}
+              totalRows={totalRows}
+              variant="table"
+            /> */}
+            <div className="project-member-section__grid">
+              <table
+                className={tableCompose({
+                  color: 'global',
+                  navPosition: 'top',
+                })}
+              >
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Http methods</th>
+                    <th>Data source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {endpoints?.map((item) => (
+                    <tr>
+                      <td>
+                        <OakLink
+                          color="primary"
+                          handleClick={() => goToViewPage(item)}
+                          underline="hover"
+                        >
+                          {item.name}
+                        </OakLink>
+                      </td>
+                      <td>{item.description}</td>
+                      <td>
+                        {item.type === 'domain'
+                          ? 'GET, POST, PUT, DELETE'
+                          : item.method}
+                      </td>
+                      <td>Random / Defined</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             {!endpoints ||
               (endpoints.length === 0 && (
                 <div className="typography-4">No endpoints yet</div>

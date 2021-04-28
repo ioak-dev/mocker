@@ -32,10 +32,9 @@ const ViewProject = (props: Props) => {
   return (
     <OakTab
       tabs={['Endpoints', 'Configuration']}
-      variant="pills"
+      variant="underline"
       // nobaseline
-      color="info"
-      rounded
+      color="primary"
       handleChange={handleTabChange}
     >
       <div className="tab-section">

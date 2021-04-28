@@ -22,7 +22,15 @@ interface Props {
   regexp?: object;
   validatorFunction?: Function;
   tooltip?: string;
-  type?: 'text' | 'number' | 'password' | 'date' | 'file' | 'time' | 'datetime';
+  type?:
+    | 'text'
+    | 'textarea'
+    | 'number'
+    | 'password'
+    | 'date'
+    | 'file'
+    | 'time'
+    | 'datetime';
   multiple?: boolean;
   size?: 'xsmall' | 'small' | 'medium' | 'large';
   shape?: 'sharp' | 'rectangle' | 'rounded' | 'leaf' | 'underline';

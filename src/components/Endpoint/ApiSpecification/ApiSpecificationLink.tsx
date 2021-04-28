@@ -1,4 +1,7 @@
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
+import OakClickArea from '../../../oakui/wc/OakClickArea';
 import {
   newId,
   receiveMessage,
@@ -22,7 +25,7 @@ const ApiSpecificationLink = (props: Props) => {
   const [identifier, setIdentifier] = useState(newId());
 
   useEffect(() => {
-    receiveMessage().subscribe(message => {
+    receiveMessage().subscribe((message) => {
       if (message.name === 'clipboard-updated' && message.data !== identifier) {
         setCopied(false);
       }
@@ -64,11 +67,11 @@ const ApiSpecificationLink = (props: Props) => {
             </i>
           </div>
         )}
-        <div>
-          <i className="material-icons" onClick={copy}>
-            content_copy
-          </i>
-        </div>
+        <OakClickArea handleClick={copy}>
+          <div className="api-specification-link--right__copy">
+            <FontAwesomeIcon icon={faCopy} />
+          </div>
+        </OakClickArea>
       </div>
     </div>
   );

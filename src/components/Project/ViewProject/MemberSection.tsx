@@ -7,11 +7,7 @@ import {
   TableCellDatatype,
 } from '@oakui/core-stage/types/TableHeaderType';
 import { getPage } from '@oakui/core-stage/service/OakTableService';
-import {
-  addProjectMember,
-  getProjectMembers,
-  removeProjectMember,
-} from '../service';
+import { addRole, removeRole } from '../service';
 import { newMessageId, sendMessage } from '../../../events/MessageService';
 import OakTable from '../../../oakui/wc/OakTable';
 import OakCheckbox from '../../../oakui/wc/OakCheckbox';
@@ -27,8 +23,9 @@ interface Props {
 }
 
 const MemberSection = (props: Props) => {
-  const users = useSelector((state) => state.user.users);
-  const authorization = useSelector((state) => state.authorization);
+  const users = useSelector((state: any) => state.user.users);
+  const roles = useSelector((state: any) => state.role.roles);
+  const authorization = useSelector((state: any) => state.authorization);
   const [memberMap, setMemberMap] = useState<any>({});
   const [userView, setUserView] = useState<any[]>([]);
   const [totalRows, setTotalRows] = useState<number>(0);
@@ -64,82 +61,23 @@ const MemberSection = (props: Props) => {
         headers,
         paginationPref
       );
-      console.log(result);
       setUserView(result.filteredResults);
       setTotalRows(result.totalRows);
     }
-  }, [paginationPref, users, memberMap]);
+  }, [paginationPref, users, roles, memberMap]);
 
-  useEffect(() => {
-    (async () => {
-      if (props.project) {
-        await fetchMembers();
-      }
-    })();
-  }, [props.project]);
-
-  const fetchMembers = async () => {
-    const response = await getProjectMembers(
-      props.space,
-      authorization,
-      props.project._id
-    );
-
-    if (response.status === 200) {
-      setMemberMap(
-        response.data.data?.map((item: any) => ({ [item.userId]: item }))
-      );
-    }
-  };
-
-  const gotoEditPage = () => {
-    console.log('edit page');
-  };
-
-  const toggleMember = async (detail: any) => {
-    const jobId = newMessageId();
-    sendMessage('notification', true, {
-      id: jobId,
-      type: 'running',
-      message: `Removing member from project`,
-    });
-    const response = await removeProjectMember(
-      props.space,
-      authorization,
-      detail.name
-    );
-
-    if (response.status === 200) {
-      sendMessage('notification', true, {
-        id: jobId,
-        type: 'success',
-        message: `Member removed from project successfully`,
-        duration: 3000,
+  const toggleMember = async (member: any) => {
+    if (member.value) {
+      await removeRole(props.space, authorization, member.roleId.name);
+    } else {
+      await addRole(props.space, authorization, {
+        userId: member._id,
+        domainId: props.project._id,
+        type: 'ProjectMember',
       });
     }
   };
 
-  const addUser = async (detail: any) => {
-    const jobId = newMessageId();
-    sendMessage('notification', true, {
-      id: jobId,
-      type: 'running',
-      message: `Adding member to project`,
-    });
-    const response = await addProjectMember(props.space, authorization, {
-      userId: detail.value,
-      projectId: props.project._id,
-      type: 'props.type',
-    });
-    if (response.status === 200) {
-      sendMessage('notification', true, {
-        id: jobId,
-        type: 'success',
-        message: `Member added to project successfully`,
-        duration: 3000,
-      });
-    }
-  };
   return (
     <OakSection
       fillColor="container"
@@ -189,9 +127,9 @@ const MemberSection = (props: Props) => {
                   </td>
                   <td>
                     <OakCheckbox
-                      name={member.userId}
-                      value={true}
-                      handleChange={toggleMember}
+                      name={member._id}
+                      value={false}
+                      handleChange={() => toggleMember(member)}
                     />
                   </td>
                   <td>test</td>

@@ -101,10 +101,8 @@ const DetailSection = (props: Props) => {
             rounded
             elevation={1}
           >
-            <div className="project-detail-section__heading">
-              Project details
-            </div>
-            <div className="project-detail-section__form">
+            <div className="section__heading">Project details</div>
+            <div className="section__form">
               <OakInput
                 color="container"
                 formGroupName={formId}
@@ -134,26 +132,26 @@ const DetailSection = (props: Props) => {
               />
             </div>
           </OakSection>
+          {isEdited && (
+            <div className="action-footer position-right">
+              <OakButton
+                theme="primary"
+                variant="appear"
+                formGroupName={formId}
+                type="submit"
+              >
+                Save
+              </OakButton>
+              <OakButton
+                theme="default"
+                variant="appear"
+                handleClick={discardChanges}
+              >
+                Discard
+              </OakButton>
+            </div>
+          )}
         </OakForm>
-      )}
-      {isEdited && (
-        <>
-          <OakButton
-            theme="primary"
-            variant="appear"
-            formGroupName={formId}
-            type="submit"
-          >
-            Save
-          </OakButton>
-          <OakButton
-            theme="default"
-            variant="appear"
-            handleClick={discardChanges}
-          >
-            Discard
-          </OakButton>
-        </>
       )}
     </div>
   );

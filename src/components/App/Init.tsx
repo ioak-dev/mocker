@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchAllRoles } from '../../actions/RoleActions';
 import { fetchAllEndpoints } from '../../actions/EndpointActions';
 import { fetchAllProjects } from '../../actions/ProjectActions';
 import { fetchAllUsers } from '../../actions/UserActions';
@@ -61,6 +62,7 @@ const Init = () => {
   const initialize = () => {
     console.log('Initialization logic here');
     dispatch(fetchAllUsers(space, authorization));
+    dispatch(fetchAllRoles(space, authorization));
     dispatch(fetchAllProjects(space, authorization));
     dispatch(fetchAllEndpoints(space, authorization));
   };
