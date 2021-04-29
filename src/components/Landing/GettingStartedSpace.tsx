@@ -39,7 +39,11 @@ const GettingStartedSpace = (props: Props) => {
         </div>
       </div>
       <div className="action-footer position-center">
-        <OakButton theme="primary" variant="disappear" handleClick={goToCreatePage}>
+        <OakButton
+          theme="primary"
+          variant="disappear"
+          handleClick={goToCreatePage}
+        >
           Create a new space
         </OakButton>
       </div>

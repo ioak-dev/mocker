@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { compose as tableCompose } from '@oakui/core-stage/style-composer/OakTableComposer';
-
-import './style.scss';
-import OakButton from '../../../oakui/wc/OakButton';
-import OakFormActionsContainer from '../../../oakui/wc/OakFormActionsContainer';
 import {
   TableCellDatatype,
   TableHeader,
 } from '@oakui/core-stage/types/TableHeaderType';
 import { PaginatePref } from '@oakui/core-stage/types/PaginatePrefType';
 import { getPage } from '@oakui/core-stage/service/OakTableService';
+
+import './style.scss';
+import OakButton from '../../../oakui/wc/OakButton';
+import OakFormActionsContainer from '../../../oakui/wc/OakFormActionsContainer';
 
 const queryString = require('query-string');
 
