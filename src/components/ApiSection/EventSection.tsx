@@ -1,8 +1,8 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React from 'react';
+import { compose as tableCompose } from '@oakui/core-stage/style-composer/OakTableComposer';
 
 import './style.scss';
 import OakTypography from '../../oakui/wc/OakTypography';
-import OakTable from '../../oakui/wc/OakTable';
 
 interface Props {
   events: {
@@ -15,24 +15,22 @@ const EventSection = (props: Props) => {
   return (
     <div className="event-section">
       {props.events.length > 0 && (
-        <OakTable fill="none" navPlacement="none" elevation={0}>
-          <table>
-            <thead>
+        <table className={tableCompose({ color: 'global' })}>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.events.map((row) => (
               <tr>
-                <th>Name</th>
-                <th>Description</th>
+                <td>{row.name}</td>
+                <td>{row.description}</td>
               </tr>
-            </thead>
-            <tbody>
-              {props.events.map((row) => (
-                <tr>
-                  <td>{row.name}</td>
-                  <td>{row.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </OakTable>
+            ))}
+          </tbody>
+        </table>
       )}
       {props.events.length === 0 && (
         <OakTypography variant="body2">

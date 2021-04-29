@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
 import './styles/oak-editor.scss';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
@@ -79,7 +78,7 @@ const OakEditor = (props: Props) => {
     'background',
     'align',
   ];
-  const handleChange = (value, delta, source) => {
+  const handleChange = (value: string, delta: any, source: string) => {
     if (source === 'api' && blockApiChangeEvents) {
       setBlockApiChangeEvents(false);
     } else {
@@ -94,13 +93,13 @@ const OakEditor = (props: Props) => {
   return (
     <div className={props.bubble ? 'oak-editor bubble' : 'oak-editor'}>
       <label>{props.label}</label>
-      <ReactQuill
+      {/* <ReactQuill
         value={props.data[props.id]}
         onChange={handleChange}
         theme={props.bubble ? 'bubble' : 'snow'}
         modules={modules}
         formats={formats}
-      />
+      /> */}
       {props.errorData && props.errorData[props.id] && (
         <div className="text-field-error">
           <Warning />

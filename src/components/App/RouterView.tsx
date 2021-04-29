@@ -7,8 +7,6 @@ import OaLogin from '../Auth/OaLogin';
 import Landing from '../Landing';
 import OakRoute from '../Auth/OakRoute';
 import Unauthorized from '../Auth/Unauthorized';
-import OneAuth from '../Login/OneAuth/index';
-import Login from '../Login/index';
 import CreateProject from '../Project/CreateProject';
 import ViewProject from '../Project/ViewProject';
 import ListProject from '../Project/ListProject';
@@ -97,28 +95,6 @@ const RouterView = (props: Props) => {
             {...props}
             component={CreateProject}
             middleware={['authenticate']}
-          />
-        )}
-      />
-      <Route
-        path="/:space/login/home"
-        render={(propsLocal) => (
-          <OakRoute
-            {...propsLocal}
-            {...props}
-            component={Login}
-            middleware={['readAuthentication']}
-          />
-        )}
-      />
-      <Route
-        path="/:space/login/oa"
-        render={(propsLocal) => (
-          <OakRoute
-            {...propsLocal}
-            {...props}
-            component={OneAuth}
-            middleware={['readAuthentication']}
           />
         )}
       />

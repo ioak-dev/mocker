@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
 import { saveProject } from '../service';
-import { sendMessage, newMessageId, newId } from '../../../events/MessageService';
+import {
+  sendMessage,
+  newMessageId,
+  newId,
+} from '../../../events/MessageService';
 import OakSection from '../../../oakui/wc/OakSection';
 import OakForm from '../../../oakui/wc/OakForm';
 import OakInput from '../../../oakui/wc/OakInput';
@@ -22,23 +26,21 @@ const CreateProject = (props: Props) => {
     reference: '',
   });
   const dispatch = useDispatch();
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
 
-  const handleChange = detail => {
+  const handleChange = (detail: any) => {
     setState({
       ...state,
       [detail.name]: detail.value,
     });
   };
 
-  const handleNameChange = detail => {
+  const handleNameChange = (detail: any) => {
     setState({
       ...state,
       name: detail.value,
       reference:
-        state.name === state.reference
-          ? detail.value
-          : state.reference,
+        state.name === state.reference ? detail.value : state.reference,
     });
   };
 
@@ -71,40 +73,48 @@ const CreateProject = (props: Props) => {
   const formId = newId();
 
   return (
-      <OakSection fillColor="container">
-        Create new project
-        <div className="create-project">
-          <OakForm formGroupName={formId} handleSubmit={save}>
-            <OakInput formGroupName={formId} 
-              value={state.name}
-              name="name"
-              handleInput={handleNameChange}
-              label="Project name"
-            />
-            <OakInput formGroupName={formId} 
-              value={state.reference
-                  .toLowerCase()
-                  .replace(/\s/g, '')
-                  .replace(/\W/g, '')}
-              name="reference"
-              handleInput={handleChange}
-              label="Reference word for URL path prefix"
-            />
-            <OakInput formGroupName={formId} 
-              value={state.description}
-              name="description"
-              handleInput={handleChange}
-              label="Short description about the project"
-            />
-          </OakForm>
+    <OakSection fillColor="container">
+      Create new project
+      <div className="create-project">
+        <OakForm formGroupName={formId} handleSubmit={save}>
+          <OakInput
+            formGroupName={formId}
+            value={state.name}
+            name="name"
+            handleInput={handleNameChange}
+            label="Project name"
+          />
+          <OakInput
+            formGroupName={formId}
+            value={state.reference
+              .toLowerCase()
+              .replace(/\s/g, '')
+              .replace(/\W/g, '')}
+            name="reference"
+            handleInput={handleChange}
+            label="Reference word for URL path prefix"
+          />
+          <OakInput
+            formGroupName={formId}
+            value={state.description}
+            name="description"
+            handleInput={handleChange}
+            label="Short description about the project"
+          />
+        </OakForm>
         <div>
-            <OakButton theme="primary" variant="appear" type="submit" formGroupName={formId}>
-              Save
-            </OakButton>
-            <OakButton theme="default" variant="appear">
-              Cancel
-            </OakButton>
-          </div>
+          <OakButton
+            theme="primary"
+            variant="appear"
+            type="submit"
+            formGroupName={formId}
+          >
+            Save
+          </OakButton>
+          <OakButton theme="default" variant="appear">
+            Cancel
+          </OakButton>
+        </div>
       </div>
     </OakSection>
   );

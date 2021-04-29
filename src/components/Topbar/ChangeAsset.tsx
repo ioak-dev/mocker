@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, connect, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import OakButton from '../../oakui/wc/OakButton';
 
-import { getProfile, setProfile } from '../../actions/ProfileActions';
-import { sendMessage } from '../../events/MessageService';
-import OakLink from '../../oakui/OakLink';
 import './ChangeAsset.scss';
 
 interface Props {
@@ -12,13 +10,13 @@ interface Props {
 }
 
 const ChangeAsset = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
 
-  const profile = useSelector((state) => state.profile);
+  const profile = useSelector((state: any) => state.profile);
 
   const history = useHistory();
 
-  const assets = useSelector((state) => state.asset.assets);
+  const assets = useSelector((state: any) => state.asset.assets);
 
   const [currentAsset, setCurrentAsset] = useState<any>(null);
 
@@ -42,13 +40,13 @@ const ChangeAsset = (props: Props) => {
     <div className="change-asset">
       {currentAsset && <div>{currentAsset.name}</div>}
       <div>
-        <OakLink
-          action={goToChangeAssetPage}
+        <OakButton
+          handleClick={goToChangeAssetPage}
           theme="secondary"
           variant="appear"
         >
           {currentAsset ? 'Change company' : 'Choose company'}
-        </OakLink>
+        </OakButton>
       </div>
     </div>
   );

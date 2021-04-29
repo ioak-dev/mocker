@@ -4,7 +4,13 @@ const webpack = require('webpack');
 const dotenv = require('dotenv');
 
 module.exports = (env) => {
-  console.log('NODE_ENV', env.NODE_ENV);
+  let envFile = '.env';
+  if (env.target) {
+    envFile = `.env.${env.target}`;
+  }
+  const envParsed = dotenv.config({
+    path: path.join(__dirname, envFile),
+  }).parsed;
   return {
     entry: './src/app.tsx',
     resolve: {
@@ -73,7 +79,7 @@ module.exports = (env) => {
         favicon: './src/static/favicon.ico',
       }),
       new webpack.DefinePlugin({
-        'process.env': JSON.stringify(dotenv.config().parsed), // it will automatically pick up key values from .env file
+        'process.env': JSON.stringify(envParsed), // it will automatically pick up key values from .env file
         // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       }),
       // new webpack.DefinePlugin({

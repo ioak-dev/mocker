@@ -8,12 +8,12 @@ interface Props {
 }
 
 const ListSpaces = (props: Props) => {
-  const spaceList = useSelector(state => state.space);
+  const spaceList = useSelector((state: any) => state.space);
   return (
     <div className="list-spaces">
       Choose a space to proceed
       <div className="list-spaces--content">
-        {spaceList?.spaces?.map(space => (
+        {spaceList?.spaces?.map((space: any) => (
           <SpaceItem space={space} history={props.history} key={space.id} />
         ))}
       </div>

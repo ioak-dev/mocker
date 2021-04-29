@@ -33,10 +33,10 @@ const FieldElement = (props: Props) => {
 
   useEffect(() => {
     setCurrentField(
-      props.data.find(item => item.reference === props.reference)
+      props.data.find((item) => item.reference === props.reference)
     );
     setChildren(
-      props.data.filter(item => item.parentReference === props.reference)
+      props.data.filter((item) => item.parentReference === props.reference)
     );
   }, [props.data, props.reference]);
 
@@ -63,7 +63,7 @@ const FieldElement = (props: Props) => {
     props.handleChange('remove', props.reference, props.id);
   };
 
-  const onEditNode = updatedNode => {
+  const onEditNode = (updatedNode: any) => {
     props.handleChange('edit', updatedNode, props.id);
     setShowEditDialog(false);
   };
@@ -112,7 +112,7 @@ const FieldElement = (props: Props) => {
         </div>
         {children?.length > 0 && (
           <div className="field-element-children">
-            {children.map(child => (
+            {children.map((child: any) => (
               <div
                 className="field-element-children--element"
                 key={child.reference}

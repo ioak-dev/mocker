@@ -32,14 +32,14 @@ const EditAttribute = (props: Props) => {
     setState({ ...state, ...props.data });
   }, [props.data]);
 
-  const handleChange = (detail) => {
+  const handleChange = (detail: any) => {
     setState({
       ...state,
       [detail.name]: detail.value,
     });
   };
 
-  const handleNumberChange = (detail) => {
+  const handleNumberChange = (detail: any) => {
     setState({
       ...state,
       [detail.name]: parseInt(detail.value, 10),

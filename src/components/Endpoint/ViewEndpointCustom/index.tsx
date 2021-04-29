@@ -19,13 +19,13 @@ const ViewEndpointCustom = (props: Props) => {
     id: '',
   });
   const dispatch = useDispatch();
-  const authorization = useSelector((state) => state.authorization);
-  const customEndpoint = useSelector((state) =>
-    state.endpoint.endpoints.find((item) => item._id === query.id)
+  const authorization = useSelector((state: any) => state.authorization);
+  const customEndpoint = useSelector((state: any) =>
+    state.endpoint.endpoints.find((item: any) => item._id === query.id)
   );
-  const project = useSelector((state) =>
+  const project = useSelector((state: any) =>
     state.project.projects.find(
-      (item) => item._id === customEndpoint?.projectId
+      (item: any) => item._id === customEndpoint?.projectId
     )
   );
   const goBack = () => props.history.goBack();

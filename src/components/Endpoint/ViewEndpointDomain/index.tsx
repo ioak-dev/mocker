@@ -21,13 +21,13 @@ const ViewEndpointDomain = (props: Props) => {
     id: '',
   });
   const dispatch = useDispatch();
-  const authorization = useSelector((state) => state.authorization);
-  const domainEndpoint = useSelector((state) =>
-    state.endpoint.endpoints.find((item) => item._id === query.id)
+  const authorization = useSelector((state: any) => state.authorization);
+  const domainEndpoint = useSelector((state: any) =>
+    state.endpoint.endpoints.find((item: any) => item._id === query.id)
   );
-  const project = useSelector((state) =>
+  const project = useSelector((state: any) =>
     state.project.projects.find(
-      (item) => item._id === domainEndpoint?.projectId
+      (item: any) => item._id === domainEndpoint?.projectId
     )
   );
   const goBack = () => props.history.goBack();
@@ -50,39 +50,20 @@ const ViewEndpointDomain = (props: Props) => {
     setQuery(query);
   }, [props.location.search]);
 
-  const [projectElements, setProjectElements] = useState<any>([]);
-
-  const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
-  };
-
-  const handleNameChange = (event) => {
-    setState({
-      ...state,
-      name: event.currentTarget.value
-        .toLowerCase()
-        .replace(/\s/g, '')
-        .replace(/\W/g, ''),
-    });
-  };
-
-  const handleDataStructureChange = (actionType, changeData) => {
+  const handleDataStructureChange = (actionType: string, changeData: any) => {
     console.log(actionType, changeData);
     let newData: any[] = [];
     switch (actionType) {
       case 'remove':
         newData = state.response.filter(
-          (item) =>
+          (item: any) =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
         newData = state.response.filter(
-          (item) => item.reference !== changeData.reference
+          (item: any) => item.reference !== changeData.reference
         );
         newData.push({ ...changeData });
         break;

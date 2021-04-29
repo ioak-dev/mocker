@@ -9,17 +9,17 @@ interface Props {
 }
 
 const Landing = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
 
   const goToLogin = () => {
     window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/appspace/${process.env.REACT_APP_ONEAUTH_APPSPACE_ID}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
-  }
+  };
 
   return (
     <div className="landing">
-          <ListSpaces history={props.history} />
-          <hr />
-          <GettingStartedSpace history={props.history} />
+      <ListSpaces history={props.history} />
+      <hr />
+      <GettingStartedSpace history={props.history} />
     </div>
   );
 };

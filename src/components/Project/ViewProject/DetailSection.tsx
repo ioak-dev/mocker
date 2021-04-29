@@ -22,7 +22,7 @@ interface Props {
 }
 
 const DetailSection = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
   const [state, setState] = useState({
     reference: '',
     description: '',
@@ -39,7 +39,7 @@ const DetailSection = (props: Props) => {
     console.log('edit page');
   };
 
-  const handleChange = (detail) => {
+  const handleChange = (detail: any) => {
     setState({
       ...state,
       [detail.name]: detail.value,
@@ -47,7 +47,7 @@ const DetailSection = (props: Props) => {
     setIsEdited(true);
   };
 
-  const handleNameChange = (detail) => {
+  const handleNameChange = (detail: any) => {
     setState({
       ...state,
       name: detail.value,

@@ -9,8 +9,8 @@ interface Props {
 }
 
 const NavAccountIcon = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
-  const profile = useSelector((state) => state.profile);
+  const authorization = useSelector((state: any) => state.authorization);
+  const profile = useSelector((state: any) => state.profile);
   return (
     <div
       className={`nav-account-icon ${profile.theme}`}

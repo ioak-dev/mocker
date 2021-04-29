@@ -7,8 +7,8 @@ import { fetchAllUsers } from '../../actions/UserActions';
 import { receiveMessage, sendMessage } from '../../events/MessageService';
 
 const Init = () => {
-  const authorization = useSelector((state) => state.authorization);
-  const profile = useSelector((state) => state.profile);
+  const authorization = useSelector((state: any) => state.authorization);
+  const profile = useSelector((state: any) => state.profile);
   const [
     previousAuthorizationState,
     setPreviousAuthorizationState,
@@ -61,10 +61,12 @@ const Init = () => {
 
   const initialize = () => {
     console.log('Initialization logic here');
-    dispatch(fetchAllUsers(space, authorization));
-    dispatch(fetchAllRoles(space, authorization));
-    dispatch(fetchAllProjects(space, authorization));
-    dispatch(fetchAllEndpoints(space, authorization));
+    if (space) {
+      dispatch(fetchAllUsers(space, authorization));
+      dispatch(fetchAllRoles(space, authorization));
+      dispatch(fetchAllProjects(space, authorization));
+      dispatch(fetchAllEndpoints(space, authorization));
+    }
   };
   return <></>;
 };

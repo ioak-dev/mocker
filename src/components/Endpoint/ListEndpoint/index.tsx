@@ -4,16 +4,13 @@ import { compose as tableCompose } from '@oakui/core-stage/style-composer/OakTab
 
 import './style.scss';
 import OakButton from '../../../oakui/wc/OakButton';
-import OakClickArea from '../../../oakui/wc/OakClickArea';
 import OakFormActionsContainer from '../../../oakui/wc/OakFormActionsContainer';
-import OakLink from '../../../oakui/OakLink';
 import {
   TableCellDatatype,
   TableHeader,
 } from '@oakui/core-stage/types/TableHeaderType';
 import { PaginatePref } from '@oakui/core-stage/types/PaginatePrefType';
 import { getPage } from '@oakui/core-stage/service/OakTableService';
-import OakPaginate from '../../../oakui/wc/OakPaginate';
 
 const queryString = require('query-string');
 
@@ -24,7 +21,7 @@ interface Props {
 }
 
 const ListEndpoint = (props: Props) => {
-  const projects = useSelector((state) => state.project.projects);
+  const projects = useSelector((state: any) => state.project.projects);
   const [endpoints, setEndpoints] = useState<any[]>();
   const [projectElements, setProjectElements] = useState<any>([]);
 
@@ -46,11 +43,11 @@ const ListEndpoint = (props: Props) => {
     },
   ];
 
-  const allEndpoints = useSelector((state) => state.endpoint.endpoints);
+  const allEndpoints = useSelector((state: any) => state.endpoint.endpoints);
 
   useEffect(() => {
     setEndpoints(
-      allEndpoints.filter((item) => item.projectId === props.projectId)
+      allEndpoints.filter((item: any) => item.projectId === props.projectId)
     );
   }, [props.projectId, allEndpoints]);
 
@@ -127,13 +124,13 @@ const ListEndpoint = (props: Props) => {
                   {endpoints?.map((item) => (
                     <tr>
                       <td>
-                        <OakLink
-                          color="primary"
+                        <OakButton
+                          theme="primary"
                           handleClick={() => goToViewPage(item)}
-                          underline="hover"
+                          // underline="hover"
                         >
                           {item.name}
-                        </OakLink>
+                        </OakButton>
                       </td>
                       <td>{item.description}</td>
                       <td>

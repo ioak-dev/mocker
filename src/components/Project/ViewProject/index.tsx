@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 
 import './style.scss';
 import DetailSection from './DetailSection';
-import { getProjectMembers } from '../service';
 import MemberSection from './MemberSection';
 import OakSection from '../../../oakui/wc/OakSection';
 import OakTab from '../../../oakui/wc/OakTab';
@@ -18,10 +17,10 @@ interface Props {
 }
 
 const ViewProject = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
   const query = queryString.parse(props.location.search);
-  const project = useSelector((state) =>
-    state.project.projects.find((item) => item._id === query.id)
+  const project = useSelector((state: any) =>
+    state.project.projects.find((item: any) => item._id === query.id)
   );
   const [tabIndex, setTabIndex] = useState(0);
 

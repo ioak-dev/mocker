@@ -40,7 +40,7 @@ const CustomEndpoint = (props: Props) => {
     payload: [],
   });
   const dispatch = useDispatch();
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
 
   useEffect(() => {
     if (props.data) {
@@ -82,14 +82,14 @@ const CustomEndpoint = (props: Props) => {
     switch (actionType) {
       case 'remove':
         newData = state[fieldName].filter(
-          (item) =>
+          (item: any) =>
             item.parentReference !== changeData && item.reference !== changeData
         );
         break;
 
       case 'edit':
         newData = state[fieldName].filter(
-          (item) => item.reference !== changeData.reference
+          (item: any) => item.reference !== changeData.reference
         );
         newData.push({ ...changeData });
         break;
@@ -141,7 +141,6 @@ const CustomEndpoint = (props: Props) => {
           <>
             <OakInput
               gutterBottom
-              fill="container"
               formGroupName={formId}
               value={state.name}
               handleChange={handleNameChange}
@@ -150,7 +149,6 @@ const CustomEndpoint = (props: Props) => {
             />
             <OakSelect
               gutterBottom
-              fill="container"
               formGroupName={formId}
               name="method"
               value={state.method}
@@ -185,7 +183,6 @@ const CustomEndpoint = (props: Props) => {
             {/* <OakSubheading title="Web service response" /> */}
             <OakSelect
               gutterBottom
-              fill="container"
               formGroupName={formId}
               value={state.responseType}
               handleChange={handleChange}

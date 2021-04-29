@@ -36,7 +36,7 @@ const DomainEndpoint = (props: Props) => {
     { id: 'None', value: 'None - We do not have a unique identifier' },
   ]);
   const dispatch = useDispatch();
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
 
   useEffect(() => {
     if (props.data) {

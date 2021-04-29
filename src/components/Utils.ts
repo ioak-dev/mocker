@@ -1,4 +1,4 @@
-export function isEmptyOrSpaces(str) {
+export function isEmptyOrSpaces(str: any) {
   return str === null || str.match(/^ *$/) !== null;
 }
 
@@ -15,7 +15,7 @@ export function isEmptyAttributes(object: Record<string, any>) {
   });
 }
 
-export function match(text, words) {
+export function match(text: string, words: string) {
   let found = false;
   if (words) {
     words.split(' ').forEach((word) => {
@@ -27,7 +27,11 @@ export function match(text, words) {
   return found;
 }
 
-export function sort(array, property, isReverseOrder) {
+export function sort(
+  array: any[],
+  property: string | number,
+  isReverseOrder: boolean
+) {
   const result = array.sort(function (o1, o2) {
     if (isReverseOrder) {
       return o1[property] > o2[property]

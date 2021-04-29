@@ -25,7 +25,7 @@ interface Props {
 }
 
 const ApiSpecification = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
   const [copied, setCopied] = useState(false);
   const [state, setState] = useState({
     alias: '',
@@ -40,13 +40,6 @@ const ApiSpecification = (props: Props) => {
       }
     });
   }, []);
-
-  const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
-  };
 
   const addAlias = async () => {
     if (
@@ -83,7 +76,7 @@ const ApiSpecification = (props: Props) => {
     reset();
   };
 
-  const removeAlias = async (alias) => {
+  const removeAlias = async (alias: any) => {
     const jobId = newMessageId();
     sendMessage('notification', true, {
       id: jobId,
@@ -93,7 +86,7 @@ const ApiSpecification = (props: Props) => {
     const response = await saveEndpoint(props.space, authorization, {
       ...props.endpoint,
       alias: props.endpoint.alias.filter(
-        (item) => item.pathKey !== props.pathKey || item.path !== alias
+        (item: any) => item.pathKey !== props.pathKey || item.path !== alias
       ),
     });
     if (response.status === 200) {
@@ -124,8 +117,8 @@ const ApiSpecification = (props: Props) => {
         <>
           {props.endpoint.alias &&
             props.endpoint.alias
-              .filter((alias) => alias.pathKey === props.pathKey)
-              .map((alias) => (
+              .filter((alias: any) => alias.pathKey === props.pathKey)
+              .map((alias: any) => (
                 <ApiSpecificationLink
                   baseUrl={props.baseUrl + (props.extendedUrl || '')}
                   extendedUrl={`${alias.path}`}

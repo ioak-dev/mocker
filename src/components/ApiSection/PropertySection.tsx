@@ -1,8 +1,7 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React from 'react';
+import { compose as tableCompose } from '@oakui/core-stage/style-composer/OakTableComposer';
 
 import './style.scss';
-import OakTypography from '../../oakui/wc/OakTypography';
-import OakTable from '../../oakui/wc/OakTable';
 
 interface Props {
   properties: {
@@ -16,28 +15,26 @@ interface Props {
 const PropertySection = (props: Props) => {
   return (
     <div className="property-section">
-      <OakTable fill="none" navPlacement="none" elevation={0}>
-        <table>
-          <thead>
+      <table className={tableCompose({ color: 'global' })}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.properties.map((row) => (
             <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Default</th>
-              <th>Description</th>
+              <td>{row.name}</td>
+              <td dangerouslySetInnerHTML={{ __html: row.type || '' }} />
+              <td>{row.default}</td>
+              <td>{row.description}</td>
             </tr>
-          </thead>
-          <tbody>
-            {props.properties.map((row) => (
-              <tr>
-                <td>{row.name}</td>
-                <td dangerouslySetInnerHTML={{ __html: row.type || '' }} />
-                <td>{row.default}</td>
-                <td>{row.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </OakTable>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

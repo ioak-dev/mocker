@@ -6,12 +6,14 @@ import constants from '../components/Constants';
 
 const domain = 'project';
 
-export const fetchAllProjects = (space, authorization) => dispatch => {
+export const fetchAllProjects = (space: string, authorization: any) => (
+  dispatch: any
+) => {
   httpGet(`${constants.API_URL_PROJECT}/${space}`, {
     headers: {
       Authorization: authorization.token,
     },
-  }).then(response => {
+  }).then((response) => {
     dispatch({
       type: RELOAD_PROJECTS,
       payload: { projects: response.data.data },

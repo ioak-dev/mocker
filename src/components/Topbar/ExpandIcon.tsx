@@ -10,9 +10,9 @@ interface Props {
 }
 
 const ExpandIcon = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
 
-  const profile = useSelector((state) => state.profile);
+  const profile = useSelector((state: any) => state.profile);
 
   const dispatch = useDispatch();
 

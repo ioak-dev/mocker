@@ -9,7 +9,6 @@ import {
 import { getPage } from '@oakui/core-stage/service/OakTableService';
 import { addRole, removeRole } from '../service';
 import { newMessageId, sendMessage } from '../../../events/MessageService';
-import OakTable from '../../../oakui/wc/OakTable';
 import OakCheckbox from '../../../oakui/wc/OakCheckbox';
 
 import './MemberSection.scss';
@@ -79,12 +78,7 @@ const MemberSection = (props: Props) => {
   };
 
   return (
-    <OakSection
-      fillColor="container"
-      rounded
-      elevation={1}
-      className="project-member-section__root"
-    >
+    <OakSection fillColor="container" rounded elevation={1}>
       <div className="project-member-section">
         <div className="project-member-section__heading">User permissions</div>
         <OakPaginate

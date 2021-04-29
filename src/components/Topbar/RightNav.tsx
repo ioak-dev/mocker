@@ -9,7 +9,6 @@ import { receiveMessage, sendMessage } from '../../events/MessageService';
 import DarkModeIcon from '../Navigation/DarkModeIcon';
 import NavAccountIcon from '../Navigation/NavAccountIcon';
 import { removeAuth } from '../../actions/AuthActions';
-import OakButton from '../../oakui/wc/OakButton';
 
 interface Props {
   cookies: any;
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const RightNav = (props: Props) => {
-  const authorization = useSelector((state) => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -39,7 +38,7 @@ const RightNav = (props: Props) => {
     });
   };
 
-  const login = (type) => {
+  const login = (type: string) => {
     window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/appspace/${process.env.REACT_APP_ONEAUTH_APPSPACE_ID}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
   };
 

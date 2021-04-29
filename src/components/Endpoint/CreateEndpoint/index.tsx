@@ -23,7 +23,7 @@ const emptyEndpoint = {
 
 const CreateEndpoint = (props: Props) => {
   const goBack = () => props.history.goBack();
-  const projects = useSelector((state) => state.project.projects);
+  const projects = useSelector((state: any) => state.project.projects);
   const [state, setState] = useState({
     type: 'Domain endpoint',
     projectId: '',

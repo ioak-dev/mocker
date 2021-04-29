@@ -2,7 +2,11 @@ import { httpPut } from '../Lib/RestTemplate';
 import constants from '../Constants';
 import { sendMessage } from '../../events/MessageService';
 
-export const saveDomainEndpoint = async (space, authorization, payload) => {
+export const saveDomainEndpoint = async (
+  space: string,
+  authorization: any,
+  payload: any
+) => {
   const response = await httpPut(
     `${constants.API_URL_ENDPOINT_DOMAIN}/${space}/`,
     payload,
@@ -15,7 +19,11 @@ export const saveDomainEndpoint = async (space, authorization, payload) => {
   return response;
 };
 
-export const saveCustomEndpoint = async (space, authorization, payload) => {
+export const saveCustomEndpoint = async (
+  space: string,
+  authorization: any,
+  payload: any
+) => {
   const response = await httpPut(
     `${constants.API_URL_ENDPOINT_CUSTOM}/${space}/`,
     payload,
@@ -28,7 +36,11 @@ export const saveCustomEndpoint = async (space, authorization, payload) => {
   return response;
 };
 
-export const saveEndpoint = async (space, authorization, payload) => {
+export const saveEndpoint = async (
+  space: string,
+  authorization: any,
+  payload: any
+) => {
   const response = await httpPut(
     `${constants.API_URL_ENDPOINT}/${space}/`,
     payload,

@@ -11,23 +11,23 @@ interface Props {
 }
 
 const ListProject = (props: Props) => {
-  const projects = useSelector(state => state.project.projects);
+  const projects = useSelector((state: any) => state.project.projects);
   const gotoCreatePage = () =>
     props.history.push(`/${props.space}/project/create`);
   return (
-      <OakSection>
-        List of projects
-        <div className="list-project">
-          {projects?.map(item => (
-            <ProjectLink
-              key={item._id}
-              space={props.space}
-              history={props.history}
-              project={item}
-            />
-          ))}
-        </div>
-      </OakSection>
+    <OakSection>
+      List of projects
+      <div className="list-project">
+        {projects?.map((item: any) => (
+          <ProjectLink
+            key={item._id}
+            space={props.space}
+            history={props.history}
+            project={item}
+          />
+        ))}
+      </div>
+    </OakSection>
   );
 };
 

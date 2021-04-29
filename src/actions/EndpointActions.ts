@@ -5,12 +5,14 @@ import constants from '../components/Constants';
 
 const domain = 'endpoint';
 
-export const fetchAllEndpoints = (space, authorization) => dispatch => {
+export const fetchAllEndpoints = (space: string, authorization: any) => (
+  dispatch: any
+) => {
   httpGet(`${constants.API_URL_ENDPOINT}/${space}`, {
     headers: {
       Authorization: authorization.token,
     },
-  }).then(response => {
+  }).then((response) => {
     console.log(response.data.data);
     dispatch({
       type: RELOAD_ENDPOINTS,
