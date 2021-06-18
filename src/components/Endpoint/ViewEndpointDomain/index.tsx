@@ -105,7 +105,7 @@ const ViewEndpointDomain = (props: Props) => {
       tabs={['Configuration', 'API']}
       handleChange={handleTabChange}
     >
-      <div className="tab-section">
+      <div>
         {tabIndex === 0 && domainEndpoint && (
           <DomainEndpoint
             data={domainEndpoint}

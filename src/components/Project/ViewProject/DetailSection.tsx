@@ -88,7 +88,7 @@ const DetailSection = (props: Props) => {
     }
   };
 
-  const formId = newId();
+  const [formId, setFormId] = useState(newId());
 
   return (
     <div className="project-detail-section">

@@ -40,7 +40,7 @@ module.exports = (env) => {
           ],
         },
         {
-          test: /\.scss$/,
+          test: /\.(scss|css)$/,
           use: [
             {
               loader: 'style-loader',

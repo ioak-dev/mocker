@@ -16,7 +16,7 @@ interface Props {
 }
 
 const EditAttribute = (props: Props) => {
-  const formId = newId();
+  const [formId, setFormId] = useState(newId());
   const [state, setState] = useState({
     name: '',
     datatype: '',
@@ -51,7 +51,7 @@ const EditAttribute = (props: Props) => {
   };
 
   return (
-    <OakModal showModal={props.visible} handleClose={props.toggleVisibility}>
+    <OakModal isOpen={props.visible} handleClose={props.toggleVisibility}>
       <div slot="body">
         <OakForm handleSubmit={save} formGroupName={formId}>
           <OakInput
@@ -64,7 +64,9 @@ const EditAttribute = (props: Props) => {
           />
           <OakSelect
             value={state.datatype}
+            formGroupName={formId}
             name="datatype"
+            gutterBottom
             handleChange={handleChange}
             label="Datatype"
             options={[
@@ -148,15 +150,18 @@ const EditAttribute = (props: Props) => {
           )}
         </OakForm>
       </div>
-      <div className="modal-footer">
-        <OakButton
-          type="submit"
-          theme="primary"
-          variant="appear"
-          formGroupName={formId}
-        >
-          Update
-        </OakButton>
+      <div slot="footer">
+        <div className="modal-footer">
+          <OakButton
+            type="submit"
+            theme="primary"
+            variant="appear"
+            formGroupName={formId}
+            // handleClick={save}
+          >
+            Update
+          </OakButton>
+        </div>
       </div>
     </OakModal>
   );

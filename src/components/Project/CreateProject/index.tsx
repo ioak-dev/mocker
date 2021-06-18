@@ -70,7 +70,7 @@ const CreateProject = (props: Props) => {
     }
   };
 
-  const formId = newId();
+  const [formId, setFormId] = useState(newId());
 
   return (
     <OakSection fillColor="container">

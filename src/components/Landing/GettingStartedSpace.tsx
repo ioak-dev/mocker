@@ -19,17 +19,17 @@ const GettingStartedSpace = (props: Props) => {
           <div className="typography-4">
             An asset represents an application or product being supported.
             Create an asset to get started with the process of onboarding your
-            product into Expenso.
+            product into Mocker.
           </div>
-          <div className="typography-7">Set Expenso URL in your product</div>
+          <div className="typography-7">Set Mocker URL in your product</div>
           <div className="typography-4">
             To provide seemless experience to your users, add a link from your
-            product to Expenso. By triggering a button for example from your
-            product, your users will be securely transferred to Expenso with
+            product to Mocker. By triggering a button for example from your
+            product, your users will be securely transferred to Mocker with
             their details.
           </div>
           <div className="typography-7">
-            Securely transmit user information to Expenso
+            Securely transmit user information to Mocker
           </div>
           <div className="typography-4">
             When you redirect from your product, transmit the user information

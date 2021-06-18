@@ -6,6 +6,7 @@ import CustomEndpoint from '../CustomEndpoint';
 import DomainEndpoint from '../DomainEndpoint';
 import { newId } from '../../../events/MessageService';
 import OakSelect from '../../../oakui/wc/OakSelect';
+import OakSection from '../../../oakui/wc/OakSection';
 
 const queryString = require('query-string');
 
@@ -63,30 +64,41 @@ const CreateEndpoint = (props: Props) => {
     );
   };
 
-  const formId = newId();
+  const [formId, setFormId] = useState(newId());
 
   return (
     <>
-      New Endpoint(page title)
-      <br />
-      Basic details (Section title)
-      <OakSelect
-        name="projectId"
-        value={state.projectId}
-        handleChange={handleProjectChange}
-        label="Project"
-        optionsAsKeyValue={projectElements}
-      />
-      <OakSelect
-        name="type"
-        value={state.type}
-        handleChange={handleTypeChange}
-        label="Endpoint type"
-        optionsAsKeyValue={[
-          { id: 'domain', value: 'Domain endpoint' },
-          { id: 'custom', value: 'Custom endpoint' },
-        ]}
-      />
+      <OakSection
+        fillColor="container"
+        paddingHorizontal={2}
+        paddingVertical={2}
+        rounded
+        elevation={1}
+        marginVertical={4}
+      >
+        <div className="section__heading">Create endpoint</div>
+        <div className="section__form">
+          <OakSelect
+            name="projectId"
+            gutterBottom
+            value={state.projectId}
+            handleChange={handleProjectChange}
+            label="Project"
+            optionsAsKeyValue={projectElements}
+          />
+          <OakSelect
+            name="type"
+            gutterBottom
+            value={state.type}
+            handleChange={handleTypeChange}
+            label="Endpoint type"
+            optionsAsKeyValue={[
+              { id: 'domain', value: 'Domain endpoint' },
+              { id: 'custom', value: 'Custom endpoint' },
+            ]}
+          />
+        </div>
+      </OakSection>
       {state.projectId && state.type === 'domain' && (
         <DomainEndpoint
           space={props.space}

@@ -55,7 +55,7 @@ const OakRoute = (props: Props) => {
     if (authorization.isAuth) {
       return true;
     }
-    const cookieKey = `mockback_${props.match.params.space}`;
+    const cookieKey = `mocker_${props.match.params.space}`;
     const authKey = props.cookies.get(cookieKey);
     const baseAuthUrl = `/auth/${props.match.params.space}`;
     if (authKey) {

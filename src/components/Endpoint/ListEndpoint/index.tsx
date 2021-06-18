@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { compose as linkCompose } from '@oakui/core-stage/style-composer/OakLinkComposer';
 import { compose as tableCompose } from '@oakui/core-stage/style-composer/OakTableComposer';
 import {
   TableCellDatatype,
@@ -115,30 +116,33 @@ const ListEndpoint = (props: Props) => {
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Description</th>
                     <th>Http methods</th>
                     <th>Data source</th>
+                    <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   {endpoints?.map((item) => (
                     <tr>
                       <td>
-                        <OakButton
-                          theme="primary"
-                          handleClick={() => goToViewPage(item)}
-                          // underline="hover"
+                        <a
+                          href={`#/${props.space}/endpoint/${item.type}/view?id=${item._id}`}
+                          className={linkCompose({
+                            underlineStyle: 'hover',
+                            textStyle: 'always',
+                            underlineThickness: 'thin',
+                          })}
                         >
                           {item.name}
-                        </OakButton>
+                        </a>
                       </td>
-                      <td>{item.description}</td>
                       <td>
                         {item.type === 'domain'
                           ? 'GET, POST, PUT, DELETE'
                           : item.method}
                       </td>
                       <td>Random / Defined</td>
+                      <td>{item.description}</td>
                     </tr>
                   ))}
                 </tbody>

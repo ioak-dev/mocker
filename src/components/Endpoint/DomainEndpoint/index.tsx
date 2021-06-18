@@ -87,27 +87,8 @@ const DomainEndpoint = (props: Props) => {
     });
   };
 
-  const handleDataStructureChange = (actionType: string, changeData: any) => {
-    console.log(actionType, changeData);
-    let newData: any[] = [];
-    switch (actionType) {
-      case 'remove':
-        newData = state.response.filter(
-          (item: any) =>
-            item.parentReference !== changeData && item.reference !== changeData
-        );
-        break;
-
-      case 'edit':
-        newData = state.response.filter(
-          (item: any) => item.reference !== changeData.reference
-        );
-        newData.push({ ...changeData });
-        break;
-      default:
-        break;
-    }
-    setState({ ...state, response: newData });
+  const handleDataStructureChange = (data: any) => {
+    setState({ ...state, response: data });
   };
 
   const save = async () => {
@@ -131,75 +112,66 @@ const DomainEndpoint = (props: Props) => {
         message: `Domain endpoint [${state.name}] saved successfully`,
         duration: 3000,
       });
-      props.history.push(
-        `/${props.space}/endpoint?projectId=${props.projectId}`
-      );
+      props.history.push(`/${props.space}/project/view?id=${props.projectId}`);
     }
   };
 
-  const formId = newId();
+  const [formId, setFormId] = useState(newId());
 
   return (
     <>
-      {props.projectId && (
-        <OakForm formGroupName={formId} handleSubmit={save}>
+      <OakSection
+        fillColor="container"
+        paddingHorizontal={2}
+        paddingVertical={2}
+        marginVertical={4}
+        rounded
+        elevation={1}
+      >
+        {props.projectId && (
+          // <OakForm formGroupName={formId} handleSubmit={save}>
           <div className="domain-endpoint-sections">
-            <OakSection
-              fillColor="container"
-              paddingHorizontal={2}
-              paddingVertical={4}
-              rounded
-              elevation={1}
-            >
-              <div className="section__heading">Endpoint configuration</div>
-              <div className="section__form">
-                <OakInput
-                  color="container"
-                  gutterBottom
-                  formGroupName={formId}
-                  value={state.name}
-                  name="name"
-                  handleChange={handleNameChange}
-                  label="Endpoint path"
-                />
-                <OakSelect
-                  color="container"
-                  gutterBottom
-                  formGroupName={formId}
-                  value={state.source}
-                  name="source"
-                  handleChange={handleChange}
-                  optionsAsKeyValue={[
-                    { id: 'Hard coded', value: 'Hard coded' },
-                    {
-                      id: 'Generated based on data structure',
-                      value: 'Generated based on data structure',
-                    },
-                  ]}
-                  label="Data source"
-                />
-              </div>
-            </OakSection>
+            {/* <div className="section__heading">Endpoint configuration</div> */}
+            <div className="section__form">
+              <OakInput
+                color="container"
+                gutterBottom
+                formGroupName={formId}
+                value={state.name}
+                name="name"
+                handleChange={handleNameChange}
+                label="Endpoint path"
+              />
+              <OakSelect
+                color="container"
+                gutterBottom
+                formGroupName={formId}
+                value={state.source}
+                name="source"
+                handleChange={handleChange}
+                optionsAsKeyValue={[
+                  { id: 'Hard coded', value: 'Hard coded' },
+                  {
+                    id: 'Generated based on data structure',
+                    value: 'Generated based on data structure',
+                  },
+                ]}
+                label="Data source"
+              />
+            </div>
             {state.source && (
-              <OakSection
-                fillColor="container"
-                paddingHorizontal={2}
-                paddingVertical={4}
-                rounded
-                elevation={1}
-              >
-                <div className="section__heading">Response</div>
+              <>
+                {/* <div className="section__heading">Response configuration</div> */}
                 {state.source === 'Generated based on data structure' && (
                   <>
                     <DataStructureBuilder
-                      data={state}
-                      id="response"
+                      data={state.response}
                       label="Domain data structure"
                       handleChange={handleDataStructureChange}
+                      gutterBottom
                     />
                     <OakSelect
                       color="container"
-                      gutterBottom
                       formGroupName={formId}
                       value={state.key}
                       name="key"
@@ -213,7 +185,6 @@ const DomainEndpoint = (props: Props) => {
                   <OakInput
                     type="textarea"
                     color="container"
-                    gutterBottom
                     formGroupName={formId}
                     value={state.responseData}
                     name="responseData"
@@ -221,17 +192,18 @@ const DomainEndpoint = (props: Props) => {
                     label="Response data as JSON"
                   />
                 )}
-              </OakSection>
+              </>
             )}
           </div>
-        </OakForm>
-      )}
+          // </OakForm>
+        )}
+      </OakSection>
       <div className="action-footer position-right">
         <OakButton
           theme="primary"
           variant="appear"
           formGroupName={formId}
-          type="submit"
+          handleClick={save}
         >
           Save
         </OakButton>

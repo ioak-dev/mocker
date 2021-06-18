@@ -1,14 +1,15 @@
 {
   "name": "oakui-docs",
   "version": "1.0.0",
-  "description": "Documentation of oakui",
+  "description": "Mocker application",
   "main": "index.js",
-  "homepage": "https://oakui-docs.ioak.io",
+  "homepage": "https://mocker-app.ioak.io",
   "scripts": {
     "start": "tsc && webpack serve --env target=development --config webpack.config.js --mode development",
     "build:local": "tsc -w",
     "build": "tsc && webpack --env target=production --config webpack.config.js --mode production",
     "deploy": "npm run build&&gh-pages -d build",
+    "deploy-only": "gh-pages -d build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
@@ -62,6 +63,7 @@
     "@types/uuid": "^8.3.0",
     "axios": "^0.21.1",
     "chart.js": "^2.9.4",
+    "cropperjs": "^1.5.11",
     "cross-env": "^7.0.3",
     "date-fns": "^2.16.1",
     "prettier": "^2.2.1",
@@ -71,6 +73,7 @@
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.2",
     "react-notifications-component": "^3.0.3",
+    "react-quill": "^1.3.5",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

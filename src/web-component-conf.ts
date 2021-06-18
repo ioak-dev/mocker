@@ -9,6 +9,8 @@ declare global {
       'oak-form-actions-container': any;
       'oak-input': any;
       'oak-select': any;
+      'oak-label': any;
+      'oak-image-upload': any;
       'oak-checkbox': any;
       'oak-checkbox-group': any;
       'oak-radio': any;

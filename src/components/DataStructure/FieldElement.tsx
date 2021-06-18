@@ -72,7 +72,7 @@ const FieldElement = (props: Props) => {
         <div className="field-element-parent">
           <div className="field-element-parent--title typography-5">
             {currentField && <div>{currentField?.name}</div>}
-            {!currentField && <div>Root</div>}
+            {!currentField && <div />}
           </div>
           {currentField && (
             <div className="field-element-parent--subtitle typography-4">
@@ -81,10 +81,14 @@ const FieldElement = (props: Props) => {
                   currentField.array ? ' [ ]' : ''
                 }`}
               </div>
-              {!currentField && <div>Root</div>}
+              {!currentField && <div />}
             </div>
           )}
-          <div className="field-element-parent--action typography-4">
+          <div
+            className={`field-element-parent--action ${
+              !currentField ? 'field-element-parent--action-persistent' : ''
+            } typography-4`}
+          >
             {currentField && (
               <>
                 <div
@@ -101,7 +105,12 @@ const FieldElement = (props: Props) => {
                 </div>
               </>
             )}
-            {(!currentField || currentField.datatype === 'object') && (
+            {!currentField && (
+              <div className="field-element-action hyperlink" onClick={newNode}>
+                new-attribute
+              </div>
+            )}
+            {currentField?.datatype === 'object' && (
               <div className="field-element-action hyperlink" onClick={newNode}>
                 new-attribute
               </div>

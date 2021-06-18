@@ -116,16 +116,13 @@ code {
     // align-items: center;
     // column-gap: 10px;
 
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-auto-flow: column;
     justify-content: center;
-    @media (max-width: 767px) {
-      flex-wrap: wrap;
-    }
-    > * {
-      margin: 5px 10px;
-    }
-
+    column-gap: 20px;
+    // @media (max-width: 767px) {
+    //   flex-wrap: wrap;
+    // }
     &.position-right {
       justify-content: flex-end;
     }

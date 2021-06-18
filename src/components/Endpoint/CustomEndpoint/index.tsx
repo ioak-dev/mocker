@@ -18,6 +18,7 @@ import OakForm from '../../../oakui/wc/OakForm';
 import OakInput from '../../../oakui/wc/OakInput';
 import OakSelect from '../../../oakui/wc/OakSelect';
 import OakButton from '../../../oakui/wc/OakButton';
+import OakSection from '../../../oakui/wc/OakSection';
 
 interface Props {
   space: string;
@@ -72,31 +73,8 @@ const CustomEndpoint = (props: Props) => {
     });
   };
 
-  const handleDataStructureChange = (
-    actionType: string,
-    changeData: any,
-    fieldName: string
-  ) => {
-    console.log(actionType, changeData, fieldName);
-    let newData: any[] = [];
-    switch (actionType) {
-      case 'remove':
-        newData = state[fieldName].filter(
-          (item: any) =>
-            item.parentReference !== changeData && item.reference !== changeData
-        );
-        break;
-
-      case 'edit':
-        newData = state[fieldName].filter(
-          (item: any) => item.reference !== changeData.reference
-        );
-        newData.push({ ...changeData });
-        break;
-      default:
-        break;
-    }
-    setState({ ...state, [fieldName]: newData });
+  const handleDataStructureChange = (data: any) => {
+    setState({ ...state, response: data });
   };
 
   const save = async () => {
@@ -120,98 +98,83 @@ const CustomEndpoint = (props: Props) => {
         message: `Domain endpoint [${state.name}] saved successfully`,
         duration: 3000,
       });
-      props.history.push(
-        `/${props.space}/endpoint?projectId=${props.projectId}`
-      );
+      props.history.push(`/${props.space}/project/view?id=${props.projectId}`);
     }
   };
 
-  const handleProjectChange = (detail: any) => {
-    props.history.push(
-      `/${props.space}/endpoint/custom/create?projectId=${detail.value}`
-    );
-  };
-
-  const formId = newId();
+  const [formId, setFormId] = useState(newId());
 
   return (
     <>
-      <OakForm formGroupName={formId} handleSubmit={save}>
+      <OakSection
+        fillColor="container"
+        paddingHorizontal={2}
+        paddingVertical={2}
+        rounded
+        elevation={1}
+        marginVertical={4}
+      >
+        {/* <OakForm formGroupName={formId} handleSubmit={save}> */}
         {props.projectId && (
           <>
-            <OakInput
-              gutterBottom
-              formGroupName={formId}
-              value={state.name}
-              handleChange={handleNameChange}
-              name="name"
-              label="Endpoint name"
-            />
-            <OakSelect
-              gutterBottom
-              formGroupName={formId}
-              name="method"
-              value={state.method}
-              handleChange={handleChange}
-              label="Request method"
-              options={['GET', 'POST', 'PUT']}
-            />
+            {/* <div className="section__heading">Endpoint configuration</div> */}
+            <div className="section__form">
+              <OakInput
+                gutterBottom
+                formGroupName={formId}
+                value={state.name}
+                handleChange={handleNameChange}
+                name="name"
+                label="Endpoint name"
+              />
+              <OakSelect
+                gutterBottom
+                formGroupName={formId}
+                name="method"
+                value={state.method}
+                handleChange={handleChange}
+                label="Request method"
+                options={['GET', 'POST', 'PUT']}
+              />
+              <OakSelect
+                gutterBottom
+                formGroupName={formId}
+                value={state.responseType}
+                handleChange={handleChange}
+                options={['None', 'Object', 'Array']}
+                name="responseType"
+                label="Response type"
+              />
+            </div>
           </>
         )}
-      </OakForm>
-      {props.projectId && (
-        <>
-          {/* <OakForm>
-            <OakSubheading title="Request payload" />
-            <OakSelect
-              data={state}
-              handleChange={handleChange}
-              elements={['None', 'Object', 'Array']}
-              id="payloadType"
-              label="Payload type"
-            />
-            {['Object', 'Array'].includes(state.payloadType) && (
-              <DataStructureBuilder
-                data={state}
-                id="payload"
-                label="Payload"
-                handleChange={handleDataStructureChange}
-              />
-            )}
-          </OakForm> */}
-          <OakForm handleSubmit={save} formGroupName={formId}>
-            {/* <OakSubheading title="Web service response" /> */}
-            <OakSelect
-              gutterBottom
-              formGroupName={formId}
-              value={state.responseType}
-              handleChange={handleChange}
-              options={['None', 'Object', 'Array']}
-              name="responseType"
-              label="Response type"
-            />
+        {props.projectId && (
+          <>
+            {/* <div className="section__heading">Response configuration</div> */}
             {['Object', 'Array'].includes(state.responseType) && (
               <DataStructureBuilder
-                data={state}
-                id="response"
+                data={state.response}
                 label="Response data structure"
                 handleChange={handleDataStructureChange}
               />
             )}
-          </OakForm>
-        </>
-      )}
-      <OakButton
-        theme="primary"
-        variant="appear"
-        type="submit"
-        formGroupName={formId}
-      >
-        Save
-      </OakButton>
-      <OakButton theme="default" variant="appear" handleClick={goBack}>
-        Close
-      </OakButton>
+          </>
+        )}
+        {/* </OakForm> */}
+      </OakSection>
+      <div className="action-footer position-right">
+        <OakButton
+          theme="primary"
+          variant="appear"
+          formGroupName={formId}
+          handleClick={save}
+        >
+          Save
+        </OakButton>
+        <OakButton theme="default" variant="appear" handleClick={goBack}>
+          Close
+        </OakButton>
+      </div>
     </>
   );
 };

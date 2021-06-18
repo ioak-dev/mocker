@@ -7,7 +7,7 @@ call npm pack
 call npm run move-package
 call npm run move-package-to-oneauth
 call npm run move-package-to-janus
-call npm run move-package-to-mockback
-cd ../mockback
+call npm run move-package-to-mocker
+cd ../mocker
 call npm i .\oakui-core-stage-1.0.0.tgz
 call npm start

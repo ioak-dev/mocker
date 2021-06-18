@@ -14,7 +14,7 @@ const OaLogin = (props: Props) => {
     if (props.location.search) {
       const query = queryString.parse(props.location.search);
       console.log('--------------', query);
-      props.cookies.set(`mockback_${query.space}`, query.authKey);
+      props.cookies.set(`mocker_${query.space}`, query.authKey);
       props.history.push(query.from ? query.from : `/${query.space}/project`);
     }
   }, []);
