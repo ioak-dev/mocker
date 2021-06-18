@@ -2,21 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakForm from '../../../oakui/OakForm';
-import OakText from '../../../oakui/OakText';
-import OakFooter from '../../../oakui/OakFooter';
-import OakButton from '../../../oakui/OakButton';
 import {
   saveCustomEndpoint,
   saveDomainEndpoint,
   saveEndpoint,
 } from '../service';
-import { sendMessage, newMessageId } from '../../../events/MessageService';
+import {
+  sendMessage,
+  newMessageId,
+  newId,
+} from '../../../events/MessageService';
 import DataStructureBuilder from '../../DataStructure/DataStructureBuilder';
-import OakSelect from '../../../oakui/OakSelect';
-import OakSection from '../../../oakui/OakSection';
-import OakSubheading from '../../../oakui/OakSubheading';
 import { fetchAllEndpoints } from '../../../actions/EndpointActions';
+import OakForm from '../../../oakui/wc/OakForm';
+import OakInput from '../../../oakui/wc/OakInput';
+import OakSelect from '../../../oakui/wc/OakSelect';
+import OakButton from '../../../oakui/wc/OakButton';
+import OakSection from '../../../oakui/wc/OakSection';
 
 interface Props {
   space: string;
@@ -39,7 +41,7 @@ const CustomEndpoint = (props: Props) => {
     payload: [],
   });
   const dispatch = useDispatch();
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
 
   useEffect(() => {
     if (props.data) {
@@ -57,48 +59,25 @@ const CustomEndpoint = (props: Props) => {
     }
   }, [props.projectId, props.data]);
 
-  const handleChange = event => {
+  const handleChange = (detail: any) => {
     setState({
       ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [detail.name]: detail.value,
     });
   };
 
-  const handleNameChange = event => {
+  const handleNameChange = (detail: any) => {
     setState({
       ...state,
-      name: event.currentTarget.value
-        .toLowerCase()
-        .replace(/\s/g, '')
-        .replace(/\W/g, ''),
+      name: detail.value.toLowerCase().replace(/\s/g, '').replace(/\W/g, ''),
     });
   };
 
-  const handleDataStructureChange = (actionType, changeData, fieldName) => {
-    console.log(actionType, changeData, fieldName);
-    let newData: any[] = [];
-    switch (actionType) {
-      case 'remove':
-        newData = state[fieldName].filter(
-          item =>
-            item.parentReference !== changeData && item.reference !== changeData
-        );
-        break;
-
-      case 'edit':
-        newData = state[fieldName].filter(
-          item => item.reference !== changeData.reference
-        );
-        newData.push({ ...changeData });
-        break;
-      default:
-        break;
-    }
-    setState({ ...state, [fieldName]: newData });
+  const handleDataStructureChange = (data: any) => {
+    setState({ ...state, response: data });
   };
 
   const save = async () => {
-    console.log(props);
     const jobId = newMessageId();
     sendMessage('notification', true, {
       id: jobId,
@@ -109,9 +88,8 @@ const CustomEndpoint = (props: Props) => {
       ...state,
       type: 'custom',
       projectId: props.projectId,
-      alias: []
+      alias: [],
     });
-    console.log(response);
     if (response.status === 200) {
       dispatch(fetchAllEndpoints(props.space, authorization));
       sendMessage('notification', true, {
@@ -120,85 +98,83 @@ const CustomEndpoint = (props: Props) => {
         message: `Domain endpoint [${state.name}] saved successfully`,
         duration: 3000,
       });
-      props.history.push(`/${props.space}/endpoint?projectId=${props.projectId}`);
+      props.history.push(`/${props.space}/project/view?id=${props.projectId}`);
     }
   };
 
-  const handleProjectChange = event => {
-    props.history.push(
-      `/${props.space}/endpoint/custom/create?projectId=${event.currentTarget.value}`
-    );
-  };
+  const [formId, setFormId] = useState(newId());
 
   return (
     <>
-      <OakForm>
+      <OakSection
+        fillColor="container"
+        paddingHorizontal={2}
+        paddingVertical={2}
+        rounded
+        elevation={1}
+        marginVertical={4}
+      >
+        {/* <OakForm formGroupName={formId} handleSubmit={save}> */}
         {props.projectId && (
           <>
-            <OakText
-              data={state}
-              handleChange={handleNameChange}
-              id="name"
-              label="Endpoint name"
-            />
-            <OakSelect
-              id="method"
-              data={state}
-              handleChange={handleChange}
-              label="Request method"
-              elements={['GET', 'POST', 'PUT']}
-            />
+            {/* <div className="section__heading">Endpoint configuration</div> */}
+            <div className="section__form">
+              <OakInput
+                gutterBottom
+                formGroupName={formId}
+                value={state.name}
+                handleChange={handleNameChange}
+                name="name"
+                label="Endpoint name"
+              />
+              <OakSelect
+                gutterBottom
+                formGroupName={formId}
+                name="method"
+                value={state.method}
+                handleChange={handleChange}
+                label="Request method"
+                options={['GET', 'POST', 'PUT']}
+              />
+              <OakSelect
+                gutterBottom
+                formGroupName={formId}
+                value={state.responseType}
+                handleChange={handleChange}
+                options={['None', 'Object', 'Array']}
+                name="responseType"
+                label="Response type"
+              />
+            </div>
           </>
         )}
-      </OakForm>
-      {props.projectId && (
-        <>
-          {/* <OakForm>
-            <OakSubheading title="Request payload" />
-            <OakSelect
-              data={state}
-              handleChange={handleChange}
-              elements={['None', 'Object', 'Array']}
-              id="payloadType"
-              label="Payload type"
-            />
-            {['Object', 'Array'].includes(state.payloadType) && (
-              <DataStructureBuilder
-                data={state}
-                id="payload"
-                label="Payload"
-                handleChange={handleDataStructureChange}
-              />
-            )}
-          </OakForm> */}
-          <OakForm>
-            {/* <OakSubheading title="Web service response" /> */}
-            <OakSelect
-              data={state}
-              handleChange={handleChange}
-              elements={['None', 'Object', 'Array']}
-              id="responseType"
-              label="Response type"
-            />
+        {props.projectId && (
+          <>
+            {/* <div className="section__heading">Response configuration</div> */}
             {['Object', 'Array'].includes(state.responseType) && (
               <DataStructureBuilder
-                data={state}
-                id="response"
+                data={state.response}
                 label="Response data structure"
                 handleChange={handleDataStructureChange}
               />
             )}
-          </OakForm>
-        </>
-      )}
-      <OakFooter>
-        <OakButton theme="primary" variant="appear" action={save}>
+          </>
+        )}
+        {/* </OakForm> */}
+      </OakSection>
+      <div className="action-footer position-right">
+        <OakButton
+          theme="primary"
+          variant="appear"
+          formGroupName={formId}
+          handleClick={save}
+        >
           Save
         </OakButton>
-        <OakButton theme="default" variant="appear" action={goBack}>
+        <OakButton theme="default" variant="appear" handleClick={goBack}>
           Close
         </OakButton>
-      </OakFooter>
+      </div>
     </>
   );
 };

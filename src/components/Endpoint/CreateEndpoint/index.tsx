@@ -2,14 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './style.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakHeading from '../../../oakui/OakHeading';
-import OakSelect from '../../../oakui/OakSelect';
-import OakForm from '../../../oakui/OakForm';
-import OakSubheading from '../../../oakui/OakSubheading';
 import CustomEndpoint from '../CustomEndpoint';
 import DomainEndpoint from '../DomainEndpoint';
+import { newId } from '../../../events/MessageService';
+import OakSelect from '../../../oakui/wc/OakSelect';
+import OakSection from '../../../oakui/wc/OakSection';
 
 const queryString = require('query-string');
 
@@ -27,7 +24,7 @@ const emptyEndpoint = {
 
 const CreateEndpoint = (props: Props) => {
   const goBack = () => props.history.goBack();
-  const projects = useSelector(state => state.project.projects);
+  const projects = useSelector((state: any) => state.project.projects);
   const [state, setState] = useState({
     type: 'Domain endpoint',
     projectId: '',
@@ -42,81 +39,81 @@ const CreateEndpoint = (props: Props) => {
 
   useEffect(() => {
     const localState: any[] = [];
-    projects.map(item => {
-      localState.push({ key: item._id, value: item.name });
+    projects.map((item: any) => {
+      localState.push({ id: item._id, value: item.name });
     });
     setProjectElements(localState);
   }, [projects]);
 
-  const handleChange = event => {
+  const handleChange = (detail: any) => {
     setState({
       ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [detail.name]: detail.value,
     });
   };
 
-  const handleProjectChange = event => {
+  const handleProjectChange = (detail: any) => {
     props.history.push(
-      `/${props.space}/endpoint/create?projectId=${event.currentTarget.value}&type=${state.type}`
+      `/${props.space}/endpoint/create?projectId=${detail.value}&type=${state.type}`
     );
   };
 
-  const handleTypeChange = event => {
+  const handleTypeChange = (detail: any) => {
     props.history.push(
-      `/${props.space}/endpoint/create?projectId=${state.projectId}&type=${event.currentTarget.value}`
+      `/${props.space}/endpoint/create?projectId=${state.projectId}&type=${detail.value}`
     );
   };
+
+  const [formId, setFormId] = useState(newId());
 
   return (
-    <OakPage>
-      <OakSection>
-        <OakHeading
-          title="New Endpoint"
-          links={[
-            {
-              label: 'Back',
-              icon: 'reply',
-              action: goBack,
-            },
-          ]}
-          linkSize="large"
-        />
-        <OakForm>
-          <OakSubheading title="Basic details" />
+    <>
+      <OakSection
+        fillColor="container"
+        paddingHorizontal={2}
+        paddingVertical={2}
+        rounded
+        elevation={1}
+        marginVertical={4}
+      >
+        <div className="section__heading">Create endpoint</div>
+        <div className="section__form">
           <OakSelect
-            id="projectId"
-            data={state}
+            name="projectId"
+            gutterBottom
+            value={state.projectId}
             handleChange={handleProjectChange}
             label="Project"
-            objects={projectElements}
+            optionsAsKeyValue={projectElements}
           />
           <OakSelect
-            id="type"
-            data={state}
+            name="type"
+            gutterBottom
+            value={state.type}
             handleChange={handleTypeChange}
             label="Endpoint type"
-            objects={[
-              { key: 'domain', value: 'Domain endpoint' },
-              { key: 'custom', value: 'Custom endpoint' },
+            optionsAsKeyValue={[
+              { id: 'domain', value: 'Domain endpoint' },
+              { id: 'custom', value: 'Custom endpoint' },
             ]}
           />
-        </OakForm>
-        {state.projectId && state.type === 'domain' && (
-          <DomainEndpoint
-            space={props.space}
-            history={props.history}
-            projectId={state.projectId}
-          />
-        )}
-        {state.projectId && state.type === 'custom' && (
-          <CustomEndpoint
-            space={props.space}
-            history={props.history}
-            projectId={state.projectId}
-          />
-        )}
+        </div>
       </OakSection>
-    </OakPage>
+      {state.projectId && state.type === 'domain' && (
+        <DomainEndpoint
+          space={props.space}
+          history={props.history}
+          projectId={state.projectId}
+        />
+      )}
+      {state.projectId && state.type === 'custom' && (
+        <CustomEndpoint
+          space={props.space}
+          history={props.history}
+          projectId={state.projectId}
+        />
+      )}
+    </>
   );
 };
 

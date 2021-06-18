@@ -2,7 +2,11 @@ import { httpDelete, httpGet, httpPost, httpPut } from '../Lib/RestTemplate';
 import constants from '../Constants';
 import { sendMessage } from '../../events/MessageService';
 
-export const saveProject = async (space, authorization, payload) => {
+export const saveProject = async (
+  space: string,
+  authorization: any,
+  payload: any
+) => {
   const response = await httpPut(
     `${constants.API_URL_PROJECT}/${space}/`,
     payload,
@@ -15,9 +19,13 @@ export const saveProject = async (space, authorization, payload) => {
   return response;
 };
 
-export const addProjectMember = async (space, authorization, payload) => {
-  const response = await httpPost(
-    `${constants.API_URL_PROJECTMEMBER}/${space}/`,
+export const addRole = async (
+  space: string,
+  authorization: any,
+  payload: any
+) => {
+  const response = await httpPut(
+    `${constants.API_URL_ROLE}/${space}/`,
     payload,
     {
       headers: {
@@ -28,21 +36,13 @@ export const addProjectMember = async (space, authorization, payload) => {
   return response;
 };
 
-export const getProjectMembers = async (space, authorization, projectId) => {
-  const response = await httpGet(
-    `${constants.API_URL_PROJECTMEMBER}/${space}/project/${projectId}`,
-    {
-      headers: {
-        Authorization: authorization.token,
-      },
-    }
-  );
-  return response;
-};
-
-export const removeProjectMember = async (space, authorization, id) => {
+export const removeRole = async (
+  space: string,
+  authorization: any,
+  id: string
+) => {
   const response = await httpDelete(
-    `${constants.API_URL_PROJECTMEMBER}/${space}/${id}`,
+    `${constants.API_URL_ROLE}/${space}/${id}`,
     {
       headers: {
         Authorization: authorization.token,

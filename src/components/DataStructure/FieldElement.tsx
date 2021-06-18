@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
 import './FieldElement.scss';
-import { any } from 'prop-types';
 import { newId } from '../../events/MessageService';
 import EditAttribute from './EditAttribute';
 
@@ -33,10 +31,10 @@ const FieldElement = (props: Props) => {
 
   useEffect(() => {
     setCurrentField(
-      props.data.find(item => item.reference === props.reference)
+      props.data.find((item) => item.reference === props.reference)
     );
     setChildren(
-      props.data.filter(item => item.parentReference === props.reference)
+      props.data.filter((item) => item.parentReference === props.reference)
     );
   }, [props.data, props.reference]);
 
@@ -63,7 +61,7 @@ const FieldElement = (props: Props) => {
     props.handleChange('remove', props.reference, props.id);
   };
 
-  const onEditNode = updatedNode => {
+  const onEditNode = (updatedNode: any) => {
     props.handleChange('edit', updatedNode, props.id);
     setShowEditDialog(false);
   };
@@ -74,7 +72,7 @@ const FieldElement = (props: Props) => {
         <div className="field-element-parent">
           <div className="field-element-parent--title typography-5">
             {currentField && <div>{currentField?.name}</div>}
-            {!currentField && <div>Root</div>}
+            {!currentField && <div />}
           </div>
           {currentField && (
             <div className="field-element-parent--subtitle typography-4">
@@ -83,10 +81,14 @@ const FieldElement = (props: Props) => {
                   currentField.array ? ' [ ]' : ''
                 }`}
               </div>
-              {!currentField && <div>Root</div>}
+              {!currentField && <div />}
             </div>
           )}
-          <div className="field-element-parent--action typography-4">
+          <div
+            className={`field-element-parent--action ${
+              !currentField ? 'field-element-parent--action-persistent' : ''
+            } typography-4`}
+          >
             {currentField && (
               <>
                 <div
@@ -103,7 +105,12 @@ const FieldElement = (props: Props) => {
                 </div>
               </>
             )}
-            {(!currentField || currentField.datatype === 'object') && (
+            {!currentField && (
+              <div className="field-element-action hyperlink" onClick={newNode}>
+                new-attribute
+              </div>
+            )}
+            {currentField?.datatype === 'object' && (
               <div className="field-element-action hyperlink" onClick={newNode}>
                 new-attribute
               </div>
@@ -112,7 +119,7 @@ const FieldElement = (props: Props) => {
         </div>
         {children?.length > 0 && (
           <div className="field-element-children">
-            {children.map(child => (
+            {children.map((child: any) => (
               <div
                 className="field-element-children--element"
                 key={child.reference}

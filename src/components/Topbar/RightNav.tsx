@@ -11,23 +11,23 @@ import NavAccountIcon from '../Navigation/NavAccountIcon';
 import { removeAuth } from '../../actions/AuthActions';
 
 interface Props {
-    cookies: any;
+  cookies: any;
   //   location: any;
   //   match: any;
 }
 
 const RightNav = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
+  const authorization = useSelector((state: any) => state.authorization);
   const dispatch = useDispatch();
   const history = useHistory();
-  
+
   const logout = (
     event: any,
     type = 'success',
     message = 'You have been logged out'
   ) => {
     dispatch(removeAuth());
-    props.cookies.remove(`ir_${process.env.REACT_APP_ONEAUTH_APPSPACE_ID}`);
+    props.cookies.remove(`mocker_${process.env.REACT_APP_ONEAUTH_APPSPACE_ID}`);
     history.push(`/`);
     sendMessage('notification', true, {
       type,
@@ -36,13 +36,14 @@ const RightNav = (props: Props) => {
     });
   };
 
-  const login = type => {
-    // window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/appspace/${process.env.REACT_APP_ONEAUTH_APPSPACE_ID}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
-    history.push("/");
+  const login = (type: string) => {
+    window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/appspace/${process.env.REACT_APP_ONEAUTH_APPSPACE_ID}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
   };
 
   return (
     <div className="right-nav">
+      {/* <OakButton theme="primary" variant="appear" action={() => {}} icon="add">Income</OakButton>
+      <OakButton theme="primary" variant="appear" action={() => {}} icon="add">Bill</OakButton> */}
       <DarkModeIcon />
       <NavAccountIcon logout={logout} login={login} />
     </div>

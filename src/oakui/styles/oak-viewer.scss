@@ -145,21 +145,21 @@
   }
 
   .ql-snow .ql-stroke {
-    stroke: var(--color-foreground-3);
+    stroke: var(--color-1);
   }
   .ql-snow .ql-fill,
   .ql-snow .ql-stroke.ql-fill {
-    fill: var(--color-foreground-3);
+    fill: var(--color-1);
   }
   .ql-picker-label {
-    color: var(--color-foreground-3);
+    color: var(--color-1);
     &:hover {
       color: green;
     }
   }
   .ql-strike.ql-active {
-    // border: 1px solid var(--color-foreground-3);
-    background-color: var(--color-foreground-2);
-    color: var(--color-foreground-1);
+    // border: 1px solid var(--color-1);
+    background-color: var(--color-1);
+    color: var(--color-1);
   }
 }

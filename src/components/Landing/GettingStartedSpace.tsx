@@ -1,7 +1,6 @@
 import React from 'react';
+import OakButton from '../../oakui/wc/OakButton';
 import './style.scss';
-import OakButton from '../../oakui/OakButton';
-import OakHeading from '../../oakui/OakHeading';
 
 interface Props {
   history: any;
@@ -14,23 +13,23 @@ const GettingStartedSpace = (props: Props) => {
   return (
     <div className="getting-started">
       <div>
-        <OakHeading title="Getting Started" />
+        Getting Started
         <div className="getting-started--steps space-top-2">
           <div className="typography-7">Create Space</div>
           <div className="typography-4">
             An asset represents an application or product being supported.
             Create an asset to get started with the process of onboarding your
-            product into Expenso.
+            product into Mocker.
           </div>
-          <div className="typography-7">Set Expenso URL in your product</div>
+          <div className="typography-7">Set Mocker URL in your product</div>
           <div className="typography-4">
             To provide seemless experience to your users, add a link from your
-            product to Expenso. By triggering a button for example from your
-            product, your users will be securely transferred to Expenso with
+            product to Mocker. By triggering a button for example from your
+            product, your users will be securely transferred to Mocker with
             their details.
           </div>
           <div className="typography-7">
-            Securely transmit user information to Expenso
+            Securely transmit user information to Mocker
           </div>
           <div className="typography-4">
             When you redirect from your product, transmit the user information
@@ -40,7 +39,11 @@ const GettingStartedSpace = (props: Props) => {
         </div>
       </div>
       <div className="action-footer position-center">
-        <OakButton theme="primary" variant="disappear" action={goToCreatePage}>
+        <OakButton
+          theme="primary"
+          variant="disappear"
+          handleClick={goToCreatePage}
+        >
           Create a new space
         </OakButton>
       </div>

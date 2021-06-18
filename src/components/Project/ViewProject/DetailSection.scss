@@ -1,0 +1,10 @@
+.project-detail-section__heading {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.project-detail-section__form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  row-gap: 20px;
+  column-gap: 20px;
+}

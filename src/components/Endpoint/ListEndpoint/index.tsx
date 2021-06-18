@@ -1,110 +1,161 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { compose as linkCompose } from '@oakui/core-stage/style-composer/OakLinkComposer';
+import { compose as tableCompose } from '@oakui/core-stage/style-composer/OakTableComposer';
+import {
+  TableCellDatatype,
+  TableHeader,
+} from '@oakui/core-stage/types/TableHeaderType';
+import { PaginatePref } from '@oakui/core-stage/types/PaginatePrefType';
+import { getPage } from '@oakui/core-stage/service/OakTableService';
 
 import './style.scss';
-import OakPage from '../../../oakui/OakPage';
-import OakSection from '../../../oakui/OakSection';
-import OakHeading from '../../../oakui/OakHeading';
-import OakForm from '../../../oakui/OakForm';
-import OakSelect from '../../../oakui/OakSelect';
-import OakButton from '../../../oakui/OakButton';
-import OakFooter from '../../../oakui/OakFooter';
-import EndpointLink from './EndpointLink';
-import OakFormRow from '../../../oakui/OakFormRow';
+import OakButton from '../../../oakui/wc/OakButton';
+import OakFormActionsContainer from '../../../oakui/wc/OakFormActionsContainer';
 
 const queryString = require('query-string');
 
 interface Props {
   space: string;
   history: any;
-  location: any;
+  projectId: string;
 }
 
 const ListEndpoint = (props: Props) => {
-  const projects = useSelector(state => state.project.projects);
-  const [state, setState] = useState({
-    projectId: '',
-  });
+  const projects = useSelector((state: any) => state.project.projects);
   const [endpoints, setEndpoints] = useState<any[]>();
   const [projectElements, setProjectElements] = useState<any>([]);
 
-  const allEndpoints = useSelector(state => state.endpoint.endpoints);
+  const [view, setView] = useState<any[]>([]);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [paginationPref, setPaginationPref] = useState<PaginatePref>({
+    pageNo: 1,
+    rowsPerPage: 5,
+    searchText: '',
+  });
+  const headers: TableHeader[] = [
+    {
+      name: 'name',
+      datatype: TableCellDatatype.text,
+    },
+    {
+      name: 'description',
+      datatype: TableCellDatatype.text,
+    },
+  ];
+
+  const allEndpoints = useSelector((state: any) => state.endpoint.endpoints);
 
   useEffect(() => {
     setEndpoints(
-      allEndpoints.filter(item => item.projectId === state.projectId)
+      allEndpoints.filter((item: any) => item.projectId === props.projectId)
     );
-  }, [state.projectId, allEndpoints]);
-
-  useEffect(() => {
-    const query = queryString.parse(props.location.search);
-    setState({ ...state, projectId: query?.projectId });
-  }, [props.location.search]);
+  }, [props.projectId, allEndpoints]);
 
   useEffect(() => {
     const localState: any[] = [];
-    projects.map(item => {
-      localState.push({ key: item._id, value: item.name });
+    projects.map((item: any) => {
+      localState.push({ id: item._id, value: item.name });
     });
     setProjectElements(localState);
   }, [projects]);
 
+  const handlePageChange = (detail: any) => {
+    setPaginationPref(detail);
+  };
+
+  useEffect(() => {
+    if (paginationPref && endpoints) {
+      const result = getPage(endpoints, headers, paginationPref);
+      setView(result.filteredResults);
+      setTotalRows(result.totalRows);
+    }
+  }, [paginationPref, endpoints]);
+
   const gotoCreatePage = () =>
     props.history.push(
-      `/${props.space}/endpoint/create?projectId=${state.projectId}`
+      `/${props.space}/endpoint/create?projectId=${props.projectId}`
     );
 
-  const handleProjectChange = event => {
+  const handleProjectChange = (detail: any) => {
+    props.history.push(`/${props.space}/endpoint?projectId=${detail.value}`);
+  };
+  const goToViewPage = (endpoint: any) => {
     props.history.push(
-      `/${props.space}/endpoint?projectId=${event.currentTarget.value}`
+      `/${props.space}/endpoint/${endpoint.type}/view?id=${endpoint._id}`
     );
   };
 
   return (
-    <OakPage>
-      <OakSection>
-        <OakHeading
-          title="Endpoint management console"
-          subtitle="Creation and maintainance of your project API endpoints"
-        />
-        <OakFormRow>
-          <OakSelect
-            id="projectId"
-            data={state}
-            handleChange={handleProjectChange}
-            label="Choose project"
-            objects={projectElements}
-          />
-          </OakFormRow>
-        {state.projectId && (
-          <>
-            <OakFooter>
-              <OakButton
-                action={gotoCreatePage}
-                theme="primary"
-                variant="appear"
+    <>
+      {props.projectId && (
+        <>
+          <OakFormActionsContainer align="right">
+            <OakButton
+              handleClick={gotoCreatePage}
+              theme="primary"
+              variant="appear"
+            >
+              New endpoint
+            </OakButton>
+          </OakFormActionsContainer>
+          <div className="list-endpoint">
+            {/* <OakPaginate
+              paginatePref={paginationPref}
+              handleChange={handlePageChange}
+              totalRows={totalRows}
+              variant="table"
+            /> */}
+            <div className="project-member-section__grid">
+              <table
+                className={tableCompose({
+                  color: 'global',
+                  navPosition: 'top',
+                })}
               >
-                New endpoint
-              </OakButton>
-            </OakFooter>
-            <div className="list-domain">
-              {endpoints?.map(item => (
-                <EndpointLink
-                  key={item._id}
-                  space={props.space}
-                  endpoint={item}
-                  history={props.history}
-                />
-              ))}
-              {!endpoints ||
-                (endpoints.length === 0 && (
-                  <div className="typography-4">No endpoints yet</div>
-                ))}
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Http methods</th>
+                    <th>Data source</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {endpoints?.map((item) => (
+                    <tr>
+                      <td>
+                        <a
+                          href={`#/${props.space}/endpoint/${item.type}/view?id=${item._id}`}
+                          className={linkCompose({
+                            underlineStyle: 'hover',
+                            textStyle: 'always',
+                            underlineThickness: 'thin',
+                          })}
+                        >
+                          {item.name}
+                        </a>
+                      </td>
+                      <td>
+                        {item.type === 'domain'
+                          ? 'GET, POST, PUT, DELETE'
+                          : item.method}
+                      </td>
+                      <td>Random / Defined</td>
+                      <td>{item.description}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </>
-        )}
-      </OakSection>
-    </OakPage>
+            {!endpoints ||
+              (endpoints.length === 0 && (
+                <div className="typography-4">No endpoints yet</div>
+              ))}
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

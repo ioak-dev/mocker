@@ -9,6 +9,8 @@ const constants = {
   API_URL_CODE: '/auth/sendResetCode',
   API_URL_USER_DETAILS: '/user/details',
 
+  API_URL_ASSET: '/asset',
+
   API_URL_STAGE: '/stage',
   API_URL_PREDICT: '/model/predict',
 
@@ -16,6 +18,7 @@ const constants = {
   API_URL_FAQ: '/faq',
   API_URL_SR: '/servicerequests',
   API_URL_USER: '/user',
+  API_URL_ROLE: '/role',
   API_URL: '/auth/',
   API_SIGNIN: '/signin',
   API_SIGNUP: '/signup',

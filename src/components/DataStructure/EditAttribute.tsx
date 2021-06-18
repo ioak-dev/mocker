@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import OakForm from '../../oakui/OakForm';
-import OakText from '../../oakui/OakText';
-import OakFooter from '../../oakui/OakFooter';
-import OakButton from '../../oakui/OakButton';
-import OakModal from '../../oakui/OakModal';
-import OakSelect from '../../oakui/OakSelect';
-import OakCheckbox from '../../oakui/OakCheckbox';
+import { newId } from '../../events/MessageService';
+import OakButton from '../../oakui/wc/OakButton';
+import OakCheckbox from '../../oakui/wc/OakCheckbox';
+import OakForm from '../../oakui/wc/OakForm';
+import OakInput from '../../oakui/wc/OakInput';
+import OakModal from '../../oakui/wc/OakModal';
+import OakSelect from '../../oakui/wc/OakSelect';
 
 interface Props {
   data: any;
@@ -17,6 +16,7 @@ interface Props {
 }
 
 const EditAttribute = (props: Props) => {
+  const [formId, setFormId] = useState(newId());
   const [state, setState] = useState({
     name: '',
     datatype: '',
@@ -32,24 +32,17 @@ const EditAttribute = (props: Props) => {
     setState({ ...state, ...props.data });
   }, [props.data]);
 
-  const handleChange = event => {
+  const handleChange = (detail: any) => {
     setState({
       ...state,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [detail.name]: detail.value,
     });
   };
 
-  const handleNumberChange = event => {
+  const handleNumberChange = (detail: any) => {
     setState({
       ...state,
-      [event.currentTarget.name]: parseInt(event.currentTarget.value, 10),
-    });
-  };
-
-  const handleCheckboxChange = event => {
-    setState({
-      ...state,
-      [event.currentTarget.name]: event.currentTarget.checked,
+      [detail.name]: parseInt(detail.value, 10),
     });
   };
 
@@ -58,25 +51,25 @@ const EditAttribute = (props: Props) => {
   };
 
   return (
-    <OakModal
-      visible={props.visible}
-      toggleVisibility={props.toggleVisibility}
-      label="Attribute setting"
-    >
-      <div slot="modal-body" className="modal-body">
-        <OakForm>
-          <OakText
-            data={state}
-            id="name"
-            handleChange={handleChange}
+    <OakModal isOpen={props.visible} handleClose={props.toggleVisibility}>
+      <div slot="body">
+        <OakForm handleSubmit={save} formGroupName={formId}>
+          <OakInput
+            gutterBottom
+            formGroupName={formId}
+            value={state.name}
+            name="name"
+            handleInput={handleChange}
             label="Field name"
           />
           <OakSelect
-            data={state}
-            id="datatype"
+            value={state.datatype}
+            formGroupName={formId}
+            name="datatype"
+            gutterBottom
             handleChange={handleChange}
             label="Datatype"
-            elements={[
+            options={[
               'object',
               'integer',
               'decimal',
@@ -88,62 +81,87 @@ const EditAttribute = (props: Props) => {
               'enum',
               'sequence_number',
             ]}
+            positioningStrategy="fixed"
           />
           {['sequence_number'].includes(state.datatype) && (
-            <OakText
-              data={state}
-              id="startSequenceFrom"
+            <OakInput
+              gutterBottom
+              formGroupName={formId}
+              value={state.startSequenceFrom}
+              name="startSequenceFrom"
               handleChange={handleNumberChange}
               type="number"
               label="Start from"
             />
           )}
-          {state.datatype && !['sequence_number', 'boolean', 'enum', 'object'].includes(state.datatype) && (
+          {state.datatype &&
+            !['sequence_number', 'boolean', 'enum', 'object'].includes(
+              state.datatype
+            ) && (
+              <>
+                <OakInput
+                  gutterBottom
+                  formGroupName={formId}
+                  value={state.lower}
+                  name="lower"
+                  handleInput={handleNumberChange}
+                  type="number"
+                  label="Lower bound"
+                />
+                <OakInput
+                  gutterBottom
+                  formGroupName={formId}
+                  value={state.upper}
+                  name="upper"
+                  handleInput={handleNumberChange}
+                  type="number"
+                  label="Upper bound"
+                />
+              </>
+            )}
+          {['enum'].includes(state.datatype) && (
             <>
-              <OakText
-                data={state}
-                id="lower"
-                handleChange={handleNumberChange}
-                type="number"
-                label="Lower bound"
+              <OakInput
+                gutterBottom
+                formGroupName={formId}
+                value={state.enumValues}
+                name="enumValues"
+                handleInput={handleChange}
+                label="Possible values"
               />
-              <OakText
-                data={state}
-                id="upper"
-                handleChange={handleNumberChange}
-                type="number"
-                label="Upper bound"
+              <OakInput
+                gutterBottom
+                formGroupName={formId}
+                value={state.delimiter}
+                name="delimiter"
+                handleInput={handleChange}
+                label="Possible values delimited by"
               />
             </>
           )}
-          {['enum'].includes(state.datatype) && (<>
-          <OakText
-            data={state}
-            id="enumValues"
-            handleChange={handleChange}
-            label="Possible values"
-          />
-          <OakText
-            data={state}
-            id="delimiter"
-            handleChange={handleChange}
-            label="Possible values delimited by"
-          /></>)}
-          {state.datatype &&
-          <OakCheckbox
-            id="array"
-            data={state}
-            handleChange={handleCheckboxChange}
-            theme="primary"
-            variant="circle"
-            label="Array type"
-          />}
+          {state.datatype && (
+            <OakCheckbox
+              name="array"
+              value={state.array}
+              handleChange={handleChange}
+            >
+              Array type
+            </OakCheckbox>
+          )}
         </OakForm>
       </div>
-      <div className="modal-footer">
-        <OakButton theme="primary" variant="appear" action={save}>
-          Update
-        </OakButton>
+      <div slot="footer">
+        <div className="modal-footer">
+          <OakButton
+            type="submit"
+            theme="primary"
+            variant="appear"
+            formGroupName={formId}
+            // handleClick={save}
+          >
+            Update
+          </OakButton>
+        </div>
       </div>
     </OakModal>
   );

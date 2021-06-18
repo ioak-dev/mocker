@@ -16,12 +16,12 @@ interface Props {
 }
 
 const OakRoute = (props: Props) => {
-  const authorization = useSelector(state => state.authorization);
-  const profile = useSelector(state => state.profile);
+  const authorization = useSelector((state: any) => state.authorization);
+  const profile = useSelector((state: any) => state.profile);
   const dispatch = useDispatch();
 
   const middlewares = () => {
-    props.middleware?.forEach(middlewareName => {
+    props.middleware?.forEach((middlewareName) => {
       if (!runMidleware(middlewareName)) {
         return false;
       }
@@ -29,7 +29,7 @@ const OakRoute = (props: Props) => {
     return true;
   };
 
-  const runMidleware = middlewareName => {
+  const runMidleware = (middlewareName: string) => {
     sendMessage('spaceChange', true, '');
     switch (middlewareName) {
       case 'readAuthentication':
@@ -50,17 +50,17 @@ const OakRoute = (props: Props) => {
     return authenticate('space', false);
   };
 
-  const authenticate = async (type, redirect = true) => {
+  const authenticate = async (type: string, redirect = true) => {
     sendMessage('spaceChange', true, props.match.params.space);
     if (authorization.isAuth) {
       return true;
     }
-    const cookieKey = `mockback_${props.match.params.space}`;
+    const cookieKey = `mocker_${props.match.params.space}`;
     const authKey = props.cookies.get(cookieKey);
     const baseAuthUrl = `/auth/${props.match.params.space}`;
     if (authKey) {
       httpGet(`${baseAuthUrl}/session/${authKey}`, null)
-        .then(sessionResponse => {
+        .then((sessionResponse) => {
           if (sessionResponse.status === 200) {
             console.log('@@@@@@@@@');
             dispatch(
@@ -107,7 +107,7 @@ const OakRoute = (props: Props) => {
     return false;
   };
 
-  const redirectToLogin = space => {
+  const redirectToLogin = (space: string) => {
     window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/${props.match.params.space}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
     // props.history.push(`/${space}/login/home`);
   };

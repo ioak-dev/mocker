@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, connect, useDispatch } from 'react-redux';
 
 import { receiveMessage, sendMessage } from '../../events/MessageService';
-import packetWhite from '../../images/mockback_white.svg';
-import packetBlack from '../../images/mockback_black.svg';
+import packetWhite from '../../images/mocker_white.svg';
+import packetBlack from '../../images/mocker_black.svg';
 import './NavPopover.scss';
 import DropLinks from './DropLinks';
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const NavPopover = (props: Props) => {
-  const profile = useSelector(state => state.profile);
+  const profile = useSelector((state: any) => state.profile);
 
   const dispatch = useDispatch();
 
