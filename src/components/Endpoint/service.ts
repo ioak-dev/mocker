@@ -12,7 +12,7 @@ export const saveDomainEndpoint = async (
     payload,
     {
       headers: {
-        Authorization: authorization.token,
+        Authorization: authorization.access_token,
       },
     }
   );
@@ -29,7 +29,7 @@ export const saveCustomEndpoint = async (
     payload,
     {
       headers: {
-        Authorization: authorization.token,
+        Authorization: authorization.access_token,
       },
     }
   );
@@ -46,7 +46,7 @@ export const saveEndpoint = async (
     payload,
     {
       headers: {
-        Authorization: authorization.token,
+        Authorization: authorization.access_token,
       },
     }
   );

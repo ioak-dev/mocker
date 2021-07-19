@@ -12,16 +12,22 @@ import { getPage } from '@oakui/core-stage/service/OakTableService';
 import './style.scss';
 import OakButton from '../../../oakui/wc/OakButton';
 import OakFormActionsContainer from '../../../oakui/wc/OakFormActionsContainer';
+import EndpointLink from './EndpointLink';
 
 const queryString = require('query-string');
 
 interface Props {
   space: string;
   history: any;
-  projectId: string;
+  location: any;
 }
 
 const ListEndpoint = (props: Props) => {
+  const query = queryString.parse(props.location.search);
+  const project = useSelector((state: any) =>
+    state.project.projects.find((item: any) => item._id === query.id)
+  );
+
   const projects = useSelector((state: any) => state.project.projects);
   const [endpoints, setEndpoints] = useState<any[]>();
   const [projectElements, setProjectElements] = useState<any>([]);
@@ -47,10 +53,12 @@ const ListEndpoint = (props: Props) => {
   const allEndpoints = useSelector((state: any) => state.endpoint.endpoints);
 
   useEffect(() => {
-    setEndpoints(
-      allEndpoints.filter((item: any) => item.projectId === props.projectId)
-    );
-  }, [props.projectId, allEndpoints]);
+    if (project) {
+      setEndpoints(
+        allEndpoints.filter((item: any) => item.projectId === project._id)
+      );
+    }
+  }, [project, allEndpoints]);
 
   useEffect(() => {
     const localState: any[] = [];
@@ -74,7 +82,7 @@ const ListEndpoint = (props: Props) => {
 
   const gotoCreatePage = () =>
     props.history.push(
-      `/${props.space}/endpoint/create?projectId=${props.projectId}`
+      `/${props.space}/endpoint/create?projectId=${project._id}`
     );
 
   const handleProjectChange = (detail: any) => {
@@ -88,72 +96,32 @@ const ListEndpoint = (props: Props) => {
 
   return (
     <>
-      {props.projectId && (
-        <>
-          <OakFormActionsContainer align="right">
+      {project && (
+        <div className="list-endpoint">
+          <div className="action-footer position-left">
             <OakButton
               handleClick={gotoCreatePage}
-              theme="primary"
+              theme="default"
               variant="appear"
             >
               New endpoint
             </OakButton>
-          </OakFormActionsContainer>
-          <div className="list-endpoint">
-            {/* <OakPaginate
-              paginatePref={paginationPref}
-              handleChange={handlePageChange}
-              totalRows={totalRows}
-              variant="table"
-            /> */}
-            <div className="project-member-section__grid">
-              <table
-                className={tableCompose({
-                  color: 'global',
-                  navPosition: 'top',
-                })}
-              >
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Http methods</th>
-                    <th>Data source</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {endpoints?.map((item) => (
-                    <tr>
-                      <td>
-                        <a
-                          href={`#/${props.space}/endpoint/${item.type}/view?id=${item._id}`}
-                          className={linkCompose({
-                            underlineStyle: 'hover',
-                            textStyle: 'always',
-                            underlineThickness: 'thin',
-                          })}
-                        >
-                          {item.name}
-                        </a>
-                      </td>
-                      <td>
-                        {item.type === 'domain'
-                          ? 'GET, POST, PUT, DELETE'
-                          : item.method}
-                      </td>
-                      <td>Random / Defined</td>
-                      <td>{item.description}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {!endpoints ||
-              (endpoints.length === 0 && (
-                <div className="typography-4">No endpoints yet</div>
-              ))}
           </div>
-        </>
+          <div className="list-endpoint__container">
+            {endpoints?.map((item: any) => (
+              <EndpointLink
+                key={item._id}
+                space={props.space}
+                history={props.history}
+                endpoint={item}
+              />
+            ))}
+          </div>
+          {!endpoints ||
+            (endpoints.length === 0 && (
+              <div className="typography-4">No endpoints yet</div>
+            ))}
+        </div>
       )}
     </>
   );

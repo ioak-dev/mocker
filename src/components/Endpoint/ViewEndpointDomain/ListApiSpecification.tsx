@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { compose as sectionCompose } from '@oakui/core-stage/style-composer/OakSectionComposer';
+
 import ApiSpecification from '../ApiSpecification';
 
 import './style.scss';
@@ -26,7 +28,13 @@ const ListApiSpecification = (props: Props) => {
   return (
     <>
       {props.project && props.endpoint && (
-        <div className="api-specification-list">
+        <div
+          className={sectionCompose({
+            baseClass: 'api-specification-list',
+            elevation: 0,
+            marginVertical: 4,
+          })}
+        >
           <ApiSpecification
             type="GET"
             pathKey="GET_ALL"

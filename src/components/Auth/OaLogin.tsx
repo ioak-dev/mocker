@@ -14,8 +14,15 @@ const OaLogin = (props: Props) => {
     if (props.location.search) {
       const query = queryString.parse(props.location.search);
       console.log('--------------', query);
-      props.cookies.set(`mocker_${query.space}`, query.authKey);
-      props.history.push(query.from ? query.from : `/${query.space}/project`);
+      props.cookies.set(
+        `mocker_${query.realm}-access_token`,
+        query.access_token
+      );
+      props.cookies.set(
+        `mocker_${query.realm}-refresh_token`,
+        query.refresh_token
+      );
+      props.history.push(query.from ? query.from : `/${query.realm}/project`);
     }
   }, []);
 

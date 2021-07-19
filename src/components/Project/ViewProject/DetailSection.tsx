@@ -99,7 +99,7 @@ const DetailSection = (props: Props) => {
             paddingHorizontal={2}
             paddingVertical={4}
             rounded
-            elevation={1}
+            elevation={0}
           >
             <div className="section__heading">Project details</div>
             <div className="section__form">

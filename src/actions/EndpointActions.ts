@@ -10,7 +10,7 @@ export const fetchAllEndpoints = (space: string, authorization: any) => (
 ) => {
   httpGet(`${constants.API_URL_ENDPOINT}/${space}`, {
     headers: {
-      Authorization: authorization.token,
+      Authorization: authorization.access_token,
     },
   }).then((response) => {
     console.log(response.data.data);

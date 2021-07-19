@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { compose as sectionCompose } from '@oakui/core-stage/style-composer/OakSectionComposer';
 
 import './style.scss';
 import { newMessageId, sendMessage } from '../../../events/MessageService';
@@ -99,31 +100,35 @@ const ViewEndpointDomain = (props: Props) => {
   };
 
   return (
-    <OakTab
-      variant="underline"
-      color="primary"
-      tabs={['Configuration', 'API']}
-      handleChange={handleTabChange}
+    <div
+      className={sectionCompose({
+        fillColor: 'container',
+        paddingHorizontal: 4,
+        paddingVertical: 4,
+        rounded: true,
+      })}
     >
-      <div>
-        {tabIndex === 0 && domainEndpoint && (
-          <DomainEndpoint
-            data={domainEndpoint}
-            history={props.history}
-            space={props.space}
-            projectId={domainEndpoint?.projectId}
-          />
-        )}
-        {tabIndex === 1 && (
-          <ListApiSpecification
-            space={props.space}
-            history={props.history}
-            endpoint={domainEndpoint}
-            project={project}
-          />
-        )}
-      </div>
-    </OakTab>
+      <OakTab tabs={['Settings', 'Link']} handleChange={handleTabChange}>
+        <div>
+          {tabIndex === 0 && domainEndpoint && (
+            <DomainEndpoint
+              data={domainEndpoint}
+              history={props.history}
+              space={props.space}
+              projectId={domainEndpoint?.projectId}
+            />
+          )}
+          {tabIndex === 1 && (
+            <ListApiSpecification
+              space={props.space}
+              history={props.history}
+              endpoint={domainEndpoint}
+              project={project}
+            />
+          )}
+        </div>
+      </OakTab>
+    </div>
   );
 };
 

@@ -29,37 +29,18 @@ const ViewProject = (props: Props) => {
   };
 
   return (
-    <OakTab
-      tabs={['Endpoints', 'Configuration']}
-      variant="underline"
-      // nobaseline
-      color="primary"
-      handleChange={handleTabChange}
-    >
-      <div className="tab-section">
-        {tabIndex === 0 && (
-          <ListEndpoint
-            projectId={project?._id}
-            space={props.space}
-            history={props.history}
-          />
-        )}
-        {tabIndex === 1 && (
-          <div className="project-settings-tab">
-            <DetailSection
-              project={project}
-              space={props.space}
-              history={props.history}
-            />
-            <MemberSection
-              history={props.history}
-              space={props.space}
-              project={project}
-            />
-          </div>
-        )}
-      </div>
-    </OakTab>
+    <div className="project-settings-tab">
+      <DetailSection
+        project={project}
+        space={props.space}
+        history={props.history}
+      />
+      <MemberSection
+        history={props.history}
+        space={props.space}
+        project={project}
+      />
+    </div>
   );
 };
 

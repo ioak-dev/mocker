@@ -1,5 +1,6 @@
 import React from 'react';
-import './style.scss';
+import OakClickArea from '../../oakui/wc/OakClickArea';
+import './SpaceItem.scss';
 
 interface Props {
   space: any;
@@ -8,14 +9,19 @@ interface Props {
 
 const SpaceItem = (props: Props) => {
   const goToSpacePage = () => {
-    window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/${props.space.spaceId}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
+    window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/realm/${props.space.realm}/login/${process.env.REACT_APP_ONEAUTH_APP_ID}`;
   };
   return (
-    <div className="space-list-item" onClick={goToSpacePage}>
-      <div className="space-list-item--link">
-        <div className="typography-6">{props.space.name}</div>
-      </div>
-      <div className="typography-4">{props.space.description}</div>
+    <div className="space-item">
+      <OakClickArea handleClick={goToSpacePage}>
+        <div className="space-item__left">
+          <div className="space-item__left__name">{props.space.name}</div>
+          <div className="space-item__left__description">
+            {props.space.description}
+          </div>
+        </div>
+      </OakClickArea>
+      {/* <div className="space-item__right">a</div> */}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { compose as sectionCompose } from '@oakui/core-stage/style-composer/OakSectionComposer';
 
 import './style.scss';
 import { saveDomainEndpoint, saveEndpoint } from '../service';
@@ -120,14 +121,7 @@ const DomainEndpoint = (props: Props) => {
 
   return (
     <>
-      <OakSection
-        fillColor="container"
-        paddingHorizontal={2}
-        paddingVertical={2}
-        marginVertical={4}
-        rounded
-        elevation={1}
-      >
+      <div className={sectionCompose({ elevation: 0, marginVertical: 4 })}>
         {props.projectId && (
           // <OakForm formGroupName={formId} handleSubmit={save}>
           <div className="domain-endpoint-sections">
@@ -197,7 +191,7 @@ const DomainEndpoint = (props: Props) => {
           </div>
           // </OakForm>
         )}
-      </OakSection>
+      </div>
       <div className="action-footer position-right">
         <OakButton
           theme="primary"

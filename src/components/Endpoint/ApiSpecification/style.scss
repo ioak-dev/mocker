@@ -1,7 +1,5 @@
 .api-specification {
   display: grid;
-  grid-auto-flow: row;
-  row-gap: 10px;
-  padding: 10px 20px;
-  background-color: var(--color-background-2);
+  background-color: var(--color-surface);
+  border-radius: 4px;
 }

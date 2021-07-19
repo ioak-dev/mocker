@@ -18,8 +18,6 @@ const Landing = (props: Props) => {
   return (
     <div className="landing">
       <ListSpaces history={props.history} />
-      <hr />
-      <GettingStartedSpace history={props.history} />
     </div>
   );
 };

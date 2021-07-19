@@ -11,7 +11,7 @@ export const fetchAllProjects = (space: string, authorization: any) => (
 ) => {
   httpGet(`${constants.API_URL_PROJECT}/${space}`, {
     headers: {
-      Authorization: authorization.token,
+      Authorization: authorization.access_token,
     },
   }).then((response) => {
     dispatch({

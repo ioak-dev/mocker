@@ -10,7 +10,7 @@ export const fetchAllRoles = (tenant: string, authorization: any) => (
 ) => {
   httpGet(`${constants.API_URL_ROLE}/${tenant}`, {
     headers: {
-      Authorization: authorization.token,
+      Authorization: authorization.access_token,
     },
   }).then((response) => {
     dispatch({
@@ -25,7 +25,7 @@ export const saveRole = (tenant: string, authorization: any, payload: any) => (
 ) => {
   httpPut(`${constants.API_URL_ROLE}/${tenant}/`, payload, {
     headers: {
-      Authorization: authorization.token,
+      Authorization: authorization.access_token,
     },
   })
     .then((response) => {

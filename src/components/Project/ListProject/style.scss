@@ -1,4 +1,6 @@
-.list-project {
+.list-project__container {
   display: grid;
   grid-auto-flow: row;
+  margin: 20px 0;
+  row-gap: 20px;
 }

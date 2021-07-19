@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { compose as sectionCompose } from '@oakui/core-stage/style-composer/OakSectionComposer';
 
 import './style.scss';
 import {
@@ -106,14 +107,7 @@ const CustomEndpoint = (props: Props) => {
 
   return (
     <>
-      <OakSection
-        fillColor="container"
-        paddingHorizontal={2}
-        paddingVertical={2}
-        rounded
-        elevation={1}
-        marginVertical={4}
-      >
+      <div className={sectionCompose({ elevation: 0, marginVertical: 4 })}>
         {/* <OakForm formGroupName={formId} handleSubmit={save}> */}
         {props.projectId && (
           <>
@@ -161,7 +155,7 @@ const CustomEndpoint = (props: Props) => {
           </>
         )}
         {/* </OakForm> */}
-      </OakSection>
+      </div>
       <div className="action-footer position-right">
         <OakButton
           theme="primary"

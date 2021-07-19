@@ -1,4 +1,4 @@
-.project-link {
+.endpoint-link {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -12,19 +12,22 @@
     color: var(--color-container-darker-i);
   }
 }
-.project-link__left {
+.endpoint-link__left {
   cursor: pointer;
   padding: 16px 12px;
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 4px;
 }
-.project-link__left__name {
+.endpoint-link__left__name {
   font-size: 20px;
 }
-.project-link__left__description {
-  font-size: 12px;
+.endpoint-link__left__subtitle {
+  font-size: 10px;
   color: var(--color-3);
 }
 
-.project-link__right {
+.endpoint-link__right {
   padding: 16px 12px;
   display: grid;
   grid-auto-flow: column;

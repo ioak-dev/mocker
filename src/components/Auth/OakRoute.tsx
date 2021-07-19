@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addAuth } from '../../actions/AuthActions';
 import { Authorization } from '../Types/GeneralTypes';
 import { sendMessage } from '../../events/MessageService';
-import { httpGet } from '../Lib/RestTemplate';
+import { httpPost } from '../Lib/RestTemplate';
 
 interface Props {
   path?: string;
@@ -55,30 +55,40 @@ const OakRoute = (props: Props) => {
     if (authorization.isAuth) {
       return true;
     }
-    const cookieKey = `mocker_${props.match.params.space}`;
-    const authKey = props.cookies.get(cookieKey);
-    const baseAuthUrl = `/auth/${props.match.params.space}`;
-    if (authKey) {
-      httpGet(`${baseAuthUrl}/session/${authKey}`, null)
-        .then((sessionResponse) => {
-          if (sessionResponse.status === 200) {
-            console.log('@@@@@@@@@');
+    const accessToken = props.cookies.get(
+      `mocker_${props.match.params.space}-access_token`
+    );
+    const refreshToken = props.cookies.get(
+      `mocker_${props.match.params.space}-refresh_token`
+    );
+    if (accessToken && refreshToken) {
+      httpPost(
+        `/user/${props.match.params.space}/authorize_user`,
+        { accessToken, refreshToken },
+        null
+      )
+        .then((response) => {
+          if (response.status === 200) {
+            let newAccessToken = accessToken;
+            if (response.data.access_token) {
+              newAccessToken = response.data.access_token;
+              props.cookies.set(
+                `mocker_${props.match.params.space}-access_token`,
+                newAccessToken
+              );
+            }
             dispatch(
               addAuth({
                 isAuth: true,
-                token: sessionResponse.data.data.token,
-                secret: '',
-                firstName: sessionResponse.data.data.firstName,
-                lastName: sessionResponse.data.data.lastName,
-                email: sessionResponse.data.data.email,
-                type: sessionResponse.data.data.type,
-                userId: sessionResponse.data.data.userId,
+                ...response.data.claims,
+                access_token: newAccessToken,
               })
             );
           }
         })
         .catch((error: any) => {
-          props.cookies.remove(cookieKey);
+          props.cookies.remove(`mocker_${props.match.space}-access_token`);
+          props.cookies.remove(`mocker_${props.match.space}-refresh_token`);
           if (redirect && error.response.status === 404) {
             sendMessage('notification', true, {
               type: 'failure',
@@ -108,7 +118,7 @@ const OakRoute = (props: Props) => {
   };
 
   const redirectToLogin = (space: string) => {
-    window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/space/${props.match.params.space}/login?type=signin&appId=${process.env.REACT_APP_ONEAUTH_APP_ID}`;
+    window.location.href = `${process.env.REACT_APP_ONEAUTH_URL}/#/realm/${props.match.params.space}/login/${process.env.REACT_APP_ONEAUTH_APP_ID}`;
     // props.history.push(`/${space}/login/home`);
   };
 

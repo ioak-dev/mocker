@@ -78,7 +78,7 @@ const MemberSection = (props: Props) => {
   };
 
   return (
-    <OakSection fillColor="container" rounded elevation={1}>
+    <OakSection fillColor="container" rounded elevation={0}>
       <div className="project-member-section">
         <div className="project-member-section__heading">User permissions</div>
         <OakPaginate

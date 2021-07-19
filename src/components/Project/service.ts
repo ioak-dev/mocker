@@ -12,7 +12,7 @@ export const saveProject = async (
     payload,
     {
       headers: {
-        Authorization: authorization.token,
+        Authorization: authorization.access_token,
       },
     }
   );
@@ -29,7 +29,7 @@ export const addRole = async (
     payload,
     {
       headers: {
-        Authorization: authorization.token,
+        Authorization: authorization.access_token,
       },
     }
   );
@@ -45,7 +45,7 @@ export const removeRole = async (
     `${constants.API_URL_ROLE}/${space}/${id}`,
     {
       headers: {
-        Authorization: authorization.token,
+        Authorization: authorization.access_token,
       },
     }
   );

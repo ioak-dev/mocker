@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { compose as sectionCompose } from '@oakui/core-stage/style-composer/OakSectionComposer';
 
 import './style.scss';
 import CustomEndpoint from '../CustomEndpoint';
@@ -43,30 +44,37 @@ const ViewEndpointCustom = (props: Props) => {
   };
 
   return (
-    <OakTab tabs={['API Spec', 'Settings']} handleChange={handleTabChange}>
-      {tabIndex === 0 && (
-        <div>
-          {customEndpoint && (
-            <CustomEndpoint
-              data={customEndpoint}
-              history={props.history}
-              space={props.space}
-              projectId={customEndpoint?.projectId}
-            />
-          )}
-        </div>
-      )}
-      {tabIndex === 1 && (
-        <div>
+    <div
+      className={sectionCompose({
+        fillColor: 'container',
+        paddingHorizontal: 4,
+        paddingVertical: 4,
+        rounded: true,
+      })}
+    >
+      <OakTab tabs={['Settings', 'Link']} handleChange={handleTabChange}>
+        {tabIndex === 0 && (
+          <div>
+            {customEndpoint && (
+              <CustomEndpoint
+                data={customEndpoint}
+                history={props.history}
+                space={props.space}
+                projectId={customEndpoint?.projectId}
+              />
+            )}
+          </div>
+        )}
+        {tabIndex === 1 && (
           <ListApiSpecification
             space={props.space}
             history={props.history}
             endpoint={customEndpoint}
             project={project}
           />
-        </div>
-      )}
-    </OakTab>
+        )}
+      </OakTab>
+    </div>
   );
 };
 

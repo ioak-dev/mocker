@@ -23,7 +23,7 @@ export const fetchAllUsers = (tenant: string, authorization: any) => (
 ) => {
   httpGet(`${constants.API_URL_USER}/${tenant}/all`, {
     headers: {
-      Authorization: authorization.token,
+      Authorization: authorization.access_token,
     },
   }).then((response) => {
     dispatch({
@@ -38,7 +38,7 @@ export const saveUser = (tenant: string, authorization: any, payload: any) => (
 ) => {
   httpPut(`${constants.API_URL_USER}/${tenant}/`, payload, {
     headers: {
-      Authorization: authorization.token,
+      Authorization: authorization.access_token,
     },
   })
     .then((response) => {
