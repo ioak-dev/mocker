@@ -87,8 +87,8 @@ const OakRoute = (props: Props) => {
           }
         })
         .catch((error: any) => {
-          props.cookies.remove(`mocker_${props.match.space}-access_token`);
-          props.cookies.remove(`mocker_${props.match.space}-refresh_token`);
+          props.cookies.remove(`mocker-access_token`);
+          props.cookies.remove(`mocker-refresh_token`);
           if (redirect && error.response.status === 404) {
             sendMessage('notification', true, {
               type: 'failure',
